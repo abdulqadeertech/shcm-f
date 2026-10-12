@@ -67,8 +67,9 @@ export interface RegisterCompanyData {
 }
 
 export interface RegisterUserData {
-  firstName: string;
-  lastName: string;
+  fullName?: string;
+  firstName?: string;
+  lastName?: string;
   email: string;
   password: string;
   phone?: string;
@@ -81,6 +82,7 @@ interface AuthContextType {
   isAuthenticated: boolean;
   isLoading: boolean;
   login: (email: string, password: string) => Promise<void>;
+  loginWithGoogle: (email: string, name?: string) => Promise<void>;
   register: (data: RegisterUserData) => Promise<void>;
   registerCompany: (data: RegisterCompanyData) => Promise<void>;
   switchOrganization: (organizationId: string) => Promise<void>;
@@ -142,10 +144,44 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  const loginWithGoogle = async (email: string, name?: string) => {
+    try {
+      const res = await apiRequest('/auth/google', {
+        method: 'POST',
+        body: JSON.stringify({ email, name }),
+      });
+
+      if (res?.data?.token) {
+        localStorage.setItem('novahcm_token', res.data.token);
+        setToken(res.data.token);
+        setUser(res.data.user);
+        return;
+      }
+    } catch (err: any) {
+      if (err?.statusCode === 404 || err?.message?.includes('404')) {
+        await quickLogin(email);
+        return;
+      }
+      throw err;
+    }
+  };
+
   const register = async (data: RegisterUserData) => {
+    let firstName = data.firstName;
+    let lastName = data.lastName;
+    if (!firstName && data.fullName) {
+      const parts = data.fullName.trim().split(/\s+/);
+      firstName = parts[0] || 'User';
+      lastName = parts.slice(1).join(' ') || 'User';
+    }
+    const payload = {
+      ...data,
+      firstName: firstName || 'User',
+      lastName: lastName || 'User',
+    };
     const res = await apiRequest('/auth/register', {
       method: 'POST',
-      body: JSON.stringify(data),
+      body: JSON.stringify(payload),
     });
 
     if (res?.data?.token) {
@@ -236,6 +272,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         isAuthenticated: !!user,
         isLoading,
         login,
+        loginWithGoogle,
         register,
         registerCompany,
         switchOrganization,
