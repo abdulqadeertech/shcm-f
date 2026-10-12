@@ -1,8 +1,12 @@
 const metaEnv = (import.meta as any).env || {};
-const envApi = (metaEnv.VITE_API_URL || metaEnv.VITE_API_BASE_URL || '') as string;
-export const API_BASE = envApi
-  ? `${envApi.replace(/\/+$/, '')}/api/v1`
-  : (metaEnv.PROD ? 'https://shcm-b.onrender.com/api/v1' : '/api/v1');
+const rawEnvApi = (metaEnv.VITE_API_URL || metaEnv.VITE_API_BASE_URL || '') as string;
+
+// Ensure API URL never mistakenly points to a vercel.app frontend deployment
+const isValidBackendUrl = rawEnvApi && !rawEnvApi.includes('vercel.app');
+
+export const API_BASE = isValidBackendUrl
+  ? `${rawEnvApi.replace(/\/+$/, '')}/api/v1`
+  : (metaEnv.DEV ? '/api/v1' : 'https://shcm-b.onrender.com/api/v1');
 
 export class ApiError extends Error {
   statusCode: number;
