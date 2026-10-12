@@ -7,7 +7,7 @@ export default defineConfig({
     port: 5173,
     proxy: {
       '/api': {
-        target: 'https://shcm-f-git-main-qadeer9.vercel.app/api',
+        target: 'http://localhost:5000',
         changeOrigin: true,
       },
     },

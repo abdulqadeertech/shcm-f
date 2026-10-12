@@ -1,4 +1,8 @@
-export const API_BASE = '/api/v1';
+const metaEnv = (import.meta as any).env || {};
+const envApi = (metaEnv.VITE_API_URL || metaEnv.VITE_API_BASE_URL || '') as string;
+export const API_BASE = envApi
+  ? `${envApi.replace(/\/+$/, '')}/api/v1`
+  : (metaEnv.PROD ? 'https://shcm-b.onrender.com/api/v1' : '/api/v1');
 
 export class ApiError extends Error {
   statusCode: number;
