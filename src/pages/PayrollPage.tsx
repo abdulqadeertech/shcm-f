@@ -302,9 +302,8 @@ export const PayrollPage: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-xl font-bold text-white tracking-tight flex items-center space-x-2">
-            <CreditCard className="text-[#ff6f32]" size={24} />
-            <span>Advanced Payroll & Statutory Compensation</span>
+          <h1 className="text-xl font-bold text-white tracking-tight">
+            Advanced Payroll & Statutory Compensation
           </h1>
           <p className="text-xs text-slate-400 mt-0.5">
             4-Stage lifecycle (Draft &rarr; Reviewed &rarr; Approved &rarr; Paid), dry-run simulation, country policies, and salary revision auditing.

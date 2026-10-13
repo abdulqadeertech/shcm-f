@@ -8,7 +8,6 @@ import {
   GitBranch,
   TrendingUp,
   ArrowRight,
-  CheckCircle2,
 } from 'lucide-react';
 
 export const HowItWorksSection: React.FC = () => {
@@ -58,18 +57,11 @@ export const HowItWorksSection: React.FC = () => {
   ];
 
   return (
-    <section id="how-it-works" className="py-20 lg:py-28 bg-[#051720] transition-colors border-t border-[#0e3547] text-white">
+    <section id="how-it-works" className="py-20 lg:py-24 bg-[#051720] transition-colors border-t border-[#0e3547] text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-left max-w-3xl mb-16 space-y-3">
-          <div className="flex items-center space-x-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-[#ff6f32]" />
-            <span className="text-[#ff6f32] font-mono text-xs font-bold tracking-widest uppercase">
-              DEPLOYMENT PROCESS
-            </span>
-          </div>
-
-          <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-extrabold tracking-tight text-white leading-[1.18]">
+        <div className="text-left max-w-3xl mb-14 space-y-3">
+          <h2 className="text-3xl sm:text-4xl lg:text-[40px] font-extrabold tracking-tight text-white leading-[1.18]">
             How SmartHCM Works
           </h2>
 
@@ -89,15 +81,15 @@ export const HowItWorksSection: React.FC = () => {
               return (
                 <div
                   key={idx}
-                  className="bg-[#08222f] rounded-2xl p-5 border border-[#14425b] shadow-xl flex flex-col justify-between group hover:border-[#ff6f32]/60 transition-all duration-200"
+                  className="bg-[#08222f] rounded-2xl p-5 border border-[#14425b] shadow-md flex flex-col justify-between group hover:border-[#ff6f32]/50 transition-all duration-200"
                 >
                   <div>
                     {/* Step Number & Icon Header */}
                     <div className="flex items-center justify-between mb-4">
-                      <div className="w-10 h-10 rounded-xl bg-[#0a2736] border border-[#14425b] text-white flex items-center justify-center font-bold text-xs shadow-sm group-hover:bg-[#ff6f32] group-hover:border-[#ff6f32] transition-colors duration-200">
+                      <div className="w-10 h-10 rounded-xl bg-[#0a2736] border border-[#14425b] text-white flex items-center justify-center font-bold text-xs group-hover:bg-[#ff6f32] group-hover:border-[#ff6f32] transition-colors duration-200">
                         <Icon size={18} />
                       </div>
-                      <span className="text-xs font-mono font-bold text-[#ff6f32] bg-[#ff6f32]/10 px-2 py-0.5 rounded border border-[#ff6f32]/30">
+                      <span className="text-xs font-mono font-bold text-slate-400">
                         {item.step}
                       </span>
                     </div>
@@ -112,11 +104,6 @@ export const HowItWorksSection: React.FC = () => {
                       {item.description}
                     </p>
                   </div>
-
-                  <div className="pt-4 mt-4 border-t border-[#0f3446] text-[11px] font-semibold text-slate-400 flex items-center space-x-1">
-                    <CheckCircle2 size={12} className="text-[#ff6f32]" />
-                    <span>Verified Step</span>
-                  </div>
                 </div>
               );
             })}
@@ -127,9 +114,9 @@ export const HowItWorksSection: React.FC = () => {
         <div className="mt-12 text-center">
           <Link
             to="/register"
-            className="inline-flex items-center space-x-2 bg-[#ff6f32] hover:bg-[#ea580c] text-white font-bold text-xs sm:text-sm px-7 py-3.5 rounded-xl shadow-md transition-all duration-200 group"
+            className="inline-flex items-center space-x-2 bg-[#ff6f32] hover:bg-[#ea580c] text-white font-bold text-xs sm:text-sm px-7 py-3.5 rounded-xl shadow-sm transition-all duration-200 group"
           >
-            <span>Start Step 1: Register Free Workspace</span>
+            <span>Register Free Workspace</span>
             <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>

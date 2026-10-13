@@ -1,23 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import {
-  Building2,
   CheckCircle2,
   ShieldCheck,
   ArrowRight,
   ArrowLeft,
   Lock,
   Mail,
-  User,
-  Globe,
   Loader2,
   AlertCircle,
   Check,
-  Layers,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { apiRequest } from '../api/client';
 import { useToast } from '../context/ToastContext';
+import { BrandLogo } from '../components/common/BrandLogo';
 
 export const RegisterCompanyPage: React.FC = () => {
   const { registerCompany } = useAuth();
@@ -197,9 +194,8 @@ export const RegisterCompanyPage: React.FC = () => {
       <div className="w-full max-w-xl">
         {/* Card Header */}
         <div className="text-center mb-6">
-          <div className="inline-flex h-12 w-12 rounded-xl bg-[#071c26] border border-[#14425b] items-center justify-center font-extrabold text-white text-xl shadow-md mb-3 relative">
-            <span>S</span>
-            <span className="w-2 h-2 rounded-full bg-[#ff6f32] absolute -top-0.5 -right-0.5 ring-2 ring-[#051720]" />
+          <div className="inline-flex justify-center mb-3">
+            <BrandLogo size="lg" />
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
             Register Company <span className="text-[#ff6f32]">Workspace</span>
@@ -397,9 +393,8 @@ export const RegisterCompanyPage: React.FC = () => {
 
               {/* What gets auto-provisioned preview */}
               <div className="mt-4 p-4 rounded-xl bg-[#051720] border border-[#14425b] space-y-1.5 text-xs text-slate-300">
-                <div className="font-bold text-white flex items-center space-x-1.5 mb-2">
-                  <Layers size={14} className="text-[#ff6f32]" />
-                  <span>Automatic Workspace Initialization Includes:</span>
+                <div className="font-bold text-white mb-2">
+                  Automatic Workspace Initialization Includes:
                 </div>
                 <div className="flex items-center space-x-2">
                   <CheckCircle2 size={13} className="text-emerald-400 shrink-0" />

@@ -8,14 +8,7 @@ import {
   CalendarCheck,
   Briefcase,
   ShieldCheck,
-  Search,
-  Bell,
-  CheckCircle2,
-  XCircle,
-  Building2,
   ArrowRight,
-  TrendingUp,
-  Lock,
 } from 'lucide-react';
 
 export const ProductDashboardShowcase: React.FC = () => {
@@ -45,18 +38,11 @@ export const ProductDashboardShowcase: React.FC = () => {
   };
 
   return (
-    <section className="py-20 lg:py-28 bg-[#061b24] text-white transition-colors border-t border-[#0e3547]">
+    <section className="py-20 lg:py-24 bg-[#061b24] text-white transition-colors border-t border-[#0e3547]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-left max-w-3xl mb-12 space-y-3">
-          <div className="flex items-center space-x-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-[#ff6f32]" />
-            <span className="text-[#ff6f32] font-mono text-xs font-bold tracking-widest uppercase">
-              AUTHENTIC PRODUCT ARCHITECTURE
-            </span>
-          </div>
-
-          <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-extrabold tracking-tight text-white leading-[1.18]">
+          <h2 className="text-3xl sm:text-4xl lg:text-[40px] font-extrabold tracking-tight text-white leading-[1.18]">
             Built as a Production-Grade Enterprise Platform
           </h2>
 
@@ -66,35 +52,12 @@ export const ProductDashboardShowcase: React.FC = () => {
         </div>
 
         {/* Dashboard Shell Preview Window */}
-        <div className="rounded-2xl border border-[#14425b] bg-[#08222f] shadow-2xl overflow-hidden text-left">
-          {/* Simulated Browser Chrome Top Bar */}
-          <div className="bg-[#051720] px-4 py-3 border-b border-[#0f3446] flex flex-wrap items-center justify-between gap-2">
-            <div className="flex items-center space-x-2">
-              <span className="w-3 h-3 rounded-full bg-rose-500/80 inline-block" />
-              <span className="w-3 h-3 rounded-full bg-amber-500/80 inline-block" />
-              <span className="w-3 h-3 rounded-full bg-emerald-500/80 inline-block" />
-              <span className="text-xs text-slate-400 font-mono ml-2 hidden sm:inline">
-                SmartHCM Enterprise Shell
-              </span>
-            </div>
-
-            <div className="flex items-center space-x-2 bg-[#092736] border border-[#16435c] px-3 py-1 rounded-md text-[11px] font-mono text-slate-300">
-              <Lock size={11} className="text-emerald-400" />
-              <span>app.smarthcm.io/w/acme-global/dashboard</span>
-            </div>
-
-            <div className="flex items-center space-x-2">
-              <span className="text-[11px] font-bold text-[#ff6f32] bg-[#ff6f32]/10 px-2 py-0.5 rounded border border-[#ff6f32]/30">
-                Tenant: acme-global
-              </span>
-            </div>
-          </div>
-
+        <div className="rounded-2xl border border-[#14425b] bg-[#08222f] shadow-xl overflow-hidden text-left">
           {/* Internal Shell Grid: Sidebar + Main Workspace */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 min-h-[500px]">
-            {/* Left Mock Sidebar (3 cols) */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 min-h-[480px]">
+            {/* Left Sidebar (3 cols) */}
             <div className="lg:col-span-3 bg-[#071c26] border-r border-[#0f3446] p-4 hidden md:block">
-              {/* Workspace Badge */}
+              {/* Workspace Header */}
               <div className="flex items-center space-x-3 p-2.5 rounded-xl bg-[#0a2736] border border-[#14425b] mb-4">
                 <div className="w-8 h-8 rounded-lg bg-[#ff6f32] text-white flex items-center justify-center font-bold text-xs shadow-sm">
                   AG
@@ -156,56 +119,37 @@ export const ProductDashboardShowcase: React.FC = () => {
                   </p>
                 </div>
 
-                <div className="flex items-center space-x-2">
-                  <div className="hidden sm:flex items-center space-x-1.5 text-xs bg-[#051822] border border-white/10 px-2.5 py-1.5 rounded-lg text-slate-300 font-mono">
-                    <Search size={13} className="text-slate-400" />
-                    <span>Search records... (⌘K)</span>
-                  </div>
-
-                  <Link
-                    to="/dashboard"
-                    className="bg-[#ff6f32] hover:bg-[#ea580c] text-white font-bold text-xs px-3.5 py-1.5 rounded-lg transition flex items-center space-x-1"
-                  >
-                    <span>Open Live App</span>
-                    <ArrowRight size={13} />
-                  </Link>
-                </div>
+                <Link
+                  to="/dashboard"
+                  className="bg-[#ff6f32] hover:bg-[#ea580c] text-white font-bold text-xs px-3.5 py-2 rounded-lg transition flex items-center space-x-1.5"
+                >
+                  <span>Open Live App</span>
+                  <ArrowRight size={13} />
+                </Link>
               </div>
 
               {/* 4 KPIs Row */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
                 <div className="bg-[#051822] border border-white/10 p-3.5 rounded-xl">
-                  <div className="text-[11px] text-slate-400 flex items-center justify-between">
-                    <span>Total Workforce</span>
-                    <Users size={13} className="text-[#ff6f32]" />
-                  </div>
+                  <div className="text-[11px] text-slate-400">Total Workforce</div>
                   <div className="text-xl font-bold text-white mt-1">1,428</div>
-                  <div className="text-[10px] text-emerald-400 mt-0.5">↑ +38 this quarter</div>
+                  <div className="text-[10px] text-emerald-400 mt-0.5">+38 this quarter</div>
                 </div>
 
                 <div className="bg-[#051822] border border-white/10 p-3.5 rounded-xl">
-                  <div className="text-[11px] text-slate-400 flex items-center justify-between">
-                    <span>Attendance Rate</span>
-                    <Clock size={13} className="text-teal-400" />
-                  </div>
+                  <div className="text-[11px] text-slate-400">Attendance Rate</div>
                   <div className="text-xl font-bold text-white mt-1">96.4%</div>
                   <div className="text-[10px] text-slate-400 mt-0.5">1,377 on premise</div>
                 </div>
 
                 <div className="bg-[#051822] border border-white/10 p-3.5 rounded-xl">
-                  <div className="text-[11px] text-slate-400 flex items-center justify-between">
-                    <span>Current Payroll</span>
-                    <CreditCard size={13} className="text-sky-400" />
-                  </div>
+                  <div className="text-[11px] text-slate-400">Current Payroll</div>
                   <div className="text-xl font-bold text-white mt-1">$512,400</div>
-                  <div className="text-[10px] text-emerald-400 mt-0.5">✓ Ready for transfer</div>
+                  <div className="text-[10px] text-emerald-400 mt-0.5">Ready for transfer</div>
                 </div>
 
                 <div className="bg-[#051822] border border-white/10 p-3.5 rounded-xl">
-                  <div className="text-[11px] text-slate-400 flex items-center justify-between">
-                    <span>Pending Leaves</span>
-                    <CalendarCheck size={13} className="text-amber-400" />
-                  </div>
+                  <div className="text-[11px] text-slate-400">Pending Leaves</div>
                   <div className="text-xl font-bold text-white mt-1">3 Queue</div>
                   <div className="text-[10px] text-amber-300 mt-0.5">Requires manager review</div>
                 </div>
@@ -216,9 +160,8 @@ export const ProductDashboardShowcase: React.FC = () => {
                 {/* Employee Directory Preview (7 cols) */}
                 <div className="lg:col-span-7 bg-[#051822] border border-white/10 rounded-xl p-4">
                   <div className="flex items-center justify-between mb-3">
-                    <span className="text-xs font-bold text-white flex items-center space-x-1.5">
-                      <Users size={14} className="text-[#ff6f32]" />
-                      <span>Employee Directory Preview</span>
+                    <span className="text-xs font-bold text-white">
+                      Employee Directory
                     </span>
                     <Link
                       to="/employees"
@@ -296,11 +239,12 @@ export const ProductDashboardShowcase: React.FC = () => {
                 <div className="lg:col-span-5 bg-[#051822] border border-white/10 rounded-xl p-4 flex flex-col justify-between">
                   <div>
                     <div className="flex items-center justify-between mb-3">
-                      <span className="text-xs font-bold text-white flex items-center space-x-1.5">
-                        <CalendarCheck size={14} className="text-amber-400" />
-                        <span>Quick Approvals Queue</span>
+                      <span className="text-xs font-bold text-white">
+                        Pending Approvals
                       </span>
-                      <span className="text-[10px] font-mono text-slate-400">1-Click Actions</span>
+                      <Link to="/leaves" className="text-[11px] text-[#ff6f32] hover:underline font-semibold">
+                        Leave Queue →
+                      </Link>
                     </div>
 
                     <div className="space-y-2.5">
@@ -311,7 +255,7 @@ export const ProductDashboardShowcase: React.FC = () => {
                         >
                           <div className="flex items-center justify-between">
                             <div className="font-semibold text-white">{app.name}</div>
-                            <span className="text-[10px] text-[#ff6f32] font-mono bg-[#ff6f32]/10 px-1.5 py-0.5 rounded">
+                            <span className="text-[10px] text-[#ff6f32] font-medium bg-[#ff6f32]/10 px-1.5 py-0.5 rounded">
                               {app.type}
                             </span>
                           </div>
@@ -321,13 +265,13 @@ export const ProductDashboardShowcase: React.FC = () => {
                             <div className="flex items-center space-x-2 pt-1">
                               <button
                                 onClick={() => handleAction(app.id, 'approved')}
-                                className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-[10px] py-1 rounded transition"
+                                className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-[10px] py-1 rounded transition cursor-pointer"
                               >
                                 Approve
                               </button>
                               <button
                                 onClick={() => handleAction(app.id, 'rejected')}
-                                className="flex-1 bg-rose-600/80 hover:bg-rose-500 text-white font-bold text-[10px] py-1 rounded transition"
+                                className="flex-1 bg-rose-600/80 hover:bg-rose-500 text-white font-bold text-[10px] py-1 rounded transition cursor-pointer"
                               >
                                 Reject
                               </button>
@@ -346,13 +290,6 @@ export const ProductDashboardShowcase: React.FC = () => {
                         </div>
                       ))}
                     </div>
-                  </div>
-
-                  <div className="pt-3 border-t border-white/10 flex items-center justify-between text-[11px] text-slate-400">
-                    <span>Audit Trail Logged</span>
-                    <Link to="/leaves" className="text-[#ff6f32] hover:underline font-semibold">
-                      Leave Queue →
-                    </Link>
                   </div>
                 </div>
               </div>

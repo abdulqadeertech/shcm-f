@@ -141,21 +141,14 @@ export const WorkflowsPage: React.FC = () => {
       />
 
       {/* Page Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#08222f] p-6 rounded-2xl border border-[#14425b] shadow-xl">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center space-x-2">
-            <span className="p-2 rounded-xl bg-[#ff6f32]/10 text-[#ff6f32] border border-[#ff6f32]/30">
-              <Workflow size={22} />
-            </span>
-            <div>
-              <h1 className="text-xl font-bold text-white tracking-tight">
-                Enterprise Workflow Automation
-              </h1>
-              <p className="text-xs text-slate-400">
-                Multi-step approval routing, audit-signed actions, and out-of-office delegation
-              </p>
-            </div>
-          </div>
+          <h1 className="text-xl font-bold text-white tracking-tight">
+            Enterprise Workflow Automation
+          </h1>
+          <p className="text-xs text-slate-400 mt-0.5">
+            Multi-step approval routing, audit-signed actions, and out-of-office delegation.
+          </p>
         </div>
 
         <div className="flex items-center space-x-3">

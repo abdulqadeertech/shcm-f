@@ -1,12 +1,8 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import {
   CheckCircle2,
   ArrowRight,
-  ShieldCheck,
   Building2,
-  Users2,
-  Zap,
 } from 'lucide-react';
 
 interface AboutSmartHcmSectionProps {
@@ -19,24 +15,15 @@ export const AboutSmartHcmSection: React.FC<AboutSmartHcmSectionProps> = ({
   onRequestDemo,
 }) => {
   const [mainImgError, setMainImgError] = useState(false);
-  const [subImgError, setSubImgError] = useState(false);
 
   return (
-    <section id="about" className="py-20 lg:py-28 bg-[#061b24] border-t border-[#0e3547] text-white transition-colors">
+    <section id="about" className="py-20 lg:py-24 bg-[#061b24] border-t border-[#0e3547] text-white transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           {/* LEFT SIDE: Editorial Content (6 cols) */}
           <div className="lg:col-span-6 text-left space-y-6">
-            {/* Red Section Label */}
-            <div className="flex items-center space-x-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-[#ff6f32]" />
-              <span className="text-[#ff6f32] font-mono text-xs font-bold tracking-widest uppercase">
-                ABOUT SMART HCM
-              </span>
-            </div>
-
-            {/* Heading with Selective Red Highlight */}
-            <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-extrabold tracking-tight text-white leading-[1.18]">
+            {/* Heading */}
+            <h2 className="text-3xl sm:text-4xl lg:text-[40px] font-extrabold tracking-tight text-white leading-[1.18]">
               A Unified Human Capital Platform Built for{' '}
               <span className="text-[#ff6f32]">Enterprise Agility</span>
             </h2>
@@ -94,7 +81,7 @@ export const AboutSmartHcmSection: React.FC<AboutSmartHcmSectionProps> = ({
             <div className="pt-4 flex flex-wrap items-center gap-4">
               <a
                 href="#platform"
-                className="bg-[#ff6f32] hover:bg-[#ea580c] text-white font-bold text-xs sm:text-sm px-6 py-3.5 rounded-xl shadow-md transition flex items-center space-x-2 group cursor-pointer"
+                className="bg-[#ff6f32] hover:bg-[#ea580c] text-white font-bold text-xs sm:text-sm px-6 py-3.5 rounded-xl shadow-sm transition flex items-center space-x-2 group cursor-pointer"
               >
                 <span>Our Platform</span>
                 <ArrowRight size={15} className="group-hover:translate-x-0.5 transition-transform" />
@@ -102,72 +89,32 @@ export const AboutSmartHcmSection: React.FC<AboutSmartHcmSectionProps> = ({
 
               <button
                 onClick={onWhySmartHcm || onRequestDemo}
-                className="bg-[#0a2736] hover:bg-[#0c2f42] text-white font-semibold text-xs sm:text-sm px-6 py-3.5 rounded-xl border border-[#14425b] hover:border-[#ff6f32]/40 shadow-xs transition flex items-center space-x-2 cursor-pointer"
+                className="bg-[#0a2736] hover:bg-[#0c2f42] text-white font-semibold text-xs sm:text-sm px-6 py-3.5 rounded-xl border border-[#14425b] hover:border-[#ff6f32]/40 transition flex items-center space-x-2 cursor-pointer"
               >
-                <Zap size={15} className="text-[#ff6f32]" />
                 <span>Why SmartHCM</span>
               </button>
             </div>
           </div>
 
-          {/* RIGHT SIDE: Workplace Image Collage (6 cols) */}
-          <div className="lg:col-span-6 relative">
-            <div className="relative mx-auto max-w-md lg:max-w-none">
-              {/* Main Workplace Image */}
-              <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-[#14425b] bg-[#08222f] aspect-[4/3]">
-                {!mainImgError ? (
-                  <img
-                    src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1200&q=80"
-                    alt="Corporate professionals collaborating in a strategy conference meeting"
-                    onError={() => setMainImgError(true)}
-                    className="w-full h-full object-cover object-center"
-                  />
-                ) : (
-                  <div className="w-full h-full bg-[#071c26] flex items-center justify-center text-slate-400 p-8 text-center">
-                    <div className="space-y-2">
-                      <Building2 size={36} className="text-[#ff6f32] mx-auto" />
-                      <p className="text-sm font-semibold text-white">Enterprise Workplace Collaboration</p>
-                      <p className="text-xs text-slate-400">SmartHCM Unified People Operations</p>
-                    </div>
-                  </div>
-                )}
-                {/* Subtle dark gradient overlay on bottom of main image */}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#071c26]/60 via-transparent to-transparent pointer-events-none" />
-              </div>
-
-              {/* Overlapping Secondary Image with Red Accent Border */}
-              <div className="absolute -bottom-8 -left-6 sm:-left-8 w-48 sm:w-60 aspect-video rounded-xl overflow-hidden shadow-2xl border-2 border-[#ff6f32] bg-[#08222f] hidden sm:block z-20">
-                {!subImgError ? (
-                  <img
-                    src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=800&q=80"
-                    alt="HR operations specialist reviewing digital employee analytics"
-                    onError={() => setSubImgError(true)}
-                    className="w-full h-full object-cover object-center"
-                  />
-                ) : (
-                  <div className="w-full h-full bg-[#0a2736] flex items-center justify-center p-3 text-center">
-                    <span className="text-xs text-white font-semibold">Analytics & Payroll Sync</span>
-                  </div>
-                )}
-              </div>
-
-              {/* Floating Verified Trust Stat Pill */}
-              <div className="absolute -top-4 -right-2 sm:-right-4 bg-[#08222f] border border-[#14425b] rounded-xl p-3 sm:p-4 shadow-2xl z-20 flex items-center space-x-3 text-left">
-                <div className="w-10 h-10 rounded-lg bg-[#071c26] border border-[#14425b] text-[#ff6f32] flex items-center justify-center font-bold">
-                  <ShieldCheck size={22} />
-                </div>
-                <div>
-                  <div className="text-sm font-extrabold text-white">
-                    99.98% Precision
-                  </div>
-                  <div className="text-[11px] text-slate-400">
-                    450+ Verified Workspaces
+          {/* RIGHT SIDE: Clean Workplace Visual (6 cols) */}
+          <div className="lg:col-span-6">
+            <div className="rounded-2xl overflow-hidden shadow-xl border border-[#14425b] bg-[#08222f] aspect-[4/3]">
+              {!mainImgError ? (
+                <img
+                  src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1200&q=80"
+                  alt="Corporate professionals collaborating in a strategy conference meeting"
+                  onError={() => setMainImgError(true)}
+                  className="w-full h-full object-cover object-center"
+                />
+              ) : (
+                <div className="w-full h-full bg-[#071c26] flex items-center justify-center text-slate-400 p-8 text-center">
+                  <div className="space-y-2">
+                    <Building2 size={36} className="text-[#ff6f32] mx-auto" />
+                    <p className="text-sm font-semibold text-white">Enterprise Workplace Collaboration</p>
+                    <p className="text-xs text-slate-400">SmartHCM Unified People Operations</p>
                   </div>
                 </div>
-              </div>
-
-              {/* Fine Red Geometric Detail Lines */}
-              <div className="absolute -bottom-4 -right-4 w-24 h-24 border-r-2 border-b-2 border-[#ff6f32]/40 rounded-br-2xl pointer-events-none" />
+              )}
             </div>
           </div>
         </div>

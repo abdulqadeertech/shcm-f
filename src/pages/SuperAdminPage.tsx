@@ -3,28 +3,17 @@ import {
   Building2,
   ShieldCheck,
   CheckCircle2,
-  AlertTriangle,
   XCircle,
   PauseCircle,
-  PlayCircle,
   Search,
-  Filter,
   Users,
-  Activity,
-  Layers,
-  Calendar,
   Clock,
-  ArrowRight,
   Eye,
   Sliders,
   RefreshCw,
   Server,
-  Cpu,
-  Database,
-  ExternalLink,
 } from 'lucide-react';
 import { apiRequest } from '../api/client';
-import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { Breadcrumbs } from '../components/ui/Breadcrumbs';
 
@@ -59,7 +48,6 @@ interface CompanyItem {
 }
 
 export const SuperAdminPage: React.FC = () => {
-  const { user } = useAuth();
   const { success, error: toastError } = useToast();
 
   const [activeTab, setActiveTab] = useState<'companies' | 'audit'>('companies');
@@ -215,10 +203,6 @@ export const SuperAdminPage: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-[#14425b]">
         <div>
-          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#ff6f32]/10 border border-[#ff6f32]/30 text-xs font-semibold text-[#ff6f32] mb-2">
-            <ShieldCheck size={14} />
-            <span>PLATFORM SUPER ADMINISTRATOR ENGINE</span>
-          </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
             Multi-Tenant SaaS Management
           </h1>

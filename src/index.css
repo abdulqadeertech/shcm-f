@@ -195,7 +195,7 @@ html:not(.dark) ::-webkit-scrollbar-thumb:hover {
 @keyframes heroRise {
   from {
     opacity: 0;
-    transform: translateY(14px);
+    transform: translateY(12px);
   }
   to {
     opacity: 1;
@@ -203,36 +203,18 @@ html:not(.dark) ::-webkit-scrollbar-thumb:hover {
   }
 }
 
-@keyframes heroFloat {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-4px);
-  }
-}
-
 .hero-reveal {
-  animation: heroRise 600ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: heroRise 450ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .hero-reveal-delay {
-  animation-delay: 120ms;
-}
-
-.hero-float {
-  animation: heroFloat 5s ease-in-out infinite;
-}
-
-.hero-float-delay {
-  animation-delay: 900ms;
+  animation-delay: 100ms;
 }
 
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: scale(0.95);
+    transform: scale(0.98);
   }
   to {
     opacity: 1;
@@ -245,8 +227,10 @@ html:not(.dark) ::-webkit-scrollbar-thumb:hover {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .animate-dropdown-slide,
   .hero-reveal,
-  .hero-float {
+  .animate-fadeIn {
     animation: none;
   }
 }
+

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Laptop,
   Plus,
   UserCheck,
   CheckCircle2,
@@ -106,9 +105,8 @@ export const AssetsPage: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-xl font-bold text-white tracking-tight flex items-center space-x-2">
-            <Laptop className="text-[#ff6f32]" size={22} />
-            <span>Company Assets & Equipment</span>
+          <h1 className="text-xl font-bold text-white tracking-tight">
+            Company Assets & Equipment
           </h1>
           <p className="text-xs text-slate-400 mt-0.5">
             Hardware inventory, custody tracking, equipment assignments, and return workflows.

@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
   X,
   ChevronDown,
   CalendarDays,
   Search,
   MessageCircle,
-  Mail,
-  Phone,
   BookOpen,
   HelpCircle,
   LayoutDashboard,
@@ -16,9 +14,9 @@ import {
 import {
   MEGA_MENU_MODULES,
   UTILITY_BAR_CONFIG,
-  SUPPORTED_LANGUAGES,
 } from '../../data/navigationData';
 import { DynamicIcon } from '../common/DynamicIcon';
+import { BrandLogo } from '../common/BrandLogo';
 import { useAuth } from '../../context/AuthContext';
 
 interface MobileNavDrawerProps {
@@ -39,7 +37,7 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({
   onOpenSupport,
 }) => {
   const [modulesExpanded, setModulesExpanded] = useState(true);
-  const { user, isAuthenticated } = useAuth();
+  const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
   if (!isOpen) return null;
@@ -59,15 +57,7 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({
       >
         {/* Top Header */}
         <div className="p-4 border-b border-[#0f3446] flex items-center justify-between bg-[#071c26] text-white">
-          <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 rounded-lg bg-[#0a2736] border border-[#14425b] flex items-center justify-center text-white font-bold text-sm shadow">
-              <span className="text-white">S</span>
-              <span className="w-1.5 h-1.5 rounded-full bg-[#ff6f32] ml-0.5" />
-            </div>
-            <span className="font-extrabold text-base text-white">
-              Smart<span className="text-[#ff6f32]">HCM</span>
-            </span>
-          </div>
+          <BrandLogo size="sm" />
           <button
             onClick={onClose}
             className="p-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/10 transition cursor-pointer"
@@ -84,10 +74,10 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({
               onClose();
               onRequestDemo();
             }}
-            className="w-full bg-[#ff6f32] hover:bg-[#ea580c] text-white font-bold text-xs py-3 rounded-xl shadow-md flex items-center justify-center space-x-2 transition cursor-pointer"
+            className="w-full bg-[#ff6f32] hover:bg-[#ea580c] text-white font-semibold text-xs py-2.5 rounded-lg shadow-xs flex items-center justify-center space-x-2 transition cursor-pointer"
           >
             <CalendarDays size={14} className="text-white" />
-            <span>Book a Guided Demo</span>
+            <span>Book a Demo</span>
           </button>
 
           <div className="grid grid-cols-2 gap-2">
@@ -96,7 +86,7 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({
                 onClose();
                 onOpenSearch();
               }}
-              className="p-2 border border-[#14425b] bg-[#0a2736] rounded-xl text-xs font-medium text-slate-300 hover:text-white hover:bg-[#0c2f42] flex items-center justify-center space-x-1.5 cursor-pointer"
+              className="p-2 border border-[#14425b] bg-[#0a2736] rounded-lg text-xs font-medium text-slate-300 hover:text-white hover:bg-[#0c2f42] flex items-center justify-center space-x-1.5 cursor-pointer"
             >
               <Search size={14} className="text-[#ff6f32]" />
               <span>Search</span>
@@ -105,7 +95,7 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({
               href={UTILITY_BAR_CONFIG.whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="p-2 border border-emerald-800/80 bg-emerald-950/60 text-emerald-300 rounded-xl text-xs font-medium flex items-center justify-center space-x-1.5 hover:bg-emerald-900/60 transition"
+              className="p-2 border border-emerald-800/80 bg-emerald-950/60 text-emerald-300 rounded-lg text-xs font-medium flex items-center justify-center space-x-1.5 hover:bg-emerald-900/60 transition"
             >
               <MessageCircle size={14} className="text-emerald-400" />
               <span>WhatsApp</span>
@@ -113,14 +103,14 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({
           </div>
         </div>
 
-        {/* Accordion for Mega Menu Modules */}
+        {/* Accordion for Modules */}
         <div className="flex-1 overflow-y-auto p-4 space-y-4">
           <div>
             <button
               onClick={() => setModulesExpanded(!modulesExpanded)}
-              className="w-full flex items-center justify-between text-xs font-bold text-slate-300 uppercase tracking-wider py-1 cursor-pointer"
+              className="w-full flex items-center justify-between text-xs font-semibold text-slate-300 uppercase tracking-wider py-1 cursor-pointer"
             >
-              <span>HCM Modules ({MEGA_MENU_MODULES.length})</span>
+              <span>Platform Modules</span>
               <ChevronDown
                 size={16}
                 className={`transition-transform text-[#ff6f32] ${modulesExpanded ? 'rotate-180' : ''}`}
@@ -128,15 +118,15 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({
             </button>
 
             {modulesExpanded && (
-              <div className="mt-2 space-y-1 pl-1">
+              <div className="mt-2 space-y-1">
                 {MEGA_MENU_MODULES.map((mod) => (
                   <button
                     key={mod.id}
                     onClick={() => handleNav(mod.path)}
-                    className="w-full text-left p-2 rounded-xl hover:bg-[#ff6f32]/10 flex items-center space-x-3 transition group cursor-pointer border border-transparent hover:border-[#ff6f32]/30"
+                    className="w-full text-left p-2 rounded-lg hover:bg-white/5 flex items-center space-x-3 transition group cursor-pointer"
                   >
-                    <div className="p-1.5 rounded-lg border bg-[#071c26] border-[#14425b] shrink-0 text-[#ff6f32]">
-                      <DynamicIcon name={mod.iconName} size={15} />
+                    <div className="shrink-0 text-[#ff6f32]">
+                      <DynamicIcon name={mod.iconName} size={16} />
                     </div>
                     <div className="min-w-0">
                       <div className="text-xs font-semibold text-white group-hover:text-[#ff6f32] truncate">
@@ -152,23 +142,23 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({
 
           {/* Quick links */}
           <div className="border-t border-[#0f3446] pt-3 space-y-1">
-            <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">
+            <div className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-2">
               Workspace Access
             </div>
             <button
               onClick={() => handleNav('/dashboard')}
-              className="w-full text-left px-3 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-white/5 flex items-center space-x-2 cursor-pointer"
+              className="w-full text-left px-3 py-2 rounded-lg text-xs font-semibold text-slate-300 hover:text-white hover:bg-white/5 flex items-center space-x-2 cursor-pointer"
             >
               <LayoutDashboard size={15} className="text-[#ff6f32]" />
-              <span>Open Live HR Portal</span>
+              <span>Open HR Portal</span>
             </button>
             {!isAuthenticated ? (
               <button
                 onClick={() => handleNav('/login')}
-                className="w-full text-left px-3 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-white/5 flex items-center space-x-2 cursor-pointer"
+                className="w-full text-left px-3 py-2 rounded-lg text-xs font-semibold text-slate-300 hover:text-white hover:bg-white/5 flex items-center space-x-2 cursor-pointer"
               >
                 <LogIn size={15} className="text-slate-400" />
-                <span>Sign In to Organization</span>
+                <span>Sign In</span>
               </button>
             ) : null}
           </div>
@@ -180,28 +170,22 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({
                 onClose();
                 onOpenWiki();
               }}
-              className="w-full text-left px-3 py-1.5 hover:bg-white/5 rounded-xl flex items-center space-x-2 cursor-pointer"
+              className="w-full text-left px-3 py-1.5 hover:bg-white/5 rounded-lg flex items-center space-x-2 cursor-pointer"
             >
               <BookOpen size={14} className="text-[#ff6f32]" />
-              <span>HCM Knowledge Wiki</span>
+              <span>Knowledge Wiki</span>
             </button>
             <button
               onClick={() => {
                 onClose();
                 onOpenSupport();
               }}
-              className="w-full text-left px-3 py-1.5 hover:bg-white/5 rounded-xl flex items-center space-x-2 cursor-pointer"
+              className="w-full text-left px-3 py-1.5 hover:bg-white/5 rounded-lg flex items-center space-x-2 cursor-pointer"
             >
               <HelpCircle size={14} className="text-[#ff6f32]" />
-              <span>Enterprise Support</span>
+              <span>Support</span>
             </button>
           </div>
-        </div>
-
-        {/* Footer info */}
-        <div className="p-4 border-t border-[#0f3446] bg-[#051720] text-[11px] text-slate-400 space-y-1">
-          <div className="font-semibold text-slate-300">SmartHCM Cloud Platform Enterprise</div>
-          <div className="text-slate-400">{UTILITY_BAR_CONFIG.salesEmail}</div>
         </div>
       </div>
     </div>

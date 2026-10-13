@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Check, ArrowRight, X, Building2 } from 'lucide-react';
+import { Check, ArrowRight, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 interface PricingSectionProps {
@@ -59,7 +59,7 @@ export const PricingSection: React.FC<PricingSectionProps> = ({ onRequestDemo, o
       target: 'Conglomerates & regulated enterprises (1,500+)',
       customPrice: 'Custom',
       period: 'tailored SLA agreement',
-      badge: 'Dedicated Tenant',
+      badge: null,
       description: 'Private cloud infrastructure, customized biometric firmware, and tailored ERP connectors.',
       features: [
         'Unlimited Subsidiaries & Global Entities',
@@ -93,14 +93,10 @@ export const PricingSection: React.FC<PricingSectionProps> = ({ onRequestDemo, o
   ];
 
   return (
-    <section id="pricing" className="py-20 lg:py-28 bg-[#061b24] border-t border-[#0e3547] text-white transition-colors">
+    <section id="pricing" className="py-20 lg:py-24 bg-[#061b24] border-t border-[#0e3547] text-white transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-14">
-          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#0a2736] border border-[#14425b] text-xs font-semibold text-[#ff6f32] mb-3">
-            <Building2 size={14} className="text-[#ff6f32]" />
-            <span>TRANSPARENT ENTERPRISE TIERS</span>
-          </div>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
             Transparent Pricing for{' '}
             <span className="text-[#ff6f32]">High-Performing Teams</span>

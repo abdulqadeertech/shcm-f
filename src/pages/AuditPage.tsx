@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ShieldCheck, Filter } from 'lucide-react';
+import { Filter } from 'lucide-react';
 import { apiRequest } from '../api/client';
 import { useAuth } from '../context/AuthContext';
 import { Breadcrumbs } from '../components/ui/Breadcrumbs';
@@ -40,9 +40,8 @@ export const AuditPage: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-xl font-bold text-white tracking-tight flex items-center space-x-2">
-            <ShieldCheck className="text-[#ff6f32]" size={22} />
-            <span>Compliance & Audit Trail</span>
+          <h1 className="text-xl font-bold text-white tracking-tight">
+            Compliance & Audit Trail
           </h1>
           <p className="text-xs text-slate-400 mt-0.5">
             Immutable security event log tracking administrative modifications, authorization decisions, and access events.

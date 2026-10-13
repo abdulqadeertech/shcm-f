@@ -5,16 +5,12 @@ import {
   CreditCard,
   Clock,
   ArrowRight,
-  ShieldCheck,
-  CheckCircle2,
 } from 'lucide-react';
 
 export const ThreeFeatureStrip: React.FC = () => {
   const features = [
     {
-      number: '01 / CORE FOUNDATION',
       title: 'Core HR & Workforce Management',
-      highlight: 'Core HR',
       description:
         'Unified digital employee records, multi-branch organizational hierarchy, designation ladders, and frictionless self-service onboarding.',
       icon: Users,
@@ -22,9 +18,7 @@ export const ThreeFeatureStrip: React.FC = () => {
       actionLabel: 'Explore Core HR',
     },
     {
-      number: '02 / FINANCIAL ENGINE',
       title: 'Payroll & Benefits Precision',
-      highlight: 'Payroll',
       description:
         'Decimal-safe gross-to-net calculation engine, statutory tax withholdings, direct bank batch outputs, and automated employee payslips.',
       icon: CreditCard,
@@ -32,9 +26,7 @@ export const ThreeFeatureStrip: React.FC = () => {
       actionLabel: 'Explore Payroll Engine',
     },
     {
-      number: '03 / OPERATIONS & TALENT',
       title: 'Attendance & Talent Operations',
-      highlight: 'Attendance',
       description:
         'Hardware biometric terminal sync, multi-shift scheduling, grace-period overtime enforcement, and end-to-end recruitment pipelines.',
       icon: Clock,
@@ -55,13 +47,9 @@ export const ThreeFeatureStrip: React.FC = () => {
                 className="group flex flex-col justify-between text-left lg:px-8 first:lg:pl-0 last:lg:pr-0 transition-transform duration-200"
               >
                 <div>
-                  {/* Category and Numbering */}
-                  <div className="flex items-center justify-between mb-4">
-                    <span className="text-[#ff6f32] font-mono text-xs font-bold tracking-widest uppercase">
-                      {feature.number}
-                    </span>
-                    <div className="w-10 h-10 rounded-xl bg-[#0a2736] border border-[#14425b] group-hover:border-[#ff6f32]/60 text-slate-200 group-hover:text-[#ff6f32] flex items-center justify-center transition-colors duration-200 shadow-sm">
-                      <Icon size={20} className="transition-transform group-hover:scale-110" />
+                  <div className="mb-4">
+                    <div className="w-10 h-10 rounded-lg bg-[#0a2736] border border-[#14425b] group-hover:border-[#ff6f32]/50 text-[#ff6f32] flex items-center justify-center transition-colors duration-200">
+                      <Icon size={20} />
                     </div>
                   </div>
 

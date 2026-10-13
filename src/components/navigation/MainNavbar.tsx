@@ -6,7 +6,6 @@ import {
   Menu,
   CalendarDays,
   User,
-  LayoutDashboard,
   Building2,
   ArrowRight,
   ShieldCheck,
@@ -17,11 +16,12 @@ import {
   Globe2,
   Users2,
   Layers,
+  HelpCircle,
 } from 'lucide-react';
-import { UTILITY_BAR_CONFIG } from '../../data/navigationData';
 import { MegaMenu } from './MegaMenu';
 import { useAuth } from '../../context/AuthContext';
 import { ThemeToggle } from '../ui/ThemeToggle';
+import { BrandLogo } from '../common/BrandLogo';
 
 interface MainNavbarProps {
   onRequestDemo: () => void;
@@ -29,14 +29,17 @@ interface MainNavbarProps {
   onOpenSearch: () => void;
   onOpenMobileMenu: () => void;
   onContactSales?: () => void;
+  onOpenWiki?: () => void;
+  onOpenSupport?: () => void;
 }
 
 export const MainNavbar: React.FC<MainNavbarProps> = ({
   onRequestDemo,
-  onApplyAsCompany,
   onOpenSearch,
   onOpenMobileMenu,
   onContactSales,
+  onOpenWiki,
+  onOpenSupport,
 }) => {
   const [megaMenuOpen, setMegaMenuOpen] = useState(false);
   const [solutionsDropdownOpen, setSolutionsDropdownOpen] = useState(false);
@@ -48,7 +51,11 @@ export const MainNavbar: React.FC<MainNavbarProps> = ({
   const solutionsRef = useRef<HTMLDivElement>(null);
   const resourcesRef = useRef<HTMLDivElement>(null);
 
-  const isLandingPage = location.pathname === '/' || location.pathname === '/home';
+  const isLandingPage =
+    location.pathname === '/' ||
+    location.pathname === '/home' ||
+    location.pathname === '/portal' ||
+    location.pathname === '/showcase';
 
   const handleNavClick = (anchorId: string) => {
     setMegaMenuOpen(false);
@@ -61,7 +68,7 @@ export const MainNavbar: React.FC<MainNavbarProps> = ({
         return;
       }
     }
-    navigate(`/#${anchorId}`);
+    navigate(`/portal#${anchorId}`);
   };
 
   useEffect(() => {
@@ -78,56 +85,23 @@ export const MainNavbar: React.FC<MainNavbarProps> = ({
   }, []);
 
   return (
-    <nav className="relative bg-[#071c26]/95 backdrop-blur-md border-b border-[#0e3547] sticky top-0 z-40 transition-colors shadow-md">
+    <nav className="relative bg-[#071c26]/95 backdrop-blur-md border-b border-[#0e3547] sticky top-0 z-40 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-18 sm:h-20">
-          {/* Left Brand & Logo */}
-          <div className="flex items-center space-x-2 sm:space-x-6 lg:space-x-8">
+        <div className="flex items-center justify-between h-16 sm:h-18">
+          {/* Left Brand & Primary Navigation */}
+          <div className="flex items-center space-x-4 sm:space-x-8">
             <Link
               to="/"
-              className="flex items-center space-x-3 group rounded-lg p-1"
+              className="flex items-center py-1 rounded-lg focus-visible:outline-none"
               aria-label="SmartHCM Home"
             >
-              {/* Modern Enterprise HR Platform Emblem */}
-              <div className="relative flex items-center justify-center">
-                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#0a2736] border border-[#14425b] flex items-center justify-center shadow-md group-hover:scale-105 transition-transform duration-200">
-                  <svg
-                    className="w-5 h-5 text-white"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2.2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M12 2L2 7l10 5 10-5-10-5z" />
-                    <path d="M2 17l10 5 10-5" />
-                    <path d="M2 12l10 5 10-5" />
-                  </svg>
-                </div>
-                <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-[#ff6f32] border-2 border-[#071c26] shadow-2xs" />
-              </div>
-
-              {/* Brand Typography */}
-              <div className="flex flex-col text-left">
-                <div className="flex items-center space-x-1.5">
-                  <span className="text-lg sm:text-xl font-extrabold tracking-tight text-white">
-                    Smart<span className="text-[#ff6f32]">HCM</span>
-                  </span>
-                  <span className="hidden sm:inline text-[9px] font-bold tracking-wider uppercase px-1.5 py-0.5 bg-[#0a2736] text-[#ff6f32] rounded border border-[#14425b]">
-                    Enterprise
-                  </span>
-                </div>
-                <span className="hidden sm:block text-[10px] font-medium text-slate-400 tracking-tight leading-none">
-                  Human Capital Management Platform
-                </span>
-              </div>
+              <BrandLogo size="md" />
             </Link>
 
             {/* Desktop Navigation Links */}
             <div className="hidden lg:flex items-center space-x-1 text-slate-300">
               <Link
-                to="/"
+                to="/portal"
                 className="px-3 py-2 rounded-lg text-xs font-semibold hover:text-[#ff6f32] hover:bg-white/5 transition cursor-pointer"
               >
                 Home
@@ -143,7 +117,7 @@ export const MainNavbar: React.FC<MainNavbarProps> = ({
                 }}
                 className={`flex items-center space-x-1.5 px-3 py-2 rounded-lg text-xs font-semibold transition cursor-pointer ${
                   megaMenuOpen
-                    ? 'text-[#ff6f32] bg-[#ff6f32]/10 border border-[#ff6f32]/30'
+                    ? 'text-[#ff6f32] bg-[#ff6f32]/10'
                     : 'hover:text-[#ff6f32] hover:bg-white/5'
                 }`}
                 aria-expanded={megaMenuOpen}
@@ -169,7 +143,7 @@ export const MainNavbar: React.FC<MainNavbarProps> = ({
                   }}
                   className={`flex items-center space-x-1.5 px-3 py-2 rounded-lg text-xs font-semibold transition cursor-pointer ${
                     solutionsDropdownOpen
-                      ? 'text-[#ff6f32] bg-[#ff6f32]/10 border border-[#ff6f32]/30'
+                      ? 'text-[#ff6f32] bg-[#ff6f32]/10'
                       : 'hover:text-[#ff6f32] hover:bg-white/5'
                   }`}
                 >
@@ -183,26 +157,23 @@ export const MainNavbar: React.FC<MainNavbarProps> = ({
                 </button>
 
                 {solutionsDropdownOpen && (
-                  <div className="absolute left-0 mt-2 w-72 bg-[#08222f] border border-[#14425b] rounded-2xl shadow-2xl py-2 z-50 text-left animate-fadeIn">
-                    <div className="px-3.5 py-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-wider border-b border-[#0f3446]">
-                      Organizational Solutions
-                    </div>
+                  <div className="absolute left-0 mt-2 w-72 bg-[#08222f] border border-[#14425b] rounded-xl shadow-xl py-2 z-50 text-left animate-dropdown-slide">
                     {[
                       {
                         title: 'Small & Medium Businesses',
-                        desc: 'Automate core records and zero-error payroll.',
+                        desc: 'Automate core records and error-free payroll.',
                         icon: Users2,
                         id: 'solutions',
                       },
                       {
                         title: 'High-Growth Scaleups',
-                        desc: 'Rapid hiring pipelines and automated onboarding.',
+                        desc: 'Rapid hiring pipelines and digital onboarding.',
                         icon: Briefcase,
                         id: 'solutions',
                       },
                       {
                         title: 'Corporate HR Departments',
-                        desc: 'Strict labor policies, hierarchies & compliance.',
+                        desc: 'Labor policies, hierarchies & compliance.',
                         icon: Building2,
                         id: 'solutions',
                       },
@@ -214,7 +185,7 @@ export const MainNavbar: React.FC<MainNavbarProps> = ({
                       },
                       {
                         title: 'Distributed & Remote Teams',
-                        desc: 'GPS-geofenced mobile check-ins & self-service.',
+                        desc: 'Geofenced mobile check-ins & self-service.',
                         icon: Layers,
                         id: 'solutions',
                       },
@@ -224,16 +195,14 @@ export const MainNavbar: React.FC<MainNavbarProps> = ({
                         <button
                           key={idx}
                           onClick={() => handleNavClick(item.id)}
-                          className="w-full text-left px-3.5 py-2.5 hover:bg-[#ff6f32]/10 flex items-start space-x-3 transition group cursor-pointer"
+                          className="w-full text-left px-3.5 py-2.5 hover:bg-white/5 flex items-start space-x-3 transition group cursor-pointer"
                         >
-                          <div className="p-1.5 rounded-lg bg-[#071c26] border border-[#14425b] text-[#ff6f32] mt-0.5 group-hover:scale-105 group-hover:border-[#ff6f32]/40 transition-transform">
-                            <Icon size={16} />
-                          </div>
+                          <Icon size={16} className="text-[#ff6f32] mt-0.5 shrink-0" />
                           <div>
                             <div className="text-xs font-semibold text-white group-hover:text-[#ff6f32] transition-colors">
                               {item.title}
                             </div>
-                            <div className="text-[11px] text-slate-400 leading-tight">
+                            <div className="text-[11px] text-slate-400 leading-tight mt-0.5">
                               {item.desc}
                             </div>
                           </div>
@@ -255,7 +224,7 @@ export const MainNavbar: React.FC<MainNavbarProps> = ({
                   }}
                   className={`flex items-center space-x-1.5 px-3 py-2 rounded-lg text-xs font-semibold transition cursor-pointer ${
                     resourcesDropdownOpen
-                      ? 'text-[#ff6f32] bg-[#ff6f32]/10 border border-[#ff6f32]/30'
+                      ? 'text-[#ff6f32] bg-[#ff6f32]/10'
                       : 'hover:text-[#ff6f32] hover:bg-white/5'
                   }`}
                 >
@@ -269,34 +238,37 @@ export const MainNavbar: React.FC<MainNavbarProps> = ({
                 </button>
 
                 {resourcesDropdownOpen && (
-                  <div className="absolute left-0 mt-2 w-64 bg-[#08222f] border border-[#14425b] rounded-2xl shadow-2xl py-2 z-50 text-left animate-fadeIn">
-                    <div className="px-3.5 py-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-wider border-b border-[#0f3446]">
-                      Knowledge & Trust
-                    </div>
+                  <div className="absolute left-0 mt-2 w-64 bg-[#08222f] border border-[#14425b] rounded-xl shadow-xl py-2 z-50 text-left animate-dropdown-slide">
                     {[
                       {
                         title: 'Statutory Compliance Hub',
-                        desc: 'Labor law formulas and tax rules.',
+                        desc: 'Security standards and governance.',
                         icon: ShieldCheck,
                         action: () => handleNavClick('trust'),
                       },
                       {
-                        title: 'HCM Wiki & Knowledge Base',
+                        title: 'HCM Knowledge Wiki',
                         desc: 'Formulas, overtime laws & guides.',
                         icon: BookOpen,
-                        action: () => handleNavClick('faq'),
+                        action: () => (onOpenWiki ? onOpenWiki() : handleNavClick('faq')),
                       },
                       {
-                        title: 'Implementation Methodology',
-                        desc: '14-day zero downtime migration guide.',
+                        title: 'Implementation Process',
+                        desc: '14-day structured migration guide.',
                         icon: FileText,
                         action: () => handleNavClick('how-it-works'),
                       },
                       {
-                        title: 'REST API & Webhooks',
-                        desc: 'Biometric terminals and ERP connectors.',
+                        title: 'Platform Capabilities',
+                        desc: 'Biometric terminals and core modules.',
                         icon: Code2,
                         action: () => handleNavClick('platform'),
+                      },
+                      {
+                        title: 'Customer Support',
+                        desc: 'Help desk & technical assistance.',
+                        icon: HelpCircle,
+                        action: () => (onOpenSupport ? onOpenSupport() : handleNavClick('contact')),
                       },
                     ].map((item, idx) => {
                       const Icon = item.icon;
@@ -307,16 +279,14 @@ export const MainNavbar: React.FC<MainNavbarProps> = ({
                             setResourcesDropdownOpen(false);
                             item.action();
                           }}
-                          className="w-full text-left px-3.5 py-2.5 hover:bg-[#ff6f32]/10 flex items-start space-x-3 transition group cursor-pointer"
+                          className="w-full text-left px-3.5 py-2.5 hover:bg-white/5 flex items-start space-x-3 transition group cursor-pointer"
                         >
-                          <div className="p-1.5 rounded-lg bg-[#071c26] border border-[#14425b] text-[#ff6f32] mt-0.5 group-hover:scale-105 group-hover:border-[#ff6f32]/40 transition-transform">
-                            <Icon size={16} />
-                          </div>
+                          <Icon size={16} className="text-[#ff6f32] mt-0.5 shrink-0" />
                           <div>
                             <div className="text-xs font-semibold text-white group-hover:text-[#ff6f32] transition-colors">
                               {item.title}
                             </div>
-                            <div className="text-[11px] text-slate-400 leading-tight">
+                            <div className="text-[11px] text-slate-400 leading-tight mt-0.5">
                               {item.desc}
                             </div>
                           </div>
@@ -349,16 +319,15 @@ export const MainNavbar: React.FC<MainNavbarProps> = ({
             </div>
           </div>
 
-          {/* Right Action Buttons */}
+          {/* Right Action Controls */}
           <div className="flex items-center space-x-2 sm:space-x-3">
-            {/* Theme Toggle */}
             <ThemeToggle />
 
             {/* Quick Search Button */}
             <button
               onClick={onOpenSearch}
-              className="hidden sm:flex p-2 sm:px-2.5 sm:py-1.5 rounded-xl text-slate-300 bg-[#0a2736] hover:bg-[#0c2f42] border border-[#14425b] hover:border-[#ff6f32]/40 text-xs font-medium items-center space-x-2 transition cursor-pointer"
-              title="Search Modules & Tools (Ctrl+K)"
+              className="hidden sm:flex p-2 sm:px-2.5 sm:py-1.5 rounded-lg text-slate-300 bg-[#0a2736] hover:bg-[#0c2f42] border border-[#14425b] hover:border-[#ff6f32]/40 text-xs font-medium items-center space-x-2 transition cursor-pointer"
+              title="Search Modules (Ctrl+K)"
               aria-label="Search"
             >
               <Search size={14} className="text-slate-400" />
@@ -369,9 +338,9 @@ export const MainNavbar: React.FC<MainNavbarProps> = ({
             {isAuthenticated ? (
               <Link
                 to="/dashboard"
-                className="hidden sm:flex items-center space-x-2 px-3 py-1.5 rounded-xl border border-[#14425b] bg-[#0a2736] text-xs font-semibold text-slate-200 hover:border-[#ff6f32]/50 transition"
+                className="hidden sm:flex items-center space-x-2 px-3 py-1.5 rounded-lg border border-[#14425b] bg-[#0a2736] text-xs font-semibold text-slate-200 hover:border-[#ff6f32]/50 transition"
               >
-                <div className="w-6 h-6 rounded-full bg-[#071c26] text-white border border-[#14425b] flex items-center justify-center text-[10px] font-bold">
+                <div className="w-5 h-5 rounded-full bg-[#071c26] text-white border border-[#14425b] flex items-center justify-center text-[10px] font-bold">
                   {user?.firstName?.[0] || 'U'}
                 </div>
                 <span className="hidden md:inline">{user?.firstName || 'Dashboard'}</span>
@@ -379,18 +348,18 @@ export const MainNavbar: React.FC<MainNavbarProps> = ({
             ) : (
               <Link
                 to="/login"
-                className="hidden sm:flex items-center space-x-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-[#ff6f32] hover:bg-white/5 transition"
+                className="hidden sm:flex items-center space-x-1.5 px-3 py-2 rounded-lg text-xs font-semibold text-slate-300 hover:text-[#ff6f32] hover:bg-white/5 transition"
               >
                 <User size={14} className="text-slate-400" />
                 <span>Log in</span>
               </Link>
             )}
 
-            {/* Book a Demo Button (Red Brand Accent) */}
+            {/* Book a Demo Button */}
             <button
               onClick={onRequestDemo}
-              className="bg-[#ff6f32] hover:bg-[#ea580c] text-white font-bold text-xs py-2 px-3.5 sm:px-4 sm:py-2.5 rounded-xl shadow-md transition-all duration-200 flex items-center space-x-1.5 cursor-pointer group hover:shadow-lg hover:shadow-orange-950/40"
-              aria-label="Book a Guided Demo"
+              className="bg-[#ff6f32] hover:bg-[#ea580c] text-white font-semibold text-xs py-2 px-3.5 sm:px-4 sm:py-2 rounded-lg shadow-xs transition-colors duration-150 flex items-center space-x-1.5 cursor-pointer group"
+              aria-label="Book a Demo"
             >
               <CalendarDays size={14} className="text-white" />
               <span className="hidden sm:inline">Book a Demo</span>
@@ -401,7 +370,7 @@ export const MainNavbar: React.FC<MainNavbarProps> = ({
             {/* Mobile Menu Hamburger */}
             <button
               onClick={onOpenMobileMenu}
-              className="lg:hidden p-2 rounded-xl text-slate-300 hover:text-white hover:bg-[#0a2736] border border-[#14425b] transition cursor-pointer"
+              className="lg:hidden p-2 rounded-lg text-slate-300 hover:text-white hover:bg-[#0a2736] border border-[#14425b] transition cursor-pointer"
               aria-label="Open mobile navigation menu"
             >
               <Menu size={20} />
@@ -410,7 +379,7 @@ export const MainNavbar: React.FC<MainNavbarProps> = ({
         </div>
       </div>
 
-      {/* 4-Column Platform Mega-Menu */}
+      {/* Platform Mega-Menu */}
       <MegaMenu
         isOpen={megaMenuOpen}
         onClose={() => setMegaMenuOpen(false)}

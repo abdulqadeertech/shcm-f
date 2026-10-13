@@ -5,25 +5,13 @@ import {
   Clock,
   CalendarCheck,
   CreditCard,
-  Briefcase,
-  HelpCircle,
   ArrowUpRight,
   Play,
   Square,
   CheckCircle2,
-  AlertCircle,
-  Megaphone,
-  Calendar,
-  AlertTriangle,
   CheckSquare,
   ChevronRight,
   Plus,
-  UserCheck,
-  Check,
-  X,
-  Building2,
-  ShieldCheck,
-  Activity,
   Timer,
   FileText,
 } from 'lucide-react';
@@ -40,7 +28,6 @@ import { apiRequest } from '../api/client';
 import { useAuth } from '../context/AuthContext';
 import { Breadcrumbs } from '../components/ui/Breadcrumbs';
 import { Badge } from '../components/ui/Badge';
-import { Button } from '../components/ui/Button';
 import { useToast } from '../context/ToastContext';
 
 export const DashboardPage: React.FC = () => {
@@ -55,7 +42,7 @@ export const DashboardPage: React.FC = () => {
   const [todayAttendance, setTodayAttendance] = useState<any>(null);
   const [announcements, setAnnouncements] = useState<any[]>([]);
   const [calendarEvents, setCalendarEvents] = useState<any[]>([]);
-  const [expiries, setExpiries] = useState<any[]>([]);
+  const [, setExpiries] = useState<any[]>([]);
   const [essSummary, setEssSummary] = useState<any>(null);
   const [checklists, setChecklists] = useState<any[]>([]);
   const [pendingLeaves, setPendingLeaves] = useState<any[]>([]);
@@ -63,7 +50,6 @@ export const DashboardPage: React.FC = () => {
   const [healthCheck, setHealthCheck] = useState<any>(null);
 
   const [isClocking, setIsClocking] = useState(false);
-  const [actionMessage, setActionMessage] = useState<string | null>(null);
 
   // New Announcement Modal State
   const [showAnnounceModal, setShowAnnounceModal] = useState(false);
@@ -171,7 +157,6 @@ export const DashboardPage: React.FC = () => {
 
   const handleClockIn = async () => {
     setIsClocking(true);
-    setActionMessage(null);
     try {
       const res = await apiRequest('/attendance/clock-in', { method: 'POST' });
       setTodayAttendance(res?.data || null);
@@ -186,7 +171,6 @@ export const DashboardPage: React.FC = () => {
 
   const handleClockOut = async () => {
     setIsClocking(true);
-    setActionMessage(null);
     try {
       const res = await apiRequest('/attendance/clock-out', { method: 'POST' });
       setTodayAttendance(res?.data || null);
@@ -265,7 +249,7 @@ export const DashboardPage: React.FC = () => {
       {/* Welcome Banner with Role View Switcher */}
       <div className="bg-[#08222f] rounded-2xl p-6 border border-[#14425b] shadow-card flex flex-col md:flex-row md:items-center justify-between gap-4 transition-colors">
         <div>
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2.5">
             <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
               Welcome back, {user?.firstName} {user?.lastName}
             </h1>
@@ -273,11 +257,8 @@ export const DashboardPage: React.FC = () => {
               {user?.role}
             </Badge>
           </div>
-          <p className="text-xs text-slate-400 mt-1 flex items-center space-x-1.5">
-            <Building2 size={13} className="text-[#ff6f32]" />
-            <span>
-              Workspace: <strong className="text-white">{user?.organization?.name}</strong> &bull; Multi-Tenant Scoped
-            </span>
+          <p className="text-xs text-slate-400 mt-1">
+            Overview of today&apos;s workforce operations, pending approvals, and attendance.
           </p>
         </div>
 
@@ -463,9 +444,8 @@ export const DashboardPage: React.FC = () => {
             <div className="bg-[#08222f] p-6 rounded-2xl border border-[#14425b] shadow-card flex flex-col justify-between">
               <div>
                 <div className="flex items-center justify-between mb-2">
-                  <h2 className="text-sm font-bold text-white flex items-center space-x-2">
-                    <Activity className="text-[#ff6f32]" size={18} />
-                    <span>Smart HR Action Center</span>
+                  <h2 className="text-sm font-bold text-white">
+                    Smart HR Action Center
                   </h2>
                   <span
                     className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold ${
@@ -593,20 +573,14 @@ export const DashboardPage: React.FC = () => {
                   </Link>
                 </div>
               </div>
-
-              <div className="mt-4 pt-3 border-t border-[#14425b] flex items-center justify-between text-[11px] text-slate-400">
-                <span>Multi-tenant synchronized queue</span>
-                <span className="text-[#ff6f32] font-semibold">● Live Database</span>
-              </div>
             </div>
 
             {/* Company HR Health Check */}
             <div className="bg-[#08222f] p-6 rounded-2xl border border-[#14425b] shadow-card flex flex-col justify-between">
               <div>
                 <div className="flex items-center justify-between mb-2">
-                  <h2 className="text-sm font-bold text-white flex items-center space-x-2">
-                    <ShieldCheck className="text-[#ff6f32]" size={18} />
-                    <span>Company HR Health Check</span>
+                  <h2 className="text-sm font-bold text-white">
+                    Company HR Health Check
                   </h2>
                   <div className="flex items-center space-x-2">
                     <span className="text-xl font-extrabold text-white">
@@ -633,7 +607,7 @@ export const DashboardPage: React.FC = () => {
                 </p>
 
                 {/* Dimension Gauges */}
-                <div className="space-y-2 text-xs">
+                <div className="space-y-2.5 text-xs">
                   <div>
                     <div className="flex justify-between text-[11px] text-slate-300 mb-1">
                       <span>Employee Profile Completeness</span>
@@ -707,11 +681,6 @@ export const DashboardPage: React.FC = () => {
                   </div>
                 )}
               </div>
-
-              <div className="mt-4 pt-3 border-t border-[#14425b] flex items-center justify-between text-[11px] text-slate-400">
-                <span>Enterprise compliance audit</span>
-                <span className="text-emerald-400 font-semibold">● Active Engine</span>
-              </div>
             </div>
           </div>
 
@@ -766,9 +735,8 @@ export const DashboardPage: React.FC = () => {
             <div className="bg-[#08222f] p-6 rounded-2xl border border-[#14425b] shadow-card flex flex-col justify-between">
               <div>
                 <div className="flex items-center justify-between mb-1">
-                  <h2 className="text-sm font-bold text-white flex items-center space-x-1.5">
-                    <CalendarCheck className="text-[#ff6f32]" size={17} />
-                    <span>Quick Leave Approvals</span>
+                  <h2 className="text-sm font-bold text-white">
+                    Quick Leave Approvals
                   </h2>
                   <Badge variant="warning" size="xs">
                     {pendingLeaves.length} Pending
@@ -887,9 +855,8 @@ export const DashboardPage: React.FC = () => {
             {/* Onboarding Checklist Progress */}
             <div className="bg-[#08222f] p-6 rounded-2xl border border-[#14425b] shadow-card">
               <div className="flex items-center justify-between mb-1">
-                <h2 className="text-sm font-bold text-white flex items-center space-x-2">
-                  <CheckSquare className="text-[#ff6f32]" size={17} />
-                  <span>Employee Journey & Onboarding Checklist</span>
+                <h2 className="text-sm font-bold text-white">
+                  Employee Journey & Onboarding Checklist
                 </h2>
                 <Badge variant="brand" size="xs">
                   Self-Service
@@ -1024,9 +991,8 @@ export const DashboardPage: React.FC = () => {
         <div className="lg:col-span-2 bg-[#08222f] p-6 rounded-2xl border border-[#14425b] shadow-card">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h2 className="text-sm font-bold text-white flex items-center space-x-2">
-                <Megaphone className="text-[#ff6f32]" size={17} />
-                <span>Company Broadcasts & Announcements</span>
+              <h2 className="text-sm font-bold text-white">
+                Company Broadcasts & Announcements
               </h2>
               <p className="text-xs text-slate-400">
                 Corporate notices and executive updates
@@ -1075,9 +1041,8 @@ export const DashboardPage: React.FC = () => {
         <div className="bg-[#08222f] p-6 rounded-2xl border border-[#14425b] shadow-card flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between mb-1">
-              <h2 className="text-sm font-bold text-white flex items-center space-x-2">
-                <Calendar className="text-[#ff6f32]" size={17} />
-                <span>Company Calendar</span>
+              <h2 className="text-sm font-bold text-white">
+                Company Calendar
               </h2>
               <span className="text-[10px] text-slate-400 font-semibold">2026/2027</span>
             </div>
@@ -1108,11 +1073,6 @@ export const DashboardPage: React.FC = () => {
                 ))
               )}
             </div>
-          </div>
-
-          <div className="mt-4 pt-3 border-t border-[#14425b] text-[11px] text-slate-400 flex items-center justify-between">
-            <span>Multi-Tenant Calendar</span>
-            <span className="text-emerald-400 font-semibold">● Synced</span>
           </div>
         </div>
       </div>

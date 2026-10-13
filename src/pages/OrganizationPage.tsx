@@ -386,20 +386,12 @@ export const OrganizationPage: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-xl font-bold text-white tracking-tight flex items-center space-x-2">
-            <Building2 className="text-[#ff6f32]" size={24} />
-            <span>Enterprise Organization & Branches</span>
+          <h1 className="text-xl font-bold text-white tracking-tight">
+            Enterprise Organization & Branches
           </h1>
           <p className="text-xs text-slate-400 mt-0.5">
             Multi-branch tenant administration, organizational structure, shifts, and data isolation controls.
           </p>
-        </div>
-
-        <div className="flex items-center space-x-2">
-          <span className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-[#ff6f32]/10 text-[#ff6f32] text-xs font-semibold border border-[#ff6f32]/30">
-            <ShieldCheck size={14} className="text-[#ff6f32]" />
-            <span>Isolated Tenant: {org?.slug || user?.organization?.slug || 'acme-global'}</span>
-          </span>
         </div>
       </div>
 

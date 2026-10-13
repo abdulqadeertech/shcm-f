@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import {
-  TrendingUp,
   Target,
   Plus,
   CheckCircle2,
@@ -92,9 +91,8 @@ export const PerformancePage: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-xl font-bold text-white tracking-tight flex items-center space-x-2">
-            <TrendingUp className="text-[#ff6f32]" size={22} />
-            <span>Performance & Goal Governance</span>
+          <h1 className="text-xl font-bold text-white tracking-tight">
+            Performance & Goal Governance
           </h1>
           <p className="text-xs text-slate-400 mt-0.5">
             Key Performance Indicators (KPIs), review cycles, self-evaluations, and manager feedback.

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { TopUtilityBar } from '../components/navigation/TopUtilityBar';
 import { MainNavbar } from '../components/navigation/MainNavbar';
 import { HeroSection } from '../components/hero/HeroSection';
 import { ThreeFeatureStrip } from '../components/landing/ThreeFeatureStrip';
@@ -49,72 +48,67 @@ export const LandingPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#051720] text-slate-100 flex flex-col selection:bg-[#ff6f32]/25 selection:text-white transition-colors">
-      {/* 1. Deep Dark Teal Top Information Bar */}
-      <TopUtilityBar
-        onOpenWiki={() => setWikiDrawerOpen(true)}
-        onOpenSupport={() => setSupportModalOpen(true)}
-      />
-
-      {/* 2. White Corporate Primary Navigation with Dropdowns & Warm Orange CTA */}
+      {/* Primary Navigation */}
       <MainNavbar
         onRequestDemo={() => handleOpenDemo()}
         onApplyAsCompany={handleOpenCompanyApplication}
         onOpenSearch={() => setSearchModalOpen(true)}
         onOpenMobileMenu={() => setMobileMenuOpen(true)}
         onContactSales={() => setContactSalesOpen(true)}
+        onOpenWiki={() => setWikiDrawerOpen(true)}
+        onOpenSupport={() => setSupportModalOpen(true)}
       />
 
-      {/* 3. Hero Section: Edge-to-Edge Corporate Workplace Photo with Dark Teal Overlay */}
+      {/* Hero Section */}
       <HeroSection
         onRequestDemo={() => handleOpenDemo()}
-        onWatchVideo={() => setVideoModalOpen(true)}
       />
 
-      {/* 4. Three Signature Feature Blocks on Deep Teal Background */}
+      {/* Core Capabilities Strip */}
       <ThreeFeatureStrip />
 
-      {/* 5. Editorial Asymmetrical About Smart HCM Section with Image Collage */}
+      {/* About SmartHCM Section */}
       <AboutSmartHcmSection
         onWhySmartHcm={() => setVideoModalOpen(true)}
         onRequestDemo={() => handleOpenDemo()}
       />
 
-      {/* 6. Platform and Services Showcase: Everything Your People Operations Need */}
+      {/* Platform and Services Showcase */}
       <PlatformServicesShowcase
         onRequestDemo={(mod) => handleOpenDemo(mod)}
       />
 
-      {/* 7. Authentic Production-Grade Product Dashboard Showcase */}
+      {/* Product Dashboard Showcase */}
       <ProductDashboardShowcase />
 
-      {/* 8. Industry & Organizational Solutions */}
+      {/* Industry & Organizational Solutions */}
       <SolutionsSection />
 
-      {/* 9. Clean 6-Step Implementation Process Timeline */}
+      {/* Implementation Process */}
       <HowItWorksSection />
 
-      {/* 10. Enterprise Security & Statutory Compliance Credentials */}
+      {/* Security & Compliance Credentials */}
       <TrustSection />
 
-      {/* 11. Quantifiable Enterprise ROI & Business Benefits */}
+      {/* Business Benefits & Metrics */}
       <BenefitsSection onOpenDemo={() => handleOpenDemo()} />
 
-      {/* 12. Transparent Enterprise Pricing with Feature Comparison Matrix */}
+      {/* Pricing & Feature Comparison */}
       <PricingSection
         onRequestDemo={() => handleOpenDemo()}
         onContactSales={() => setContactSalesOpen(true)}
       />
 
-      {/* 13. Interactive Enterprise FAQ Accordion */}
+      {/* FAQ Accordion */}
       <FaqSection />
 
-      {/* 14. Deep Dark Teal / Navy Conversion CTA Strip */}
+      {/* Conversion CTA Strip */}
       <CompanyApplicationSection
         onApply={handleOpenCompanyApplication}
         onRequestDemo={() => handleOpenDemo()}
       />
 
-      {/* 15. Multi-Column Professional Corporate Footer */}
+      {/* Corporate Footer */}
       <Footer
         onRequestDemo={() => handleOpenDemo()}
         onOpenWiki={() => setWikiDrawerOpen(true)}

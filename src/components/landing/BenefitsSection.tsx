@@ -1,5 +1,5 @@
 import React from 'react';
-import { Clock, TrendingUp, ShieldCheck, CheckCircle2, Zap, ArrowRight, Layers } from 'lucide-react';
+import { Clock, TrendingUp, ShieldCheck, CheckCircle2, ArrowRight, Layers } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 interface BenefitsSectionProps {
@@ -44,16 +44,11 @@ export const BenefitsSection: React.FC<BenefitsSectionProps> = ({ onOpenDemo }) 
   ];
 
   return (
-    <section className="py-20 lg:py-28 bg-[#071c26] border-t border-[#0e3547] text-white transition-colors">
+    <section className="py-20 lg:py-24 bg-[#071c26] border-t border-[#0e3547] text-white transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           {/* Left Column: Context & Proof (5 cols) */}
           <div className="lg:col-span-5 text-left space-y-5">
-            <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#0a2736] border border-[#14425b] text-xs font-semibold text-[#ff6f32]">
-              <Zap size={14} className="text-[#ff6f32]" />
-              <span>MEASURABLE ENTERPRISE ROI</span>
-            </div>
-
             <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight">
               Engineered for Organizations That Value{' '}
               <span className="text-[#ff6f32]">Absolute Precision</span>

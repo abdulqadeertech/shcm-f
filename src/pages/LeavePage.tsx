@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import {
-  CalendarCheck,
   Plus,
   CheckCircle2,
   XCircle,
@@ -119,9 +118,8 @@ export const LeavePage: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-xl font-bold text-white tracking-tight flex items-center space-x-2">
-            <CalendarCheck className="text-[#ff6f32]" size={22} />
-            <span>Leave Management & Approvals</span>
+          <h1 className="text-xl font-bold text-white tracking-tight">
+            Leave Management & Approvals
           </h1>
           <p className="text-xs text-slate-400 mt-0.5">
             Statutory leave entitlements, holiday calendar calculations, and manager approval queues.

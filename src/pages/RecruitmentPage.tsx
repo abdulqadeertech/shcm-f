@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Briefcase,
   UserPlus,
   Plus,
   Users,
@@ -130,9 +129,8 @@ export const RecruitmentPage: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-xl font-bold text-white tracking-tight flex items-center space-x-2">
-            <Briefcase className="text-[#ff6f32]" size={22} />
-            <span>Recruitment & Applicant Tracking System (ATS)</span>
+          <h1 className="text-xl font-bold text-white tracking-tight">
+            Recruitment & Applicant Tracking System (ATS)
           </h1>
           <p className="text-xs text-slate-400 mt-0.5">
             Job requisitions, applicant pipelines, interview evaluations, and hiring workflows.

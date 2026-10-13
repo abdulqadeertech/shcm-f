@@ -214,9 +214,8 @@ export const ReportsPage: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-xl font-bold text-white tracking-tight flex items-center space-x-2">
-            <BarChart3 className="text-[#ff6f32]" size={24} />
-            <span>Workforce Analytics & Traceable BI Assistant</span>
+          <h1 className="text-xl font-bold text-white tracking-tight">
+            Workforce Analytics & Traceable BI Assistant
           </h1>
           <p className="text-xs text-slate-400 mt-0.5">
             Real-time business intelligence queried directly from organizational databases with natural-language AI explanations.

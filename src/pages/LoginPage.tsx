@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { Eye, EyeOff, AlertCircle, Loader2 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { ThemeToggle } from '../components/ui/ThemeToggle';
+import { BrandLogo } from '../components/common/BrandLogo';
 import { useToast } from '../context/ToastContext';
 
 export const LoginPage: React.FC = () => {
@@ -171,13 +172,9 @@ export const LoginPage: React.FC = () => {
       <div className="w-full max-w-[400px]">
         {/* Brand Header */}
         <div className="text-center mb-6">
-          <div className="inline-flex items-center justify-center w-11 h-11 rounded-xl bg-slate-900 dark:bg-[#071c26] border border-slate-700/60 dark:border-[#14425b] shadow-sm mb-3">
-            <span className="text-white font-bold text-lg tracking-tight">S</span>
-            <span className="w-2 h-2 rounded-full bg-[#ff6f32] ml-0.5 -mt-2" />
-          </div>
-          <h1 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">
-            Smart<span className="text-[#ff6f32]">HCM</span>
-          </h1>
+          <Link to="/portal" className="inline-flex justify-center mb-2">
+            <BrandLogo size="lg" />
+          </Link>
           <p className="mt-1 text-xs sm:text-sm text-slate-500 dark:text-slate-400">
             {mode === 'login'
               ? 'Sign in to access your workspace'

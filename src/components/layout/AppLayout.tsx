@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { NavLink, Outlet, useNavigate, Link, useLocation } from 'react-router-dom';
+import { NavLink, Outlet, useNavigate, Link } from 'react-router-dom';
 import {
   LucideIcon,
   LayoutDashboard,
@@ -21,9 +21,7 @@ import {
   UserCheck,
   Globe,
   Search,
-  MessageCircle,
   BookOpen,
-  ArrowLeft,
   Check,
   GitBranch,
   Bell,
@@ -31,13 +29,13 @@ import {
   AlertTriangle,
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
-import { useTranslation, SUPPORTED_LANGUAGES, LanguageOption } from '../../context/LanguageContext';
-import { UTILITY_BAR_CONFIG } from '../../data/navigationData';
+import { useTranslation, SUPPORTED_LANGUAGES } from '../../context/LanguageContext';
 import { RequestDemoModal } from '../modals/RequestDemoModal';
 import { SearchModal } from '../modals/SearchModal';
 import { WikiDrawer } from '../modals/WikiDrawer';
 import { SupportModal } from '../modals/SupportModal';
 import { ThemeToggle } from '../ui/ThemeToggle';
+import { BrandLogo } from '../common/BrandLogo';
 import { apiRequest } from '../../api/client';
 import { useToast } from '../../context/ToastContext';
 
@@ -53,9 +51,8 @@ interface NavigationGroup {
 
 export const AppLayout: React.FC = () => {
   const { user, logout, quickLogin, switchOrganization } = useAuth();
-  const { t, language, setLanguage, isRtl } = useTranslation();
+  const { t, language, setLanguage } = useTranslation();
   const navigate = useNavigate();
-  const location = useLocation();
   const { success, error: toastError } = useToast();
 
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -78,6 +75,7 @@ export const AppLayout: React.FC = () => {
   const workspaceRef = useRef<HTMLDivElement>(null);
   const personaRef = useRef<HTMLDivElement>(null);
   const profileRef = useRef<HTMLDivElement>(null);
+  const langRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -93,6 +91,9 @@ export const AppLayout: React.FC = () => {
       }
       if (profileRef.current && !profileRef.current.contains(target)) {
         setProfileMenuOpen(false);
+      }
+      if (langRef.current && !langRef.current.contains(target)) {
+        setLangMenuOpen(false);
       }
     };
 
@@ -262,113 +263,6 @@ export const AppLayout: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#051720] flex flex-col text-left text-slate-100 transition-colors">
-      {/* Top Utility Bar inside workspace */}
-      <div className="bg-[#071c26] border-b border-[#0e3547] text-slate-300 text-[11px] py-1.5 px-4 sm:px-6 flex items-center justify-between transition-colors">
-        <div className="flex items-center space-x-3">
-          {/* Universal Back Button */}
-          {location.pathname !== '/dashboard' ? (
-            <button
-              type="button"
-              onClick={() => navigate(-1)}
-              className="flex items-center space-x-1.5 text-[#ff6f32] hover:text-[#ea580c] font-semibold transition cursor-pointer"
-              title="Return to previous screen"
-            >
-              <ArrowLeft size={13} className={isRtl ? 'rotate-180' : ''} />
-              <span>{t('action.back', 'Back')}</span>
-            </button>
-          ) : (
-            <Link
-              to="/portal"
-              className="flex items-center space-x-1.5 text-slate-400 hover:text-white transition font-medium"
-            >
-              <span>SmartHCM Enterprise Cloud</span>
-            </Link>
-          )}
-
-          <span className="hidden md:inline text-slate-600">|</span>
-          <span className="hidden md:inline text-slate-400">
-            Current Workspace: <strong className="text-white">{currentOrg?.name || 'Acme Global'}</strong>
-            <span className="font-mono text-[10px] text-slate-400 ml-1">({currentOrg?.slug || 'acme-global'})</span>
-            {currentOrg?.subscriptionPlan && (
-              <span className="ml-2 px-1.5 py-0.5 rounded text-[10px] font-bold bg-[#ff6f32]/15 text-[#ff6f32] border border-[#ff6f32]/30">
-                {currentOrg.subscriptionPlan}
-              </span>
-            )}
-            {currentOrg?.status && currentOrg.status !== 'ACTIVE' && (
-              <span
-                className={`ml-1.5 px-1.5 py-0.5 rounded text-[10px] font-bold uppercase ${
-                  currentOrg.status === 'PENDING'
-                    ? 'bg-amber-500/15 text-amber-400 border border-amber-500/30'
-                    : 'bg-rose-500/15 text-rose-400 border border-rose-500/30'
-                }`}
-              >
-                {currentOrg.status}
-              </span>
-            )}
-          </span>
-        </div>
-
-        <div className="flex items-center space-x-3 sm:space-x-4">
-          {/* Working Centralized Language Selector */}
-          <div className="relative">
-            <button
-              onClick={() => setLangMenuOpen(!langMenuOpen)}
-              className="flex items-center space-x-1 text-slate-300 hover:text-white transition font-medium cursor-pointer px-2 py-0.5 rounded-lg hover:bg-white/5"
-            >
-              <Globe size={13} className="text-[#ff6f32]" />
-              <span>{currentLangObj.flag}</span>
-              <span className="hidden sm:inline text-xs">{currentLangObj.nativeName}</span>
-              <ChevronDown size={10} className="text-slate-400" />
-            </button>
-            {langMenuOpen && (
-              <div className="absolute right-0 mt-1 w-36 bg-[#08222f] border border-[#14425b] rounded-xl shadow-2xl py-1 z-50 text-xs animate-dropdown-slide">
-                {SUPPORTED_LANGUAGES.map((lang) => (
-                  <button
-                    key={lang.code}
-                    onClick={() => {
-                      setLanguage(lang.code);
-                      setLangMenuOpen(false);
-                    }}
-                    className={`w-full text-left px-3 py-1.5 flex items-center justify-between hover:bg-[#ff6f32]/10 transition cursor-pointer ${
-                      language === lang.code ? 'text-[#ff6f32] font-bold' : 'text-slate-200'
-                    }`}
-                  >
-                    <span>
-                      {lang.flag} {lang.nativeName}
-                    </span>
-                    {language === lang.code && <Check size={12} className="text-[#ff6f32]" />}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-
-          <button
-            onClick={() => setWikiDrawerOpen(true)}
-            className="hidden sm:flex items-center space-x-1 text-slate-300 hover:text-[#ff6f32] transition cursor-pointer"
-          >
-            <BookOpen size={12} className="text-[#ff6f32]" />
-            <span>HCM Wiki</span>
-          </button>
-          <button
-            onClick={() => setSupportModalOpen(true)}
-            className="flex items-center space-x-1 text-slate-300 hover:text-[#ff6f32] transition cursor-pointer"
-          >
-            <HelpCircle size={12} className="text-[#ff6f32]" />
-            <span>Support</span>
-          </button>
-          <a
-            href={UTILITY_BAR_CONFIG.whatsappUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hidden md:flex items-center space-x-1 text-emerald-400 hover:underline font-medium"
-          >
-            <MessageCircle size={12} />
-            <span>WhatsApp</span>
-          </a>
-        </div>
-      </div>
-
       {/* Main Workspace Header Shell */}
       <header className="bg-[#071c26] border-b border-[#0e3547] h-16 flex items-center justify-between px-4 sm:px-6 sticky top-0 z-30 shadow-xs transition-colors">
         <div className="flex items-center space-x-3 sm:space-x-4">
@@ -380,17 +274,9 @@ export const AppLayout: React.FC = () => {
             {sidebarOpen ? <X size={18} /> : <Menu size={18} />}
           </button>
 
-          {/* SmartHCM Logo */}
-          <Link to="/dashboard" className="flex items-center space-x-2.5">
-            <div className="w-8 h-8 rounded-xl bg-[#0a2736] border border-[#14425b] flex items-center justify-center font-extrabold text-white text-sm shadow-xs relative">
-              <span>S</span>
-              <span className="w-1.5 h-1.5 rounded-full bg-[#ff6f32] absolute -top-0.5 -right-0.5 ring-1 ring-[#071c26]" />
-            </div>
-            <div className="flex items-center space-x-1.5">
-              <span className="font-extrabold text-base tracking-tight text-white">
-                Smart<span className="text-[#ff6f32]">HCM</span>
-              </span>
-            </div>
+          {/* Clean SmartHCM Brand Logo */}
+          <Link to="/dashboard" className="flex items-center">
+            <BrandLogo size="sm" />
           </Link>
 
           {/* Multi-Tenant Workspace Switcher Dropdown */}
@@ -457,8 +343,8 @@ export const AppLayout: React.FC = () => {
           </div>
         </div>
 
-        {/* Right Header: Search, ThemeToggle, Notifications, Persona, Profile */}
-        <div className="flex items-center space-x-2 sm:space-x-3">
+        {/* Right Header: Search, Language, ThemeToggle, Notifications, Persona, Profile */}
+        <div className="flex items-center space-x-2 sm:space-x-2.5">
           {/* Quick Search */}
           <button
             onClick={() => setSearchModalOpen(true)}
@@ -472,6 +358,39 @@ export const AppLayout: React.FC = () => {
             </span>
           </button>
 
+          {/* Language Selector */}
+          <div className="relative" ref={langRef}>
+            <button
+              onClick={() => setLangMenuOpen(!langMenuOpen)}
+              className="flex items-center space-x-1 bg-[#0a2736] hover:bg-[#0c2f42] text-slate-300 hover:text-white px-2.5 py-1.5 rounded-xl text-xs border border-[#14425b] hover:border-[#ff6f32]/40 transition cursor-pointer"
+              title="Change Language"
+            >
+              <Globe size={13} className="text-slate-400" />
+              <span className="hidden md:inline text-xs font-medium">{currentLangObj.code.toUpperCase()}</span>
+            </button>
+            {langMenuOpen && (
+              <div className="absolute right-0 mt-2 w-40 bg-[#08222f] border border-[#14425b] rounded-xl shadow-2xl py-1 z-50 text-xs animate-dropdown-slide">
+                {SUPPORTED_LANGUAGES.map((lang) => (
+                  <button
+                    key={lang.code}
+                    onClick={() => {
+                      setLanguage(lang.code);
+                      setLangMenuOpen(false);
+                    }}
+                    className={`w-full text-left px-3 py-1.5 flex items-center justify-between hover:bg-[#ff6f32]/10 transition cursor-pointer ${
+                      language === lang.code ? 'text-[#ff6f32] font-bold' : 'text-slate-200'
+                    }`}
+                  >
+                    <span>
+                      {lang.flag} {lang.nativeName}
+                    </span>
+                    {language === lang.code && <Check size={12} className="text-[#ff6f32]" />}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
           {/* Real Light / Dark Theme Toggle */}
           <ThemeToggle />
 
@@ -484,7 +403,7 @@ export const AppLayout: React.FC = () => {
             >
               <Bell size={17} />
               {unreadCount > 0 && (
-                <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-[#ff6f32] animate-pulse" />
+                <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-[#ff6f32]" />
               )}
             </button>
 
@@ -641,6 +560,14 @@ export const AppLayout: React.FC = () => {
                     <HelpCircle size={14} className="text-[#ff6f32]" />
                     <span>Technical Support</span>
                   </button>
+                  <Link
+                    to="/portal"
+                    onClick={() => setProfileMenuOpen(false)}
+                    className="w-full text-left px-3.5 py-2 flex items-center space-x-2 text-slate-300 hover:text-white hover:bg-[#ff6f32]/10"
+                  >
+                    <Globe size={14} className="text-[#ff6f32]" />
+                    <span>Public Website</span>
+                  </Link>
                 </div>
 
                 <div className="border-t border-[#0f3446] pt-1">
@@ -756,18 +683,6 @@ export const AppLayout: React.FC = () => {
               </div>
             ))}
           </div>
-
-          {/* Sidebar Footer info */}
-          {sidebarOpen && (
-            <div className="p-4 border-t border-[#0e3547] text-xs text-slate-400 bg-[#051720]">
-              <div className="font-bold text-slate-200">SmartHCM Enterprise</div>
-              <div className="text-[11px] text-slate-400">Multi-Tenant Cloud Suite</div>
-              <div className="text-[10px] text-emerald-400 font-semibold mt-1 flex items-center space-x-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                <span>Tenant Boundary Verified</span>
-              </div>
-            </div>
-          )}
         </aside>
 
         {/* Dynamic Page Viewport */}

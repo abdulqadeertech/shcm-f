@@ -3,8 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import {
   Search,
   X,
-  ArrowRight,
-  Command,
   ChevronRight,
 } from 'lucide-react';
 import { MEGA_MENU_MODULES, MegaMenuModule } from '../../data/navigationData';
@@ -35,8 +33,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
     return (
       mod.title.toLowerCase().includes(q) ||
       mod.description.toLowerCase().includes(q) ||
-      mod.category.toLowerCase().includes(q) ||
-      (mod.badge && mod.badge.toLowerCase().includes(q))
+      mod.category.toLowerCase().includes(q)
     );
   });
 
@@ -88,7 +85,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
               setQuery(e.target.value);
               setSelectedIndex(0);
             }}
-            placeholder="Search all 16 HCM modules, payroll, attendance, workflows..."
+            placeholder="Search modules, payroll, attendance, workflows..."
             className="w-full bg-transparent text-sm text-white placeholder-slate-400 focus:outline-none"
           />
           {query ? (
@@ -117,26 +114,15 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
                   onMouseEnter={() => setSelectedIndex(idx)}
                   className={`flex items-center justify-between p-3 rounded-xl transition cursor-pointer ${
                     isSelected
-                      ? 'bg-[#ff6f32]/15 text-white border border-[#ff6f32]/40 shadow-2xs'
+                      ? 'bg-[#ff6f32]/15 text-white border border-[#ff6f32]/40'
                       : 'hover:bg-[#071c26] text-slate-300 border border-transparent'
                   }`}
                 >
                   <div className="flex items-center space-x-3 min-w-0">
-                    <div
-                      className={`p-2 rounded-lg border ${mod.iconBg} ${mod.iconBorder} shrink-0`}
-                    >
-                      <DynamicIcon name={mod.iconName} size={18} className={mod.iconColor} />
-                    </div>
+                    <DynamicIcon name={mod.iconName} size={17} className="text-[#ff6f32] shrink-0" />
                     <div className="min-w-0">
-                      <div className="flex items-center space-x-2">
-                        <span className="text-xs font-bold text-white truncate">
-                          {mod.title}
-                        </span>
-                        {mod.badge && (
-                          <span className="text-[10px] font-semibold px-1.5 py-0.2 rounded bg-[#ff6f32]/15 text-[#ff6f32] border border-[#ff6f32]/30">
-                            {mod.badge}
-                          </span>
-                        )}
+                      <div className="text-xs font-bold text-white truncate">
+                        {mod.title}
                       </div>
                       <p className="text-[11px] text-slate-400 truncate">{mod.description}</p>
                     </div>
@@ -169,10 +155,6 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
             <span>↵ Select</span>
             <span>ESC Close</span>
           </div>
-          <span className="font-semibold text-slate-300 flex items-center space-x-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#ff6f32]" />
-            <span>SmartHCM Fast Navigator</span>
-          </span>
         </div>
       </div>
     </div>

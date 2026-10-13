@@ -53,13 +53,6 @@ export const TrustSection: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="max-w-3xl mb-12 space-y-3">
-          <div className="flex items-center space-x-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-[#ff6f32]" />
-            <span className="text-[#ff6f32] font-mono text-xs font-bold tracking-widest uppercase">
-              ENTERPRISE SECURITY & COMPLIANCE
-            </span>
-          </div>
-
           <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
             Engineered for Strict Corporate Governance
           </h2>

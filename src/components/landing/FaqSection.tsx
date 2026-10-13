@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ChevronDown, HelpCircle } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 
 export const FaqSection: React.FC = () => {
   const [openIdx, setOpenIdx] = useState<number | null>(0);
@@ -32,16 +32,11 @@ export const FaqSection: React.FC = () => {
   ];
 
   return (
-    <section id="faq" className="py-20 lg:py-28 bg-[#051720] border-t border-[#0e3547] text-white transition-colors">
+    <section id="faq" className="py-20 lg:py-24 bg-[#051720] border-t border-[#0e3547] text-white transition-colors">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#0a2736] border border-[#14425b] text-xs font-semibold text-[#ff6f32] mb-3">
-            <HelpCircle size={14} className="text-[#ff6f32]" />
-            <span>FREQUENTLY ASKED QUESTIONS</span>
-          </div>
+        <div className="text-center mb-14">
           <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-            Frequently Asked Questions for{' '}
-            <span className="text-[#ff6f32]">Enterprise Leaders</span>
+            Frequently Asked Questions
           </h2>
           <p className="text-sm sm:text-base text-slate-300 mt-2 font-normal">
             Everything you need to know about architecture, statutory compliance, and deployment.
