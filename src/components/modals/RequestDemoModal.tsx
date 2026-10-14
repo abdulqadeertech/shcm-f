@@ -11,6 +11,7 @@ import {
   ShieldCheck,
 } from 'lucide-react';
 import { UTILITY_BAR_CONFIG } from '../../data/navigationData';
+import { leadService } from '../../services/leadService';
 
 interface RequestDemoModalProps {
   isOpen: boolean;
@@ -94,20 +95,20 @@ export const RequestDemoModal: React.FC<RequestDemoModalProps> = ({
     e.preventDefault();
     if (!validate()) return;
 
-    const requestType = applicationMode ? 'Company onboarding application' : 'SmartHCM demo request';
-    const subject = `${requestType}: ${formData.companyName}`;
-    const body = [
-      `Request type: ${requestType}`,
-      `Name: ${formData.fullName}`,
-      `Work email: ${formData.email}`,
-      `Company: ${formData.companyName}`,
-      `Phone: ${formData.phone}`,
-      `Company size: ${formData.companySize}`,
-      `Area of interest: ${formData.moduleInterest}`,
-      `Rollout timeline: ${formData.implementationTimeline}`,
-    ].join('\n');
+    leadService.addInquiry({
+      fullName: formData.fullName.trim(),
+      email: formData.email.trim(),
+      companyName: formData.companyName.trim(),
+      phone: formData.phone.trim(),
+      teamSize: formData.companySize,
+      moduleInterest: formData.moduleInterest,
+      message: `Implementation timeline: ${formData.implementationTimeline}. Notes: ${formData.notes || 'None'}`,
+      type: applicationMode ? 'COMPANY_APPLICATION' : 'DEMO_REQUEST',
+      status: 'NEW',
+      source: 'Request Demo Modal',
+      notes: `Timeline: ${formData.implementationTimeline}`,
+    });
 
-    window.location.href = `mailto:${UTILITY_BAR_CONFIG.salesEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     setIsSuccess(true);
   };
 

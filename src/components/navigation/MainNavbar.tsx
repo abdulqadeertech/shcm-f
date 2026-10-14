@@ -304,18 +304,12 @@ export const MainNavbar: React.FC<MainNavbarProps> = ({
                 Pricing
               </button>
 
-              <button
-                onClick={() => {
-                  if (onContactSales) {
-                    onContactSales();
-                  } else {
-                    handleNavClick('contact');
-                  }
-                }}
+              <Link
+                to="/contact-us"
                 className="px-3 py-2 rounded-lg text-xs font-semibold hover:text-[#ff6f32] hover:bg-white/5 transition cursor-pointer"
               >
-                Contact
-              </button>
+                Contact Us
+              </Link>
             </div>
           </div>
 

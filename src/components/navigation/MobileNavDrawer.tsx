@@ -166,6 +166,13 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({
           {/* Help & Support */}
           <div className="border-t border-[#0f3446] pt-3 space-y-1 text-xs text-slate-300">
             <button
+              onClick={() => handleNav('/contact-us')}
+              className="w-full text-left px-3 py-1.5 hover:bg-white/5 rounded-lg flex items-center space-x-2 cursor-pointer"
+            >
+              <MessageCircle size={14} className="text-[#ff6f32]" />
+              <span>Contact Us & Global Offices</span>
+            </button>
+            <button
               onClick={() => {
                 onClose();
                 onOpenWiki();

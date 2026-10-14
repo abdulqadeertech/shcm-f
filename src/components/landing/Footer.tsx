@@ -43,19 +43,19 @@ export const Footer: React.FC<FooterProps> = ({
             <div className="space-y-1.5 pt-1 text-xs text-slate-300">
               <div className="flex items-center space-x-2">
                 <Mail size={13} className="text-[#ff6f32] shrink-0" />
-                <a href="mailto:sales@smarthcm.io" className="hover:text-white transition">
-                  sales@smarthcm.io
+                <a href="mailto:info@smarthcm.cloud" className="hover:text-white transition">
+                  info@smarthcm.cloud
                 </a>
               </div>
               <div className="flex items-center space-x-2">
                 <Phone size={13} className="text-[#ff6f32] shrink-0" />
-                <a href="tel:+18008492180" className="hover:text-white transition">
-                  +1 (800) 849-2180
+                <a href="tel:+922134520105" className="hover:text-white transition">
+                  +92-21-345-20105 / +971-4-549-0431
                 </a>
               </div>
               <div className="flex items-center space-x-2 text-slate-400">
                 <Clock size={13} className="text-slate-500 shrink-0" />
-                <span>Mon – Fri: 8:00 AM – 6:00 PM EST</span>
+                <span>Mon – Fri: 8:00 AM – 6:00 PM PKT / GST</span>
               </div>
             </div>
 
@@ -164,6 +164,11 @@ export const Footer: React.FC<FooterProps> = ({
                 <button onClick={onOpenWiki} className="hover:text-white transition text-left cursor-pointer">
                   HCM Knowledge Wiki
                 </button>
+              </li>
+              <li>
+                <Link to="/contact-us" className="hover:text-white transition text-left cursor-pointer">
+                  Contact Us & Global Offices
+                </Link>
               </li>
               <li>
                 <button onClick={onOpenSupport} className="hover:text-white transition text-left cursor-pointer">

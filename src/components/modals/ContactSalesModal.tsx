@@ -3,6 +3,7 @@ import { Modal } from '../ui/Modal';
 import { Button } from '../ui/Button';
 import { Building2, Mail, Phone, Users, CheckCircle2 } from 'lucide-react';
 import { useToast } from '../../context/ToastContext';
+import { leadService } from '../../services/leadService';
 
 interface ContactSalesModalProps {
   isOpen: boolean;
@@ -26,10 +27,22 @@ export const ContactSalesModal: React.FC<ContactSalesModalProps> = ({ isOpen, on
     e.preventDefault();
     setIsSubmitting(true);
     setTimeout(() => {
+      leadService.addInquiry({
+        fullName: formData.fullName.trim(),
+        email: formData.email.trim(),
+        companyName: formData.companyName.trim(),
+        phone: formData.phone.trim() || 'N/A',
+        teamSize: formData.teamSize,
+        message: formData.requirements.trim() || 'Enterprise sales inquiry',
+        type: 'SALES_INQUIRY',
+        status: 'NEW',
+        source: 'Website Sales Modal',
+        notes: 'Inquiry submitted through Enterprise Sales Modal.',
+      });
       setIsSubmitting(false);
       setSubmitted(true);
       success('Your inquiry has been routed to our enterprise solutions architect.');
-    }, 600);
+    }, 400);
   };
 
   const handleReset = () => {

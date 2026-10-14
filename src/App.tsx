@@ -24,6 +24,7 @@ import { AuditPage } from './pages/AuditPage';
 import { WorkflowsPage } from './pages/WorkflowsPage';
 import { OrganizationPage } from './pages/OrganizationPage';
 import { SuperAdminPage } from './pages/SuperAdminPage';
+import { ContactUsPage } from './pages/ContactUsPage';
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { isAuthenticated, isLoading } = useAuth();
@@ -123,6 +124,8 @@ export const App: React.FC = () => {
               {/* Public Portal Showcase / Marketing */}
               <Route path="/portal" element={<LandingPage />} />
               <Route path="/showcase" element={<LandingPage />} />
+              <Route path="/contact" element={<ContactUsPage />} />
+              <Route path="/contact-us" element={<ContactUsPage />} />
 
               {/* Workspace URL login route */}
               <Route path="/w/:workspaceSlug/login" element={<LoginPage />} />
