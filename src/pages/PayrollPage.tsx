@@ -452,7 +452,7 @@ export const PayrollPage: React.FC = () => {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[#14425b]">
-                  {runs.length === 0 ? (
+                  {!Array.isArray(runs) || runs.length === 0 ? (
                     <tr>
                       <td colSpan={6} className="text-center py-8 text-slate-400">
                         No payroll runs created yet. Use "Dry-Run Simulation" or "Calculate New Run" to start.
@@ -584,7 +584,14 @@ export const PayrollPage: React.FC = () => {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-[#14425b]">
-                    {selectedRun.payslips?.map((p: any) => (
+                    {!Array.isArray(selectedRun.payslips) || selectedRun.payslips.length === 0 ? (
+                      <tr>
+                        <td colSpan={8} className="py-6 text-center text-slate-400">
+                          No itemized payslips found for this run.
+                        </td>
+                      </tr>
+                    ) : (
+                      selectedRun.payslips.map((p: any) => (
                       <tr key={p.id} className="hover:bg-[#071c26]/70">
                         <td className="py-2.5 px-3 font-semibold text-white">
                           {p.employee?.firstName} {p.employee?.lastName}
@@ -607,7 +614,8 @@ export const PayrollPage: React.FC = () => {
                         </td>
                         <td className="py-2.5 px-3 font-bold text-[#ff6f32]">${p.netSalary?.toLocaleString()}</td>
                       </tr>
-                    ))}
+                    ))
+                  )}
                   </tbody>
                 </table>
               </div>
@@ -701,7 +709,7 @@ export const PayrollPage: React.FC = () => {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-[#14425b]">
-                    {simResult.items?.map((item: any, idx: number) => (
+                    {Array.isArray(simResult.items) && simResult.items.map((item: any, idx: number) => (
                       <tr key={idx} className="hover:bg-[#071c26]/60">
                         <td className="py-2.5 px-3 font-semibold text-white">
                           {item.employeeName}
@@ -753,7 +761,7 @@ export const PayrollPage: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {policies.map((p) => (
+            {Array.isArray(policies) && policies.map((p) => (
               <div key={p.id} className="bg-[#08222f] p-5 rounded-2xl border border-[#14425b] shadow-xl space-y-3">
                 <div className="flex items-center justify-between">
                   <div>
@@ -894,7 +902,7 @@ export const PayrollPage: React.FC = () => {
                 onChange={(e) => setSelectedEmployeeId(e.target.value)}
                 className="px-3 py-2 bg-[#051822] border border-[#14425b] text-white rounded-lg focus:outline-none focus:ring-1 focus:ring-[#ff6f32] font-semibold"
               >
-                {employees.map((emp) => (
+                {Array.isArray(employees) && employees.map((emp) => (
                   <option key={emp.id} value={emp.id} className="bg-[#08222f] text-white">
                     {emp.firstName} {emp.lastName} ({emp.employeeId})
                   </option>
@@ -920,7 +928,7 @@ export const PayrollPage: React.FC = () => {
           </div>
 
           <div className="space-y-3">
-            {salaryHistory.length === 0 ? (
+            {!Array.isArray(salaryHistory) || salaryHistory.length === 0 ? (
               <div className="text-center py-8 text-xs text-slate-400">
                 No salary revisions logged for this employee yet. Click "Record Revision" to record one.
               </div>
@@ -1027,7 +1035,7 @@ export const PayrollPage: React.FC = () => {
           </div>
 
           <div className="space-y-3">
-            {myPayslips.length === 0 ? (
+            {!Array.isArray(myPayslips) || myPayslips.length === 0 ? (
               <div className="text-center py-8 text-xs text-slate-400">
                 No personal payslips published yet for your employee account.
               </div>
@@ -1225,7 +1233,7 @@ export const PayrollPage: React.FC = () => {
                 </div>
 
                 {/* Errors */}
-                {precheckData.errors?.length > 0 && (
+                {Array.isArray(precheckData.errors) && precheckData.errors.length > 0 && (
                   <div className="space-y-1.5">
                     <div className="font-bold text-rose-400 uppercase tracking-wider text-[10px]">
                       Blocking Errors ({precheckData.errors.length})
@@ -1243,7 +1251,7 @@ export const PayrollPage: React.FC = () => {
                 )}
 
                 {/* Warnings */}
-                {precheckData.warnings?.length > 0 && (
+                {Array.isArray(precheckData.warnings) && precheckData.warnings.length > 0 && (
                   <div className="space-y-1.5">
                     <div className="font-bold text-amber-400 uppercase tracking-wider text-[10px]">
                       Advisory Warnings ({precheckData.warnings.length})

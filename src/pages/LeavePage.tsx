@@ -39,9 +39,9 @@ export const LeavePage: React.FC = () => {
         apiRequest('/leaves/types'),
         apiRequest('/leaves/requests'),
       ]);
-      setBalances(balRes?.data || []);
-      setTypes(typeRes?.data || []);
-      setRequests(reqRes?.data || []);
+      setBalances(Array.isArray(balRes?.data) ? balRes.data : []);
+      setTypes(Array.isArray(typeRes?.data) ? typeRes.data : []);
+      setRequests(Array.isArray(reqRes?.data) ? reqRes.data : []);
       if (Array.isArray(typeRes?.data) && typeRes.data.length > 0 && !form.leaveTypeId) {
         setForm((prev) => ({ ...prev, leaveTypeId: typeRes.data[0].id }));
       }
@@ -103,7 +103,8 @@ export const LeavePage: React.FC = () => {
     user?.isSuperAdmin ||
     ['ORG_ADMIN', 'HR_DIRECTOR', 'HR_MANAGER', 'DEPT_MANAGER'].includes(user?.role || '');
 
-  const pendingRequests = requests.filter((r) => r.status === 'PENDING');
+  const safeRequests = Array.isArray(requests) ? requests : [];
+  const pendingRequests = safeRequests.filter((r) => r.status === 'PENDING');
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto text-left">
@@ -144,7 +145,7 @@ export const LeavePage: React.FC = () => {
 
       {/* Leave Balances Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        {balances.map((b) => {
+        {Array.isArray(balances) && balances.map((b) => {
           const percent = b.allocatedDays > 0 ? (b.remainingDays / b.allocatedDays) * 100 : 0;
           return (
             <div
@@ -255,7 +256,7 @@ export const LeavePage: React.FC = () => {
                     Loading requests...
                   </td>
                 </tr>
-              ) : requests.length === 0 ? (
+              ) : !Array.isArray(requests) || requests.length === 0 ? (
                 <tr>
                   <td colSpan={6} className="text-center py-8 text-slate-400">
                     No leave requests on record.
@@ -327,7 +328,7 @@ export const LeavePage: React.FC = () => {
                   onChange={(e) => setForm({ ...form, leaveTypeId: e.target.value })}
                   className="w-full px-3 py-2 bg-[#051822] border border-[#14425b] text-white rounded-lg focus:ring-1 focus:ring-[#ff6f32] focus:border-[#ff6f32] focus:outline-none"
                 >
-                  {types.map((t) => (
+                  {Array.isArray(types) && types.map((t) => (
                     <option key={t.id} value={t.id} className="bg-[#08222f] text-white">
                       {t.name} ({t.daysAllowed} days statutory)
                     </option>

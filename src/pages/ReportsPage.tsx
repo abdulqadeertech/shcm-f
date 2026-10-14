@@ -195,11 +195,14 @@ export const ReportsPage: React.FC = () => {
   };
 
   const deptData =
-    summary?.departmentDistribution?.map((d: any) => ({
-      name: d.name.split(' ')[0],
-      fullName: d.name,
-      count: d.count,
-    })) || [];
+    (Array.isArray(summary?.departmentDistribution)
+      ? summary.departmentDistribution
+      : []
+    ).map((d: any) => ({
+      name: d?.name ? d.name.split(' ')[0] : 'Unknown',
+      fullName: d?.name || 'Unknown',
+      count: d?.count || 0,
+    }));
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto text-left">
@@ -241,7 +244,7 @@ export const ReportsPage: React.FC = () => {
       </div>
 
       {/* Unusual-Data & Anomaly Alerts Banner */}
-      {advancedData?.anomalies?.length > 0 && (
+      {Array.isArray(advancedData?.anomalies) && advancedData.anomalies.length > 0 && (
         <div className="p-4 bg-amber-500/10 border border-amber-500/30 rounded-2xl flex items-start space-x-3 text-xs text-amber-300">
           <AlertTriangle size={18} className="text-amber-400 shrink-0 mt-0.5" />
           <div className="space-y-1">
@@ -396,7 +399,7 @@ export const ReportsPage: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {savedReports.length === 0 ? (
+          {!Array.isArray(savedReports) || savedReports.length === 0 ? (
             <div className="col-span-3 text-center py-6 text-xs text-slate-400">
               No saved custom reports. Click "Save Current Query" to bookmark a filter.
             </div>
@@ -464,7 +467,7 @@ export const ReportsPage: React.FC = () => {
 
             {/* AI Q&A Stream */}
             <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-[#051720] text-xs">
-              {aiHistory.map((item, idx) => (
+              {Array.isArray(aiHistory) && aiHistory.map((item, idx) => (
                 <div key={idx} className="space-y-2">
                   {/* User query */}
                   <div className="flex justify-end">

@@ -263,7 +263,7 @@ export const AppLayout: React.FC = () => {
   const navigationGroups = rawNavigationGroups.filter((g) => g.items.length > 0);
 
   const currentOrg = user?.organization;
-  const memberships = user?.memberships || [];
+  const memberships = Array.isArray(user?.memberships) ? user.memberships : [];
   const currentLangObj = SUPPORTED_LANGUAGES.find((l) => l.code === language) || SUPPORTED_LANGUAGES[0];
 
   return (

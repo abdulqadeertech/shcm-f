@@ -54,9 +54,9 @@ export const RecruitmentPage: React.FC = () => {
         apiRequest(`/recruitment/candidates${query}`),
         apiRequest('/organizations/departments'),
       ]);
-      setJobs(jobsRes?.data || []);
-      setCandidates(candRes?.data || []);
-      setDepartments(deptRes?.data || []);
+      setJobs(Array.isArray(jobsRes?.data) ? jobsRes.data : []);
+      setCandidates(Array.isArray(candRes?.data) ? candRes.data : []);
+      setDepartments(Array.isArray(deptRes?.data) ? deptRes.data : []);
       if (Array.isArray(jobsRes?.data) && jobsRes.data.length > 0 && !candidateForm.jobRequisitionId) {
         setCandidateForm((prev) => ({ ...prev, jobRequisitionId: jobsRes.data[0].id }));
       }
@@ -164,7 +164,7 @@ export const RecruitmentPage: React.FC = () => {
 
       {/* Job Requisitions Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {jobs.map((j) => (
+        {Array.isArray(jobs) && jobs.map((j) => (
           <div
             key={j.id}
             onClick={() => setSelectedJob(selectedJob === j.id ? '' : j.id)}
@@ -242,7 +242,7 @@ export const RecruitmentPage: React.FC = () => {
                     Loading candidates...
                   </td>
                 </tr>
-              ) : candidates.length === 0 ? (
+              ) : !Array.isArray(candidates) || candidates.length === 0 ? (
                 <tr>
                   <td colSpan={5} className="text-center py-8 text-slate-400">
                     No candidates found for this filter.
@@ -321,7 +321,7 @@ export const RecruitmentPage: React.FC = () => {
                   className="w-full px-3 py-2 bg-[#051822] border border-[#14425b] text-white rounded-lg focus:outline-none focus:ring-1 focus:ring-[#ff6f32]"
                 >
                   <option value="" className="bg-[#08222f] text-white">Select Department</option>
-                  {departments.map((d) => (
+                  {Array.isArray(departments) && departments.map((d) => (
                     <option key={d.id} value={d.id} className="bg-[#08222f] text-white">
                       {d.name}
                     </option>
@@ -402,7 +402,7 @@ export const RecruitmentPage: React.FC = () => {
                   onChange={(e) => setCandidateForm({ ...candidateForm, jobRequisitionId: e.target.value })}
                   className="w-full px-3 py-2 bg-[#051822] border border-[#14425b] text-white rounded-lg focus:outline-none focus:ring-1 focus:ring-[#ff6f32]"
                 >
-                  {jobs.map((j) => (
+                  {Array.isArray(jobs) && jobs.map((j) => (
                     <option key={j.id} value={j.id} className="bg-[#08222f] text-white">
                       {j.title}
                     </option>

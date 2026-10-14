@@ -32,8 +32,8 @@ export const PerformancePage: React.FC = () => {
         apiRequest('/performance/cycles'),
         apiRequest('/performance/goals'),
       ]);
-      setCycles(cycRes?.data || []);
-      setGoals(goalRes?.data || []);
+      setCycles(Array.isArray(cycRes?.data) ? cycRes.data : []);
+      setGoals(Array.isArray(goalRes?.data) ? goalRes.data : []);
     } catch (err) {
       console.error('Failed to load performance data:', err);
     } finally {
@@ -121,19 +121,25 @@ export const PerformancePage: React.FC = () => {
           Organizational Appraisal Cycles
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          {cycles.map((c) => (
-            <div key={c.id} className="p-4 bg-[#051720] rounded-xl border border-[#14425b] flex items-center justify-between">
-              <div>
-                <span className="font-bold text-white text-xs">{c.title}</span>
-                <div className="text-[11px] text-slate-400 mt-0.5">
-                  Timeline: {new Date(c.startDate).toLocaleDateString()} to {new Date(c.endDate).toLocaleDateString()}
-                </div>
-              </div>
-              <span className="text-[10px] font-semibold bg-[#ff6f32]/15 text-[#ff6f32] border border-[#ff6f32]/30 px-2.5 py-1 rounded-full uppercase">
-                {c.status}
-              </span>
+          {!Array.isArray(cycles) || cycles.length === 0 ? (
+            <div className="col-span-2 text-center py-4 text-xs text-slate-400">
+              No appraisal cycles configured yet.
             </div>
-          ))}
+          ) : (
+            cycles.map((c) => (
+              <div key={c.id} className="p-4 bg-[#051720] rounded-xl border border-[#14425b] flex items-center justify-between">
+                <div>
+                  <span className="font-bold text-white text-xs">{c.title}</span>
+                  <div className="text-[11px] text-slate-400 mt-0.5">
+                    Timeline: {new Date(c.startDate).toLocaleDateString()} to {new Date(c.endDate).toLocaleDateString()}
+                  </div>
+                </div>
+                <span className="text-[10px] font-semibold bg-[#ff6f32]/15 text-[#ff6f32] border border-[#ff6f32]/30 px-2.5 py-1 rounded-full uppercase">
+                  {c.status}
+                </span>
+              </div>
+            ))
+          )}
         </div>
       </div>
 
@@ -149,7 +155,7 @@ export const PerformancePage: React.FC = () => {
         <div className="p-5 space-y-4">
           {isLoading ? (
             <div className="text-center py-8 text-slate-400 text-xs">Loading performance goals...</div>
-          ) : goals.length === 0 ? (
+          ) : !Array.isArray(goals) || goals.length === 0 ? (
             <div className="text-center py-8 text-slate-400 text-xs">No active goals found. Set one above!</div>
           ) : (
             goals.map((g) => (

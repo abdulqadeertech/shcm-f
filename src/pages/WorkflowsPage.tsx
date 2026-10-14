@@ -258,7 +258,7 @@ export const WorkflowsPage: React.FC = () => {
             </span>
           </div>
 
-          {filteredRequests.length === 0 ? (
+          {!Array.isArray(filteredRequests) || filteredRequests.length === 0 ? (
             <div className="bg-[#08222f] rounded-2xl border border-[#14425b] p-12 text-center text-slate-400 shadow-xl">
               <Clock size={36} className="text-[#ff6f32] mx-auto mb-2 opacity-80" />
               <p className="font-semibold text-white text-sm">No approval requests in this view</p>
@@ -313,7 +313,7 @@ export const WorkflowsPage: React.FC = () => {
                       Multi-Stage Approval Hierarchy
                     </div>
                     <div className="flex flex-wrap items-center gap-2">
-                      {req.workflow?.steps?.map((step: any, idx: number) => {
+                      {Array.isArray(req.workflow?.steps) && req.workflow.steps.map((step: any, idx: number) => {
                         const isPast = step.stepOrder < req.currentStepOrder || req.status === 'APPROVED';
                         const isCurrent = step.stepOrder === req.currentStepOrder && req.status === 'PENDING';
                         return (
@@ -340,7 +340,7 @@ export const WorkflowsPage: React.FC = () => {
                   </div>
 
                   {/* Actions History */}
-                  {req.actions && req.actions.length > 0 && (
+                  {Array.isArray(req.actions) && req.actions.length > 0 && (
                     <div className="space-y-1 text-xs border-t border-[#14425b] pt-3">
                       <div className="text-[10px] font-semibold text-slate-400 uppercase">Audit Trail:</div>
                       {req.actions.map((act: any) => (
@@ -415,7 +415,7 @@ export const WorkflowsPage: React.FC = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#14425b]">
-                {delegations.map((d) => (
+                {Array.isArray(delegations) && delegations.map((d) => (
                   <tr key={d.id} className="hover:bg-[#071c26]/60 transition">
                     <td className="p-3.5 font-semibold text-white">{d.delegatorEmail}</td>
                     <td className="p-3.5 text-slate-300">{d.delegateEmail}</td>
@@ -455,7 +455,7 @@ export const WorkflowsPage: React.FC = () => {
       {/* TAB 3: WORKFLOW RULES CONFIGURATION */}
       {activeTab === 'config' && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {workflows.map((wf) => (
+          {Array.isArray(workflows) && workflows.map((wf) => (
             <div
               key={wf.id}
               className="bg-[#08222f] rounded-2xl border border-[#14425b] p-5 space-y-3 text-left shadow-xl"
@@ -475,7 +475,7 @@ export const WorkflowsPage: React.FC = () => {
                 <div className="text-[10px] font-semibold text-slate-400 uppercase">
                   Approval Steps Sequence:
                 </div>
-                {wf.steps?.map((st: any) => (
+                {Array.isArray(wf.steps) && wf.steps.map((st: any) => (
                   <div key={st.id} className="flex items-center justify-between text-xs text-slate-200 bg-[#08222f] p-2 rounded-lg border border-[#14425b]">
                     <span className="font-bold text-white">Step {st.stepOrder}</span>
                     <span className="text-[#ff6f32] font-semibold font-mono text-[11px]">

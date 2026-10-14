@@ -401,7 +401,7 @@ export const SuperAdminPage: React.FC = () => {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[#14425b] text-slate-300">
-                  {companies.length === 0 ? (
+                  {!Array.isArray(companies) || companies.length === 0 ? (
                     <tr>
                       <td colSpan={6} className="px-4 py-12 text-center text-slate-500 text-xs">
                         No companies match the selected criteria.
@@ -614,7 +614,7 @@ export const SuperAdminPage: React.FC = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#14425b] text-slate-300">
-                {auditLogs.length === 0 ? (
+                {!Array.isArray(auditLogs) || auditLogs.length === 0 ? (
                   <tr>
                     <td colSpan={5} className="py-8 text-center text-slate-500 text-xs">
                       No administrative logs found.
@@ -853,7 +853,7 @@ export const SuperAdminPage: React.FC = () => {
                 <div className="space-y-2">
                   <div className="font-bold text-white text-xs">Subscription Entitlement Records</div>
                   <div className="p-3 bg-[#051822] rounded-xl border border-[#14425b] divide-y divide-[#14425b]">
-                    {companyDetailData.subscriptionHistory?.length === 0 ? (
+                    {!Array.isArray(companyDetailData?.subscriptionHistory) || companyDetailData.subscriptionHistory.length === 0 ? (
                       <div className="text-slate-500 py-2">No past billing transactions.</div>
                     ) : (
                       companyDetailData.subscriptionHistory.map((sub: any) => (

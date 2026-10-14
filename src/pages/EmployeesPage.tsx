@@ -1058,7 +1058,7 @@ export const EmployeesPage: React.FC = () => {
 
               {activeProfileTab === 'leaves' && (
                 <div className="space-y-3">
-                  {selectedEmployee.leaveBalances?.length > 0 ? (
+                  {Array.isArray(selectedEmployee.leaveBalances) && selectedEmployee.leaveBalances.length > 0 ? (
                     <div className="grid grid-cols-3 gap-2.5">
                       {selectedEmployee.leaveBalances.map((b: any) => (
                         <div
@@ -1097,7 +1097,7 @@ export const EmployeesPage: React.FC = () => {
                     )}
                   </div>
 
-                  {selectedEmployee.documents?.length > 0 ? (
+                  {Array.isArray(selectedEmployee.documents) && selectedEmployee.documents.length > 0 ? (
                     <div className="space-y-2 max-h-60 overflow-y-auto">
                       {selectedEmployee.documents.map((doc: any) => {
                         const isExpired = doc.expiryDate && new Date(doc.expiryDate) < new Date();
@@ -1526,7 +1526,7 @@ export const EmployeesPage: React.FC = () => {
                   </div>
 
                   {/* Errors Notice */}
-                  {importPreview.errors?.length > 0 && (
+                  {Array.isArray(importPreview.errors) && importPreview.errors.length > 0 && (
                     <div className="bg-rose-950/40 border border-rose-600/30 rounded-xl p-3 text-rose-200 text-xs space-y-1">
                       <div className="font-bold flex items-center space-x-1">
                         <AlertTriangle size={14} className="text-rose-400" />
@@ -1543,7 +1543,7 @@ export const EmployeesPage: React.FC = () => {
                   )}
 
                   {/* Preview Table */}
-                  {importPreview.preview?.length > 0 && (
+                  {Array.isArray(importPreview.preview) && importPreview.preview.length > 0 && (
                     <div>
                       <div className="font-semibold text-slate-300 mb-1.5">Record Preview (First 10)</div>
                       <div className="overflow-x-auto rounded-xl border border-[#14425b]">

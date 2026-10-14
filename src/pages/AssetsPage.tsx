@@ -43,8 +43,8 @@ export const AssetsPage: React.FC = () => {
         apiRequest('/assets'),
         apiRequest('/employees'),
       ]);
-      setAssets(astRes?.data || []);
-      setEmployees(empRes?.data || []);
+      setAssets(Array.isArray(astRes?.data) ? astRes.data : []);
+      setEmployees(Array.isArray(empRes?.data) ? empRes.data : []);
       if (Array.isArray(empRes?.data) && empRes.data.length > 0 && !assignForm.employeeId) {
         setAssignForm((prev) => ({ ...prev, employeeId: empRes.data[0].id }));
       }
@@ -154,7 +154,7 @@ export const AssetsPage: React.FC = () => {
                 <tr>
                   <td colSpan={7} className="text-center py-8 text-slate-400">Loading assets...</td>
                 </tr>
-              ) : assets.length === 0 ? (
+              ) : !Array.isArray(assets) || assets.length === 0 ? (
                 <tr>
                   <td colSpan={7} className="text-center py-8 text-slate-400">No assets registered yet.</td>
                 </tr>
@@ -339,7 +339,7 @@ export const AssetsPage: React.FC = () => {
                   onChange={(e) => setAssignForm({ ...assignForm, employeeId: e.target.value })}
                   className="w-full px-3 py-2 bg-[#051822] border border-[#14425b] text-white rounded-lg focus:outline-none focus:ring-1 focus:ring-[#ff6f32]"
                 >
-                  {employees.map((e) => (
+                  {Array.isArray(employees) && employees.map((e) => (
                     <option key={e.id} value={e.id} className="bg-[#08222f] text-white">
                       {e.firstName} {e.lastName} ({e.employeeCode || e.employeeId})
                     </option>

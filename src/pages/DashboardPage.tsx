@@ -30,6 +30,29 @@ import { Breadcrumbs } from '../components/ui/Breadcrumbs';
 import { Badge } from '../components/ui/Badge';
 import { useToast } from '../context/ToastContext';
 
+const normalizeChecklists = (data: any): any[] => {
+  if (Array.isArray(data)) return data;
+  if (!data || typeof data !== 'object') return [];
+  const list: any[] = [];
+  if (data.onboarding && typeof data.onboarding === 'object') {
+    list.push({
+      ...data.onboarding,
+      title: data.onboarding.title || 'Corporate Onboarding Checklist',
+      type: 'Onboarding',
+      items: Array.isArray(data.onboarding.items) ? data.onboarding.items : [],
+    });
+  }
+  if (data.offboarding && typeof data.offboarding === 'object') {
+    list.push({
+      ...data.offboarding,
+      title: data.offboarding.title || 'Corporate Offboarding Checklist',
+      type: 'Offboarding',
+      items: Array.isArray(data.offboarding.items) ? data.offboarding.items : [],
+    });
+  }
+  return list;
+};
+
 export const DashboardPage: React.FC = () => {
   const { user } = useAuth();
   const { success, error: toastError } = useToast();
@@ -76,7 +99,7 @@ export const DashboardPage: React.FC = () => {
       ]);
       setSummary(sumRes?.data);
       setTodayAttendance(attRes?.data);
-      setAnnouncements(annRes?.data || []);
+      setAnnouncements(Array.isArray(annRes?.data) ? annRes.data : []);
 
       const calendarData = calRes?.data;
       if (Array.isArray(calendarData)) {
@@ -113,16 +136,21 @@ export const DashboardPage: React.FC = () => {
 
       if (isHrOrAdmin) {
         apiRequest('/employees/expiries')
-          .then((res) => setExpiries(res?.data || []))
+          .then((res) => setExpiries(Array.isArray(res?.data) ? res.data : []))
           .catch(() => {});
 
         // Load pending leave requests for quick approval queue
         apiRequest('/leaves/requests')
           .then((res) => {
-            const pending = (res?.data || []).filter((l: any) => l.status === 'PENDING');
+            const list = Array.isArray(res?.data)
+              ? res.data
+              : Array.isArray(res?.data?.requests)
+              ? res.data.requests
+              : [];
+            const pending = list.filter((l: any) => l.status === 'PENDING');
             setPendingLeaves(pending);
           })
-          .catch(() => {});
+          .catch(() => setPendingLeaves([]));
 
         // Load Smart HR Action Center
         apiRequest('/system/action-center')
@@ -141,7 +169,9 @@ export const DashboardPage: React.FC = () => {
 
       if (essRes?.data?.employee?.id) {
         const checkRes = await apiRequest(`/employees/checklists/${essRes.data.employee.id}`);
-        setChecklists(checkRes?.data || []);
+        setChecklists(normalizeChecklists(checkRes?.data));
+      } else {
+        setChecklists([]);
       }
     } catch (err) {
       console.error('Failed to load dashboard metrics:', err);
@@ -205,7 +235,7 @@ export const DashboardPage: React.FC = () => {
       });
       if (essSummary?.employee?.id) {
         const checkRes = await apiRequest(`/employees/checklists/${essSummary.employee.id}`);
-        setChecklists(checkRes?.data || []);
+        setChecklists(normalizeChecklists(checkRes?.data));
       }
     } catch (err: any) {
       console.error('Failed to toggle checklist:', err);
@@ -222,7 +252,7 @@ export const DashboardPage: React.FC = () => {
       setShowAnnounceModal(false);
       setNewAnnounce({ title: '', content: '', category: 'GENERAL', priority: 'NORMAL' });
       const annRes = await apiRequest('/employees/announcements');
-      setAnnouncements(annRes?.data || []);
+      setAnnouncements(Array.isArray(annRes?.data) ? annRes.data : []);
       success('Company announcement broadcasted successfully.');
     } catch (err: any) {
       toastError(err.message || 'Failed to post announcement');
@@ -230,11 +260,14 @@ export const DashboardPage: React.FC = () => {
   };
 
   const chartData =
-    summary?.departmentDistribution?.map((d: any) => ({
-      name: d.name.split(' ')[0],
-      fullName: d.name,
-      employees: d.count,
-    })) || [];
+    (Array.isArray(summary?.departmentDistribution)
+      ? summary.departmentDistribution
+      : []
+    ).map((d: any) => ({
+      name: d?.name ? d.name.split(' ')[0] : 'Unknown',
+      fullName: d?.name || 'Unknown',
+      employees: d?.count || 0,
+    }));
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto text-left">
@@ -739,7 +772,7 @@ export const DashboardPage: React.FC = () => {
                     Quick Leave Approvals
                   </h2>
                   <Badge variant="warning" size="xs">
-                    {pendingLeaves.length} Pending
+                    {Array.isArray(pendingLeaves) ? pendingLeaves.length : 0} Pending
                   </Badge>
                 </div>
                 <p className="text-xs text-slate-400 mb-3">
@@ -747,7 +780,7 @@ export const DashboardPage: React.FC = () => {
                 </p>
 
                 <div className="space-y-2.5 max-h-56 overflow-y-auto">
-                  {pendingLeaves.length === 0 ? (
+                  {!Array.isArray(pendingLeaves) || pendingLeaves.length === 0 ? (
                     <div className="text-center py-8 text-xs text-slate-400">
                       All leave requests have been authorized. Queue clear!
                     </div>
@@ -867,46 +900,50 @@ export const DashboardPage: React.FC = () => {
               </p>
 
               <div className="space-y-2.5">
-                {checklists.length === 0 ? (
+                {!Array.isArray(checklists) || checklists.length === 0 ? (
                   <div className="text-center py-6 text-xs text-slate-400">
                     No active onboarding checklists assigned. You are fully compliant!
                   </div>
                 ) : (
                   checklists.map((list) => (
-                    <div key={list.id} className="space-y-2">
+                    <div key={list.id || list.type} className="space-y-2">
                       <div className="font-semibold text-xs text-slate-200 uppercase tracking-wide">
                         {list.title} ({list.type})
                       </div>
                       <div className="divide-y divide-[#14425b] border border-[#14425b] rounded-xl overflow-hidden bg-[#051720]">
-                        {list.items?.map((item: any) => (
-                          <div
-                            key={item.id}
-                            className="p-3 flex items-center justify-between text-xs hover:bg-[#071c26]"
-                          >
-                            <label className="flex items-center space-x-2.5 cursor-pointer">
-                              <input
-                                type="checkbox"
-                                checked={item.isCompleted}
-                                onChange={() => handleToggleChecklist(item.id, item.isCompleted)}
-                                className="rounded text-[#ff6f32] focus:ring-[#ff6f32] h-4 w-4 bg-[#08222f] border-[#14425b]"
-                              />
-                              <span
-                                className={
-                                  item.isCompleted
-                                    ? 'line-through text-slate-500'
-                                    : 'text-slate-200 font-medium'
-                                }
-                              >
-                                {item.title}
-                              </span>
-                            </label>
-                            {item.isCompleted && (
-                              <Badge variant="success" size="xs">
-                                Verified Done
-                              </Badge>
-                            )}
-                          </div>
-                        ))}
+                        {!Array.isArray(list.items) || list.items.length === 0 ? (
+                          <div className="p-3 text-xs text-slate-400">No checklist items configured.</div>
+                        ) : (
+                          list.items.map((item: any) => (
+                            <div
+                              key={item.id}
+                              className="p-3 flex items-center justify-between text-xs hover:bg-[#071c26]"
+                            >
+                              <label className="flex items-center space-x-2.5 cursor-pointer">
+                                <input
+                                  type="checkbox"
+                                  checked={!!item.isCompleted}
+                                  onChange={() => handleToggleChecklist(item.id, !!item.isCompleted)}
+                                  className="rounded text-[#ff6f32] focus:ring-[#ff6f32] h-4 w-4 bg-[#08222f] border-[#14425b]"
+                                />
+                                <span
+                                  className={
+                                    item.isCompleted
+                                      ? 'line-through text-slate-500'
+                                      : 'text-slate-200 font-medium'
+                                  }
+                                >
+                                  {item.title}
+                                </span>
+                              </label>
+                              {item.isCompleted && (
+                                <Badge variant="success" size="xs">
+                                  Verified Done
+                                </Badge>
+                              )}
+                            </div>
+                          ))
+                        )}
                       </div>
                     </div>
                   ))
@@ -926,10 +963,10 @@ export const DashboardPage: React.FC = () => {
               </p>
 
               <div className="space-y-2.5">
-                {essSummary?.recentPayslips?.length === 0 ? (
+                {!Array.isArray(essSummary?.recentPayslips) || essSummary.recentPayslips.length === 0 ? (
                   <div className="text-center py-6 text-xs text-slate-400">No payslips found yet.</div>
                 ) : (
-                  essSummary?.recentPayslips?.slice(0, 3).map((ps: any) => (
+                  essSummary.recentPayslips.slice(0, 3).map((ps: any) => (
                     <div
                       key={ps.id}
                       className="p-3 rounded-xl bg-[#051720] border border-[#14425b] flex items-center justify-between text-xs"
@@ -1010,7 +1047,7 @@ export const DashboardPage: React.FC = () => {
           </div>
 
           <div className="space-y-3 max-h-72 overflow-y-auto">
-            {announcements.length === 0 ? (
+            {!Array.isArray(announcements) || announcements.length === 0 ? (
               <div className="text-center py-8 text-xs text-slate-400">
                 No company announcements posted.
               </div>
@@ -1051,7 +1088,7 @@ export const DashboardPage: React.FC = () => {
             </p>
 
             <div className="space-y-2.5 max-h-56 overflow-y-auto">
-              {calendarEvents.length === 0 ? (
+              {!Array.isArray(calendarEvents) || calendarEvents.length === 0 ? (
                 <div className="text-center py-6 text-xs text-slate-400">No scheduled holidays.</div>
               ) : (
                 calendarEvents.map((evt, idx) => (

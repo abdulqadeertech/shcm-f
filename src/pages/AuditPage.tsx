@@ -15,7 +15,7 @@ export const AuditPage: React.FC = () => {
     try {
       const query = selectedAction ? `?action=${selectedAction}` : '';
       const res = await apiRequest(`/audit/events${query}`);
-      setEvents(res?.data || []);
+      setEvents(Array.isArray(res?.data) ? res.data : []);
     } catch (err) {
       console.error('Failed to load audit events:', err);
     } finally {
@@ -87,7 +87,7 @@ export const AuditPage: React.FC = () => {
                     Loading audit trail...
                   </td>
                 </tr>
-              ) : events.length === 0 ? (
+              ) : !Array.isArray(events) || events.length === 0 ? (
                 <tr>
                   <td colSpan={6} className="text-center py-8 text-slate-400 font-sans">
                     No audit records registered for this filter.

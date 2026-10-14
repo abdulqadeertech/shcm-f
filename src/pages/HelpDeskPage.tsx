@@ -224,10 +224,10 @@ export const HelpDeskPage: React.FC = () => {
                 <div className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-2">
                   Conversation & Updates
                 </div>
-                {selectedTicket.comments?.length === 0 ? (
+                {!Array.isArray(selectedTicket.comments) || selectedTicket.comments.length === 0 ? (
                   <div className="text-slate-400 text-xs italic">No messages yet. Add a reply below.</div>
                 ) : (
-                  selectedTicket.comments?.map((c: any) => (
+                  selectedTicket.comments.map((c: any) => (
                     <div key={c.id} className="bg-[#051720] p-2.5 rounded-xl border border-[#14425b] text-xs space-y-1">
                       <div className="flex items-center justify-between text-[10px] text-slate-400">
                         <span className="font-semibold text-white">{c.user?.firstName} {c.user?.lastName}</span>

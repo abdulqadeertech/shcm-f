@@ -114,10 +114,10 @@ export const OrganizationPage: React.FC = () => {
         });
       }
 
-      setBranches(branchesRes?.data || []);
-      setDepartments(deptsRes?.data || []);
-      setDesignations(desigsRes?.data || []);
-      setShifts(shiftsRes?.data || []);
+      setBranches(Array.isArray(branchesRes?.data) ? branchesRes.data : []);
+      setDepartments(Array.isArray(deptsRes?.data) ? deptsRes.data : []);
+      setDesignations(Array.isArray(desigsRes?.data) ? desigsRes.data : []);
+      setShifts(Array.isArray(shiftsRes?.data) ? shiftsRes.data : []);
     } catch (err: any) {
       console.error('Error loading organization details:', err);
       setMessage({ type: 'error', text: err.message || 'Failed to load organization settings.' });
@@ -596,7 +596,7 @@ export const OrganizationPage: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {branches.map((b) => (
+            {Array.isArray(branches) && branches.map((b) => (
               <div
                 key={b.id}
                 className="bg-[#08222f] p-5 rounded-2xl border border-[#14425b] shadow-xl flex flex-col justify-between hover:border-[#ff6f32]/40 transition"
@@ -810,7 +810,7 @@ export const OrganizationPage: React.FC = () => {
             )}
 
             <div className="divide-y divide-[#14425b] max-h-80 overflow-y-auto">
-              {departments.map((d) => (
+              {Array.isArray(departments) && departments.map((d) => (
                 <div key={d.id} className="py-2.5 flex items-center justify-between text-xs">
                   <div>
                     <span className="font-bold text-white">{d.name}</span>
@@ -852,7 +852,7 @@ export const OrganizationPage: React.FC = () => {
           <div className="bg-[#08222f] p-6 rounded-2xl border border-[#14425b] shadow-xl space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-sm font-bold text-white">Job Titles & Designations ({designations.length})</h3>
+                <h3 className="text-sm font-bold text-white">Job Titles & Designations ({Array.isArray(designations) ? designations.length : 0})</h3>
                 <p className="text-xs text-slate-400">Hierarchical roles mapped to departments</p>
               </div>
             </div>
@@ -875,7 +875,7 @@ export const OrganizationPage: React.FC = () => {
                     required
                   >
                     <option value="" className="bg-[#08222f] text-white">Select Dept</option>
-                    {departments.map((d) => (
+                    {Array.isArray(departments) && departments.map((d) => (
                       <option key={d.id} value={d.id} className="bg-[#08222f] text-white">
                         {d.name}
                       </option>
@@ -892,7 +892,7 @@ export const OrganizationPage: React.FC = () => {
             )}
 
             <div className="divide-y divide-[#14425b] max-h-80 overflow-y-auto">
-              {designations.map((des) => (
+              {Array.isArray(designations) && designations.map((des) => (
                 <div key={des.id} className="py-2.5 flex items-center justify-between text-xs">
                   <div>
                     <span className="font-semibold text-white">{des.title || des.name}</span>
@@ -1056,7 +1056,7 @@ export const OrganizationPage: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {shifts.map((s) => (
+            {Array.isArray(shifts) && shifts.map((s) => (
               <div
                 key={s.id}
                 className="bg-[#08222f] p-5 rounded-2xl border border-[#14425b] shadow-xl space-y-3"

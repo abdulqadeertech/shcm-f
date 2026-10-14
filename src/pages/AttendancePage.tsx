@@ -51,10 +51,10 @@ export const AttendancePage: React.FC = () => {
         apiRequest('/attendance/corrections'),
         apiRequest('/attendance/overtime'),
       ]);
-      setRecords(recRes?.data || []);
+      setRecords(Array.isArray(recRes?.data) ? recRes.data : []);
       setTodayAttendance(todayRes?.data || null);
-      setCorrections(corrRes?.data || []);
-      setOvertimeRequests(otRes?.data || []);
+      setCorrections(Array.isArray(corrRes?.data) ? corrRes.data : []);
+      setOvertimeRequests(Array.isArray(otRes?.data) ? otRes.data : []);
     } catch (err) {
       console.error('Failed to load attendance records:', err);
     } finally {
@@ -279,7 +279,7 @@ export const AttendancePage: React.FC = () => {
           </h3>
 
           <div className="space-y-2">
-            {corrections
+            {Array.isArray(corrections) && corrections
               .filter((c) => c.status === 'PENDING')
               .map((corr) => (
                 <div
@@ -318,7 +318,7 @@ export const AttendancePage: React.FC = () => {
       )}
 
       {/* Pending Overtime (for managers) */}
-      {overtimeRequests.filter((o) => o.status === 'PENDING').length > 0 && isManagerOrHr && (
+      {Array.isArray(overtimeRequests) && overtimeRequests.filter((o) => o.status === 'PENDING').length > 0 && isManagerOrHr && (
         <div className="bg-[#08222f] border border-[#14425b] rounded-2xl p-5 shadow-card">
           <h3 className="font-bold text-[#ff6f32] text-xs uppercase tracking-wider mb-3 flex items-center space-x-2">
             <Timer size={15} />
@@ -420,7 +420,7 @@ export const AttendancePage: React.FC = () => {
                       Loading attendance records...
                     </td>
                   </tr>
-                ) : records.length === 0 ? (
+                ) : !Array.isArray(records) || records.length === 0 ? (
                   <tr>
                     <td colSpan={8} className="text-center py-8 text-slate-400">
                       No attendance records found.
@@ -514,7 +514,7 @@ export const AttendancePage: React.FC = () => {
                       Loading overtime requests...
                     </td>
                   </tr>
-                ) : overtimeRequests.length === 0 ? (
+                ) : !Array.isArray(overtimeRequests) || overtimeRequests.length === 0 ? (
                   <tr>
                     <td colSpan={isManagerOrHr ? 7 : 6} className="text-center py-8 text-slate-400">
                       No overtime requests recorded.
