@@ -7,7 +7,7 @@ export default defineConfig({
     port: 5173,
     proxy: {
       '/api': {
-        target: 'https://shcm-b.onrender.com',
+        target: process.env.VITE_API_PROXY || process.env.VITE_BACKEND_URL || 'http://localhost:5000',
         changeOrigin: true,
       },
     },

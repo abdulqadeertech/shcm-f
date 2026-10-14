@@ -144,14 +144,7 @@ export const App: React.FC = () => {
                 <Route path="/leaves" element={<LeavePage />} />
 
                 {/* Role-protected routes */}
-                <Route
-                  path="/payroll"
-                  element={
-                    <RoleProtectedRoute allowedRoles={['PAYROLL_MANAGER', 'HR_DIRECTOR', 'HR_MANAGER', 'AUDITOR']}>
-                      <PayrollPage />
-                    </RoleProtectedRoute>
-                  }
-                />
+                <Route path="/payroll" element={<PayrollPage />} />
                 <Route
                   path="/workflows"
                   element={

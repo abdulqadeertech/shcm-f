@@ -231,7 +231,12 @@ export const AppLayout: React.FC = () => {
             items: [{ to: '/payroll', label: t('nav.payroll', 'Payroll & Tax Engine'), icon: CreditCard }],
           },
         ]
-      : []),
+      : [
+          {
+            name: t('navgroup.compensation', 'Compensation'),
+            items: [{ to: '/payroll', label: t('nav.my_payslips', 'My Payslips'), icon: CreditCard }],
+          },
+        ]),
     {
       name: t('navgroup.talent', 'Talent & Growth'),
       items: [
