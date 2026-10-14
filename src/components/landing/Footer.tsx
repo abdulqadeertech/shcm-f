@@ -43,21 +43,39 @@ export const Footer: React.FC<FooterProps> = ({
             <div className="space-y-1.5 pt-1 text-xs text-slate-300">
               <div className="flex items-center space-x-2">
                 <Mail size={13} className="text-[#ff6f32] shrink-0" />
-                <a href="mailto:info@smarthcm.cloud" className="hover:text-white transition">
-                  info@smarthcm.cloud
+                <a href="mailto:aq0871633@gmail.com" className="hover:text-white transition">
+                  aq0871633@gmail.com
                 </a>
               </div>
               <div className="flex items-center space-x-2">
                 <Phone size={13} className="text-[#ff6f32] shrink-0" />
-                <a href="tel:+922134520105" className="hover:text-white transition">
-                  +92-21-345-20105 / +971-4-549-0431
+                <div className="space-x-1.5">
+                  <a href="tel:+923373029707" className="hover:text-white transition">
+                    0337-3029707
+                  </a>
+                  <span>/</span>
+                  <a href="tel:+923273726496" className="hover:text-white transition">
+                    0327-3726496
+                  </a>
+                </div>
+              </div>
+              <div className="flex items-center space-x-2">
+                <span className="text-[#25D366] text-xs font-bold">💬</span>
+                <a
+                  href="https://wa.me/923373029707"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-emerald-400 hover:text-emerald-300 font-medium transition"
+                >
+                  WhatsApp: +92 337 3029707 / +92 327 3726496
                 </a>
               </div>
               <div className="flex items-center space-x-2 text-slate-400">
                 <Clock size={13} className="text-slate-500 shrink-0" />
-                <span>Mon – Fri: 8:00 AM – 6:00 PM PKT / GST</span>
+                <span>24/7 Direct Online Inquiries & WhatsApp Support</span>
               </div>
             </div>
+
 
             <div className="pt-2">
               <button

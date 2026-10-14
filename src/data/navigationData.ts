@@ -33,13 +33,26 @@ export interface WikiArticle {
   content: string;
 }
 
+export const OWNER_CONTACT = {
+  primaryPhone: '03373029707',
+  secondaryPhone: '03273726496',
+  primaryPhoneFormatted: '+92 337 3029707',
+  secondaryPhoneFormatted: '+92 327 3726496',
+  email: 'aq0871633@gmail.com',
+  whatsappUrlPrimary: 'https://wa.me/923373029707',
+  whatsappUrlSecondary: 'https://wa.me/923273726496',
+};
+
 export const UTILITY_BAR_CONFIG = {
   supportEmail: 'aq0871633@gmail.com',
   salesEmail: 'aq0871633@gmail.com',
-  phone: '03273726496',
-  whatsappUrl: 'https://wa.me/923273726496?text=Hello%20SmartHCM%20team%2C%20I%20am%20interested%20in%20a%20live%20walkthrough%20of%20the%20SmartHCM%20platform.',
+  phone: '03373029707',
+  phoneSecondary: '03273726496',
+  whatsappUrl: 'https://wa.me/923373029707?text=Hello%20SmartHCM%20team%2C%20I%20am%20interested%20in%20a%20live%20walkthrough%20of%20the%20SmartHCM%20platform.',
+  whatsappUrlSecondary: 'https://wa.me/923273726496?text=Hello%20SmartHCM%20team%2C%20I%20am%20interested%20in%20a%20live%20walkthrough%20of%20the%20SmartHCM%20platform.',
   supportUrl: '#support',
   wikiUrl: '#wiki',
+
   socialLinks: [
     {
       platform: 'linkedin',

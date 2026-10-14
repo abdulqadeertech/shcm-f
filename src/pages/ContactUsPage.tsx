@@ -15,6 +15,7 @@ import {
   ShieldCheck,
   Star,
   ExternalLink,
+  MessageCircle,
 } from 'lucide-react';
 import { MainNavbar } from '../components/navigation/MainNavbar';
 import { Footer } from '../components/landing/Footer';
@@ -27,6 +28,7 @@ import { SearchModal } from '../components/modals/SearchModal';
 import { WikiDrawer } from '../components/modals/WikiDrawer';
 import { SupportModal } from '../components/modals/SupportModal';
 import { MobileNavDrawer } from '../components/navigation/MobileNavDrawer';
+import { OWNER_CONTACT } from '../data/navigationData';
 
 interface OfficeLocation {
   country: string;
@@ -45,8 +47,8 @@ const GLOBAL_OFFICES: OfficeLocation[] = [
     region: 'pakistan',
     city: 'Karachi (Regional HQ)',
     address: '808, Anum Estate Building, Shahrah-e-Faisal, Karachi – 75350, Pakistan',
-    phones: ['+92-21-345-20105', '+92-333-693-6747', '+92-335-249-7822'],
-    email: 'karachi@smarthcm.cloud',
+    phones: ['0337-3029707', '0327-3726496', '+92-337-3029707'],
+    email: 'aq0871633@gmail.com',
     isHeadquarter: true,
   },
   {
@@ -54,17 +56,18 @@ const GLOBAL_OFFICES: OfficeLocation[] = [
     region: 'pakistan',
     city: 'Islamabad',
     address: '14, F-8 Markaz MPCHS, Islamabad – 44000, Pakistan',
-    phones: ['+92-51-895-0424', '+92-333-693-6747'],
-    email: 'islamabad@smarthcm.cloud',
+    phones: ['0337-3029707', '0327-3726496'],
+    email: 'aq0871633@gmail.com',
   },
   {
     country: 'Pakistan',
     region: 'pakistan',
     city: 'Lahore',
     address: '22S, Imperial Commercial Block, Paragon City Barki Road, Lahore – 53200, Pakistan',
-    phones: ['+92-333-693-6747'],
-    email: 'lahore@smarthcm.cloud',
+    phones: ['0337-3029707', '0327-3726496'],
+    email: 'aq0871633@gmail.com',
   },
+
 
   // Saudi Arabia & UAE
   {
@@ -195,6 +198,12 @@ export const ContactUsPage: React.FC = () => {
   const [wikiDrawerOpen, setWikiDrawerOpen] = useState(false);
   const [supportModalOpen, setSupportModalOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [submissionResult, setSubmissionResult] = useState<{
+    whatsAppUrlPrimary: string;
+    whatsAppUrlSecondary: string;
+    mailtoUrl: string;
+    emailSent: boolean;
+  } | null>(null);
 
   // Form State
   const [form, setForm] = useState({
@@ -213,7 +222,7 @@ export const ContactUsPage: React.FC = () => {
       ? GLOBAL_OFFICES
       : GLOBAL_OFFICES.filter((office) => office.region === activeRegion);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.fullName.trim() || !form.email.trim() || !form.organizationName.trim() || !form.phone.trim()) {
       toastError('Please fill out all mandatory fields marked with an asterisk (*).');
@@ -222,9 +231,8 @@ export const ContactUsPage: React.FC = () => {
 
     setIsSubmitting(true);
 
-    setTimeout(() => {
-      // Save directly to leadService
-      leadService.addInquiry({
+    try {
+      const result = await leadService.submitInquiry({
         fullName: form.fullName.trim(),
         email: form.email.trim(),
         companyName: form.organizationName.trim(),
@@ -238,14 +246,25 @@ export const ContactUsPage: React.FC = () => {
         notes: `Submitted via website contact page. Source: ${form.source}`,
       });
 
-      setIsSubmitting(false);
+      setSubmissionResult({
+        whatsAppUrlPrimary: result.whatsAppUrlPrimary,
+        whatsAppUrlSecondary: result.whatsAppUrlSecondary,
+        mailtoUrl: result.mailtoUrl,
+        emailSent: result.emailSent,
+      });
+
       setSubmitted(true);
-      success('Thank you! Your inquiry has been registered in the platform and assigned to our solutions director.', 'Message Sent');
-    }, 500);
+      success('Inquiry submitted! Notification dispatched to aq0871633@gmail.com and WhatsApp delivery ready.', 'Message Sent');
+    } catch (err) {
+      toastError('Failed to dispatch inquiry. Please reach out via WhatsApp or call directly.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleReset = () => {
     setSubmitted(false);
+    setSubmissionResult(null);
     setForm({
       fullName: '',
       email: '',
@@ -257,6 +276,7 @@ export const ContactUsPage: React.FC = () => {
       message: '',
     });
   };
+
 
   return (
     <div className="min-h-screen bg-[#051720] text-slate-100 flex flex-col selection:bg-[#ff6f32]/25 selection:text-white transition-colors">
@@ -295,44 +315,66 @@ export const ContactUsPage: React.FC = () => {
           </div>
 
           {/* Quick Contact Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8 pt-6 border-t border-[#14425b]/60">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-8 pt-6 border-t border-[#14425b]/60">
+            {/* Phone 1 */}
             <div className="p-4 rounded-xl bg-[#08222f]/90 border border-[#14425b] flex items-center space-x-3">
               <div className="p-2.5 rounded-lg bg-[#ff6f32]/15 text-[#ff6f32] border border-[#ff6f32]/30">
                 <Phone size={18} />
               </div>
               <div>
-                <div className="text-xs text-slate-400">Direct Inquiries Hotline</div>
-                <a href="tel:+922134520105" className="text-xs sm:text-sm font-bold text-white hover:text-[#ff6f32] transition">
-                  +92-21-345-20105
+                <div className="text-xs text-slate-400">Call / WhatsApp 1</div>
+                <a href="tel:+923373029707" className="text-xs sm:text-sm font-bold text-white hover:text-[#ff6f32] transition">
+                  0337-3029707
                 </a>
               </div>
             </div>
 
-            <div className="p-4 rounded-xl bg-[#08222f]/90 border border-[#14425b] flex items-center space-x-3">
-              <div className="p-2.5 rounded-lg bg-[#ff6f32]/15 text-[#ff6f32] border border-[#ff6f32]/30">
-                <Mail size={18} />
+            {/* Phone / WhatsApp 2 */}
+            <div className="p-4 rounded-xl bg-[#08222f]/90 border border-emerald-500/30 flex items-center space-x-3">
+              <div className="p-2.5 rounded-lg bg-emerald-500/15 text-emerald-400 border border-emerald-500/40">
+                <MessageCircle size={18} />
               </div>
               <div>
-                <div className="text-xs text-slate-400">Official Sales & Solutions</div>
-                <a href="mailto:info@smarthcm.cloud" className="text-xs sm:text-sm font-bold text-white hover:text-[#ff6f32] transition">
-                  info@smarthcm.cloud
+                <div className="text-xs text-slate-400">WhatsApp / Call 2</div>
+                <a
+                  href="https://wa.me/923273726496?text=Hello%20SmartHCM%20team%2C%20I%20would%20like%20to%20inquire%20about%20the%20platform."
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs sm:text-sm font-bold text-emerald-400 hover:text-emerald-300 transition"
+                >
+                  0327-3726496
                 </a>
               </div>
             </div>
 
+            {/* Email */}
+            <div className="p-4 rounded-xl bg-[#08222f]/90 border border-[#14425b] flex items-center space-x-3">
+              <div className="p-2.5 rounded-lg bg-sky-500/15 text-sky-400 border border-sky-500/30">
+                <Mail size={18} />
+              </div>
+              <div className="overflow-hidden">
+                <div className="text-xs text-slate-400">Direct Inquiries Email</div>
+                <a href="mailto:aq0871633@gmail.com" className="text-xs sm:text-sm font-bold text-white hover:text-[#ff6f32] transition truncate block">
+                  aq0871633@gmail.com
+                </a>
+              </div>
+            </div>
+
+            {/* SLA */}
             <div className="p-4 rounded-xl bg-[#08222f]/90 border border-[#14425b] flex items-center space-x-3">
               <div className="p-2.5 rounded-lg bg-[#ff6f32]/15 text-[#ff6f32] border border-[#ff6f32]/30">
                 <Clock size={18} />
               </div>
               <div>
-                <div className="text-xs text-slate-400">SLA Response Window</div>
+                <div className="text-xs text-slate-400">Direct Response SLA</div>
                 <div className="text-xs sm:text-sm font-bold text-emerald-400">
-                  Guaranteed within 2 hours
+                  Instant on WhatsApp / 15m
                 </div>
               </div>
             </div>
           </div>
         </div>
+
       </section>
 
       {/* Main Content: Form & Offices Grid */}
@@ -352,17 +394,60 @@ export const ContactUsPage: React.FC = () => {
             </p>
 
             {submitted ? (
-              <div className="text-center py-10 space-y-4">
+              <div className="text-center py-6 space-y-4">
                 <div className="w-14 h-14 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 flex items-center justify-center mx-auto">
                   <CheckCircle2 size={32} />
                 </div>
-                <h3 className="text-lg font-bold text-white">
+                <h3 className="text-xl font-bold text-white">
                   Consultation Request Dispatched!
                 </h3>
                 <p className="text-xs text-slate-300 max-w-md mx-auto leading-relaxed">
-                  Thank you, <strong className="text-white">{form.fullName}</strong>. Your message has been saved in the administrative system. A SmartHCM enterprise consultant will review <strong className="text-white">{form.organizationName}</strong>'s requirements and respond via <strong className="text-white">{form.email}</strong> or call <strong className="text-white">{form.phone}</strong> promptly.
+                  Thank you, <strong className="text-white">{form.fullName}</strong>. Your message details for <strong className="text-white">{form.organizationName}</strong> have been recorded and emailed directly to <strong className="text-white">aq0871633@gmail.com</strong>.
                 </p>
-                <div className="pt-4">
+
+                {/* Direct Action: WhatsApp & Email Buttons */}
+                <div className="p-4 rounded-xl bg-[#051822] border border-[#14425b] space-y-3 text-left">
+                  <div className="flex items-center space-x-2 text-xs font-bold text-white">
+                    <span className="text-emerald-400">⚡</span>
+                    <span>Direct Action — Send Details to WhatsApp Now:</span>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    <a
+                      href={submissionResult?.whatsAppUrlPrimary}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center space-x-2 bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-xs py-2.5 px-3 rounded-xl shadow-md hover:shadow-emerald-500/25 transition cursor-pointer"
+                    >
+                      <MessageCircle size={15} />
+                      <span>WhatsApp (0337-3029707)</span>
+                    </a>
+
+                    <a
+                      href={submissionResult?.whatsAppUrlSecondary}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center space-x-2 bg-[#0b2b3c] hover:bg-[#14425b] border border-[#14425b] text-slate-200 hover:text-white font-semibold text-xs py-2.5 px-3 rounded-xl transition cursor-pointer"
+                    >
+                      <MessageCircle size={15} />
+                      <span>WhatsApp (0327-3726496)</span>
+                    </a>
+                  </div>
+
+                  <div className="pt-2 flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-400 border-t border-[#14425b]/60">
+                    <div className="flex items-center space-x-2">
+                      <Phone size={12} className="text-[#ff6f32]" />
+                      <span>Direct Calls: <a href="tel:+923373029707" className="text-white hover:text-[#ff6f32]">0337-3029707</a> / <a href="tel:+923273726496" className="text-white hover:text-[#ff6f32]">0327-3726496</a></span>
+                    </div>
+                    {submissionResult?.mailtoUrl && (
+                      <a href={submissionResult.mailtoUrl} className="text-sky-400 hover:underline">
+                        Open in Email App
+                      </a>
+                    )}
+                  </div>
+                </div>
+
+                <div className="pt-2">
                   <button
                     onClick={handleReset}
                     className="px-5 py-2.5 rounded-xl bg-[#ff6f32] hover:bg-[#ea580c] text-white text-xs font-semibold transition cursor-pointer"
@@ -371,6 +456,7 @@ export const ContactUsPage: React.FC = () => {
                   </button>
                 </div>
               </div>
+
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
                 {/* Full Name */}
@@ -519,6 +605,32 @@ export const ContactUsPage: React.FC = () => {
                   />
                 </div>
 
+                {/* Instant WhatsApp Quick Connect Option */}
+                <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/25 flex flex-col sm:flex-row items-center justify-between gap-2 text-left">
+                  <div className="flex items-center space-x-2 text-xs text-slate-200">
+                    <MessageCircle size={15} className="text-emerald-400 shrink-0" />
+                    <span>Prefer instant WhatsApp response?</span>
+                  </div>
+                  <div className="flex items-center space-x-1.5 shrink-0">
+                    <a
+                      href="https://wa.me/923373029707?text=Hello%20SmartHCM%20team%2C%20I%20would%20like%20to%20consult%20about%20the%20platform."
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-2.5 py-1 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-white text-[11px] font-bold transition shadow-xs flex items-center space-x-1"
+                    >
+                      <span>WhatsApp 0337</span>
+                    </a>
+                    <a
+                      href="https://wa.me/923273726496?text=Hello%20SmartHCM%20team%2C%20I%20would%20like%20to%20consult%20about%20the%20platform."
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-2.5 py-1 rounded-lg bg-[#0b2b3c] hover:bg-[#14425b] border border-[#14425b] text-slate-200 hover:text-white text-[11px] font-bold transition flex items-center space-x-1"
+                    >
+                      <span>WhatsApp 0327</span>
+                    </a>
+                  </div>
+                </div>
+
                 {/* Submit Button */}
                 <div className="pt-2">
                   <button
@@ -526,6 +638,7 @@ export const ContactUsPage: React.FC = () => {
                     disabled={isSubmitting}
                     className="w-full py-3 px-4 rounded-xl bg-[#ff6f32] hover:bg-[#ea580c] disabled:opacity-50 text-white font-bold text-xs tracking-wide uppercase transition shadow-lg flex items-center justify-center space-x-2 cursor-pointer"
                   >
+
                     {isSubmitting ? (
                       <>
                         <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />

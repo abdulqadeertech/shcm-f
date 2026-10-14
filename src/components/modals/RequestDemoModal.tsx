@@ -9,6 +9,7 @@ import {
   Phone,
   ArrowRight,
   ShieldCheck,
+  MessageCircle,
 } from 'lucide-react';
 import { UTILITY_BAR_CONFIG } from '../../data/navigationData';
 import { leadService } from '../../services/leadService';
@@ -39,6 +40,13 @@ export const RequestDemoModal: React.FC<RequestDemoModalProps> = ({
 
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSuccess, setIsSuccess] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [resultLinks, setResultLinks] = useState<{
+    whatsAppUrlPrimary: string;
+    whatsAppUrlSecondary: string;
+    mailtoUrl: string;
+  } | null>(null);
+
 
   useEffect(() => {
     setFormData((prev) => ({
@@ -91,29 +99,43 @@ export const RequestDemoModal: React.FC<RequestDemoModalProps> = ({
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
+    setIsSubmitting(true);
 
-    leadService.addInquiry({
-      fullName: formData.fullName.trim(),
-      email: formData.email.trim(),
-      companyName: formData.companyName.trim(),
-      phone: formData.phone.trim(),
-      teamSize: formData.companySize,
-      moduleInterest: formData.moduleInterest,
-      message: `Implementation timeline: ${formData.implementationTimeline}. Notes: ${formData.notes || 'None'}`,
-      type: applicationMode ? 'COMPANY_APPLICATION' : 'DEMO_REQUEST',
-      status: 'NEW',
-      source: 'Request Demo Modal',
-      notes: `Timeline: ${formData.implementationTimeline}`,
-    });
+    try {
+      const res = await leadService.submitInquiry({
+        fullName: formData.fullName.trim(),
+        email: formData.email.trim(),
+        companyName: formData.companyName.trim(),
+        phone: formData.phone.trim(),
+        teamSize: formData.companySize,
+        moduleInterest: formData.moduleInterest,
+        message: `Implementation timeline: ${formData.implementationTimeline}. Notes: ${formData.notes || 'None'}`,
+        type: applicationMode ? 'COMPANY_APPLICATION' : 'DEMO_REQUEST',
+        status: 'NEW',
+        source: 'Request Demo Modal',
+        notes: `Timeline: ${formData.implementationTimeline}`,
+      });
 
-    setIsSuccess(true);
+      setResultLinks({
+        whatsAppUrlPrimary: res.whatsAppUrlPrimary,
+        whatsAppUrlSecondary: res.whatsAppUrlSecondary,
+        mailtoUrl: res.mailtoUrl,
+      });
+
+      setIsSuccess(true);
+    } catch {
+      setIsSuccess(true);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleReset = () => {
     setIsSuccess(false);
+    setResultLinks(null);
     setErrors({});
     setFormData({
       fullName: '',
@@ -127,6 +149,7 @@ export const RequestDemoModal: React.FC<RequestDemoModalProps> = ({
     });
     onClose();
   };
+
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-950/80 backdrop-blur-xs flex items-center justify-center p-4 sm:p-6 animate-fadeIn">
@@ -170,24 +193,48 @@ export const RequestDemoModal: React.FC<RequestDemoModalProps> = ({
               <div className="w-14 h-14 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-full flex items-center justify-center mx-auto shadow-sm">
                 <CheckCircle2 size={32} />
               </div>
-              <h4 className="text-xl font-bold text-white">Your email draft is ready</h4>
+              <h4 className="text-xl font-bold text-white">
+                {applicationMode ? 'Application Dispatched' : 'Demo Request Received'}
+              </h4>
               <p className="text-xs text-slate-300 max-w-md mx-auto leading-relaxed">
-                Thank you, <strong className="text-white">{formData.fullName}</strong>. Your {applicationMode ? 'company onboarding application' : 'demo request'} for{' '}
-                <strong className="text-white">{formData.companyName}</strong> is in your email app. Send the draft to complete your request.
+                Thank you, <strong className="text-white">{formData.fullName}</strong>. Your inquiry for{' '}
+                <strong className="text-white">{formData.companyName}</strong> has been emailed directly to <strong className="text-white">aq0871633@gmail.com</strong>.
               </p>
 
-              <div className="bg-[#051720] border border-[#14425b] rounded-xl p-4 text-xs text-left max-w-md mx-auto space-y-1.5 text-slate-300">
-                <div className="flex justify-between">
-                  <span className="text-slate-400">Selected Module:</span>
-                  <span className="font-semibold text-white">{formData.moduleInterest}</span>
+              {/* Direct WhatsApp Call to Action Buttons */}
+              <div className="bg-[#051720] border border-[#14425b] rounded-xl p-4 text-xs text-left max-w-md mx-auto space-y-3 text-slate-300">
+                <div className="text-xs font-bold text-white flex items-center space-x-1.5">
+                  <span className="text-emerald-400">⚡</span>
+                  <span>Instant Delivery — Send Details to WhatsApp:</span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-slate-400">Organization Scale:</span>
-                  <span className="font-semibold text-white">{formData.companySize}</span>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <a
+                    href={resultLinks?.whatsAppUrlPrimary}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center space-x-1.5 bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-xs py-2 px-3 rounded-xl shadow-xs transition cursor-pointer"
+                  >
+                    <MessageCircle size={14} />
+                    <span>WhatsApp 0337-3029707</span>
+                  </a>
+                  <a
+                    href={resultLinks?.whatsAppUrlSecondary}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center space-x-1.5 bg-[#0b2b3c] hover:bg-[#14425b] border border-[#14425b] text-slate-200 hover:text-white font-semibold text-xs py-2 px-3 rounded-xl transition cursor-pointer"
+                  >
+                    <MessageCircle size={14} />
+                    <span>WhatsApp 0327-3726496</span>
+                  </a>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-slate-400">Deployment Window:</span>
-                  <span className="font-semibold text-white">{formData.implementationTimeline}</span>
+
+                <div className="pt-2 border-t border-[#14425b]/60 flex items-center justify-between text-[11px] text-slate-400">
+                  <span>Direct Call: <a href="tel:+923373029707" className="text-white hover:text-[#ff6f32]">0337-3029707</a></span>
+                  {resultLinks?.mailtoUrl && (
+                    <a href={resultLinks.mailtoUrl} className="text-sky-400 hover:underline">
+                      Open Email App
+                    </a>
+                  )}
                 </div>
               </div>
 
@@ -200,6 +247,7 @@ export const RequestDemoModal: React.FC<RequestDemoModalProps> = ({
                 </button>
               </div>
             </div>
+
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4" noValidate>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

@@ -25,6 +25,7 @@ import { WorkflowsPage } from './pages/WorkflowsPage';
 import { OrganizationPage } from './pages/OrganizationPage';
 import { SuperAdminPage } from './pages/SuperAdminPage';
 import { ContactUsPage } from './pages/ContactUsPage';
+import { FloatingWhatsAppButton } from './components/common/FloatingWhatsAppButton';
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { isAuthenticated, isLoading } = useAuth();
@@ -204,7 +205,9 @@ export const App: React.FC = () => {
               {/* Fallback unknown route */}
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
+            <FloatingWhatsAppButton />
           </BrowserRouter>
+
         </ToastProvider>
       </LanguageProvider>
     </AuthProvider>

@@ -60,24 +60,55 @@ export const SupportModal: React.FC<SupportModalProps> = ({ isOpen, onClose }) =
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <a
               href={`mailto:${UTILITY_BAR_CONFIG.supportEmail}`}
-              className="p-4 rounded-xl border border-[#14425b] bg-[#051720] hover:border-[#ff6f32] hover:bg-[#ff6f32]/10 transition text-left space-y-1 block group"
+              className="p-3.5 rounded-xl border border-[#14425b] bg-[#051720] hover:border-[#ff6f32] hover:bg-[#ff6f32]/10 transition text-left space-y-1 block group"
             >
-              <Mail size={18} className="text-[#ff6f32]" />
+              <Mail size={16} className="text-[#ff6f32]" />
               <div className="text-xs font-bold text-white group-hover:text-[#ff6f32] transition">Email Support</div>
-              <div className="text-[11px] text-slate-400 truncate">
+              <div className="text-[11px] text-slate-300 font-mono truncate">
                 {UTILITY_BAR_CONFIG.supportEmail}
               </div>
             </a>
 
-            <a
-              href={`tel:${UTILITY_BAR_CONFIG.phone.replace(/[^0-9+]/g, '')}`}
-              className="p-4 rounded-xl border border-[#14425b] bg-[#051720] hover:border-[#ff6f32] hover:bg-[#ff6f32]/10 transition text-left space-y-1 block group"
-            >
-              <Phone size={18} className="text-[#ff6f32]" />
-              <div className="text-xs font-bold text-white group-hover:text-[#ff6f32] transition">Direct Line</div>
-              <div className="text-[11px] text-slate-400">{UTILITY_BAR_CONFIG.phone}</div>
-            </a>
+            <div className="p-3.5 rounded-xl border border-[#14425b] bg-[#051720] text-left space-y-1 block">
+              <Phone size={16} className="text-[#ff6f32]" />
+              <div className="text-xs font-bold text-white">Direct Phone Lines</div>
+              <div className="text-[11px] text-slate-300 flex items-center space-x-1.5 font-mono">
+                <a href="tel:+923373029707" className="hover:text-[#ff6f32]">0337-3029707</a>
+                <span>/</span>
+                <a href="tel:+923273726496" className="hover:text-[#ff6f32]">0327-3726496</a>
+              </div>
+            </div>
           </div>
+
+          {/* Direct WhatsApp Support */}
+          <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/25 flex items-center justify-between">
+            <div className="flex items-center space-x-2">
+              <span className="text-emerald-400 font-bold">💬</span>
+              <div>
+                <div className="text-xs font-bold text-white">Instant WhatsApp Chat</div>
+                <div className="text-[10px] text-emerald-400">Response within minutes</div>
+              </div>
+            </div>
+            <div className="flex items-center space-x-1.5">
+              <a
+                href={UTILITY_BAR_CONFIG.whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-2.5 py-1 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-white text-[11px] font-bold transition shadow-xs"
+              >
+                0337
+              </a>
+              <a
+                href={UTILITY_BAR_CONFIG.whatsappUrlSecondary}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-2.5 py-1 rounded-lg bg-[#0b2b3c] hover:bg-[#14425b] border border-[#14425b] text-slate-200 text-[11px] font-bold transition"
+              >
+                0327
+              </a>
+            </div>
+          </div>
+
 
           <div className="p-4 rounded-xl bg-[#051720] border border-[#14425b] space-y-2">
             <div className="flex items-center justify-between">

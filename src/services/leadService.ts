@@ -156,4 +156,102 @@ export const leadService = {
   getNewCount(): number {
     return this.getInquiries().filter((i) => i.status === 'NEW').length;
   },
+
+  async submitInquiry(
+    item: Omit<InquiryItem, 'id' | 'createdAt' | 'status'> & { status?: InquiryStatus }
+  ): Promise<{ inquiry: InquiryItem; emailSent: boolean; whatsAppUrlPrimary: string; whatsAppUrlSecondary: string; mailtoUrl: string }> {
+    const inquiry = this.addInquiry(item);
+
+    let emailSent = false;
+    try {
+      // Forward to backend /api/v1/contact to dispatch email to aq0871633@gmail.com
+      const res = await fetch('/api/v1/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          fullName: inquiry.fullName,
+          email: inquiry.email,
+          phone: inquiry.phone,
+          companyName: inquiry.companyName,
+          teamSize: inquiry.teamSize,
+          moduleInterest: inquiry.moduleInterest,
+          source: inquiry.source,
+          message: inquiry.message,
+          type: inquiry.type,
+        }),
+      });
+      if (res.ok) {
+        emailSent = true;
+      }
+    } catch (e) {
+      console.warn('Backend contact dispatch error (saved locally):', e);
+    }
+
+    const whatsAppUrlPrimary = getLeadWhatsAppUrl(inquiry, 'primary');
+    const whatsAppUrlSecondary = getLeadWhatsAppUrl(inquiry, 'secondary');
+    const mailtoUrl = getLeadMailtoUrl(inquiry);
+
+    return { inquiry, emailSent, whatsAppUrlPrimary, whatsAppUrlSecondary, mailtoUrl };
+  },
 };
+
+export const formatLeadWhatsAppText = (item: {
+  fullName: string;
+  companyName?: string;
+  phone: string;
+  email: string;
+  teamSize?: string;
+  moduleInterest?: string;
+  message?: string;
+  type?: string;
+}): string => {
+  return [
+    `*⚡ New Inquiry from SmartHCM Website*`,
+    `👤 *Name:* ${item.fullName}`,
+    `🏢 *Company:* ${item.companyName || 'N/A'}`,
+    `📞 *Phone:* ${item.phone}`,
+    `✉️ *Email:* ${item.email}`,
+    item.teamSize ? `👥 *Company Size:* ${item.teamSize}` : '',
+    item.moduleInterest ? `📦 *Module Interest:* ${item.moduleInterest}` : '',
+    item.type ? `📋 *Type:* ${item.type.replace(/_/g, ' ')}` : '',
+    `💬 *Message:* ${item.message || 'I would like to explore SmartHCM for my team.'}`,
+  ]
+    .filter(Boolean)
+    .join('\n');
+};
+
+export const getLeadWhatsAppUrl = (
+  item: {
+    fullName: string;
+    companyName?: string;
+    phone: string;
+    email: string;
+    teamSize?: string;
+    moduleInterest?: string;
+    message?: string;
+    type?: string;
+  },
+  number: 'primary' | 'secondary' = 'primary'
+): string => {
+  const phoneDigits = number === 'primary' ? '923373029707' : '923273726496';
+  const text = formatLeadWhatsAppText(item);
+  return `https://wa.me/${phoneDigits}?text=${encodeURIComponent(text)}`;
+};
+
+export const getLeadMailtoUrl = (
+  item: {
+    fullName: string;
+    companyName?: string;
+    phone: string;
+    email: string;
+    teamSize?: string;
+    moduleInterest?: string;
+    message?: string;
+    type?: string;
+  }
+): string => {
+  const subject = `SmartHCM Lead: ${item.companyName || item.fullName}`;
+  const body = formatLeadWhatsAppText(item);
+  return `mailto:aq0871633@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+};
+

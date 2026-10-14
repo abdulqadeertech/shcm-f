@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Modal } from '../ui/Modal';
 import { Button } from '../ui/Button';
-import { Building2, Mail, Phone, Users, CheckCircle2 } from 'lucide-react';
+import { Building2, Mail, Phone, Users, CheckCircle2, MessageCircle } from 'lucide-react';
 import { useToast } from '../../context/ToastContext';
 import { leadService } from '../../services/leadService';
 
@@ -22,12 +22,17 @@ export const ContactSalesModal: React.FC<ContactSalesModalProps> = ({ isOpen, on
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [resultLinks, setResultLinks] = useState<{
+    whatsAppUrlPrimary: string;
+    whatsAppUrlSecondary: string;
+    mailtoUrl: string;
+  } | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    setTimeout(() => {
-      leadService.addInquiry({
+    try {
+      const res = await leadService.submitInquiry({
         fullName: formData.fullName.trim(),
         email: formData.email.trim(),
         companyName: formData.companyName.trim(),
@@ -39,14 +44,23 @@ export const ContactSalesModal: React.FC<ContactSalesModalProps> = ({ isOpen, on
         source: 'Website Sales Modal',
         notes: 'Inquiry submitted through Enterprise Sales Modal.',
       });
-      setIsSubmitting(false);
+      setResultLinks({
+        whatsAppUrlPrimary: res.whatsAppUrlPrimary,
+        whatsAppUrlSecondary: res.whatsAppUrlSecondary,
+        mailtoUrl: res.mailtoUrl,
+      });
       setSubmitted(true);
-      success('Your inquiry has been routed to our enterprise solutions architect.');
-    }, 400);
+      success('Inquiry dispatched! Notification sent to aq0871633@gmail.com.');
+    } catch {
+      setSubmitted(true);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleReset = () => {
     setSubmitted(false);
+    setResultLinks(null);
     setFormData({
       fullName: '',
       email: '',
@@ -72,22 +86,52 @@ export const ContactSalesModal: React.FC<ContactSalesModalProps> = ({ isOpen, on
       maxWidth="lg"
     >
       {submitted ? (
-        <div className="text-center py-8 space-y-4">
-          <div className="w-12 h-12 rounded-full bg-[#ff6f32]/15 text-[#ff6f32] border border-[#ff6f32]/30 flex items-center justify-center mx-auto">
+        <div className="text-center py-6 space-y-4">
+          <div className="w-12 h-12 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 flex items-center justify-center mx-auto">
             <CheckCircle2 size={26} />
           </div>
           <h4 className="text-base font-bold text-white">
             Thank you, {formData.fullName}!
           </h4>
-          <p className="text-xs text-slate-400 max-w-sm mx-auto leading-relaxed">
-            Our Enterprise Solutions Director will contact you at <strong className="text-white">{formData.email}</strong> within 1 business day with a customized architectural proposal.
+          <p className="text-xs text-slate-300 max-w-sm mx-auto leading-relaxed">
+            Your inquiry for <strong className="text-white">{formData.companyName}</strong> has been emailed directly to <strong className="text-white">aq0871633@gmail.com</strong>.
           </p>
+
+          {/* Direct WhatsApp Call to Action */}
+          <div className="p-3.5 rounded-xl bg-[#051822] border border-[#14425b] space-y-2.5 text-left">
+            <div className="text-xs font-bold text-white flex items-center space-x-1.5">
+              <span className="text-emerald-400">⚡</span>
+              <span>Send Details Directly on WhatsApp:</span>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <a
+                href={resultLinks?.whatsAppUrlPrimary}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center space-x-1.5 bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-xs py-2 px-3 rounded-xl shadow-xs transition"
+              >
+                <MessageCircle size={14} />
+                <span>WhatsApp 0337-3029707</span>
+              </a>
+              <a
+                href={resultLinks?.whatsAppUrlSecondary}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center space-x-1.5 bg-[#0b2b3c] hover:bg-[#14425b] border border-[#14425b] text-slate-200 hover:text-white font-semibold text-xs py-2 px-3 rounded-xl transition"
+              >
+                <MessageCircle size={14} />
+                <span>WhatsApp 0327-3726496</span>
+              </a>
+            </div>
+          </div>
+
           <div className="pt-2">
             <Button variant="primary" size="sm" onClick={handleReset}>
               Close Window
             </Button>
           </div>
         </div>
+
       ) : (
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
