@@ -3,14 +3,17 @@ import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { Eye, EyeOff, AlertCircle, Loader2 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { ThemeToggle } from '../components/ui/ThemeToggle';
+import { LanguageToggle } from '../components/ui/LanguageToggle';
 import { BrandLogo } from '../components/common/BrandLogo';
 import { useToast } from '../context/ToastContext';
+import { useLanguage } from '../context/LanguageContext';
 
 export const LoginPage: React.FC = () => {
   const { login, register, loginWithGoogle, isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { success } = useToast();
+  const { t, isRtl } = useLanguage();
 
   // If already authenticated, redirect immediately
   useEffect(() => {
@@ -164,8 +167,9 @@ export const LoginPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-[#051720] flex flex-col justify-center items-center px-4 py-8 sm:py-12 transition-colors antialiased select-none-text">
-      {/* Top Controls: Subtle Theme Toggle */}
-      <div className="absolute top-4 right-4 sm:top-6 sm:right-6">
+      {/* Top Controls: Subtle Theme and Language Toggles */}
+      <div className="absolute top-4 right-4 sm:top-6 sm:right-6 flex items-center gap-2">
+        <LanguageToggle compact={true} />
         <ThemeToggle />
       </div>
 
@@ -177,8 +181,8 @@ export const LoginPage: React.FC = () => {
           </Link>
           <p className="mt-1 text-xs sm:text-sm text-slate-500 dark:text-slate-400">
             {mode === 'login'
-              ? 'Sign in to access your workspace'
-              : 'Create your account to get started'}
+              ? t('auth.welcome_back', 'Sign in to access your workspace')
+              : t('auth.subtitle', 'Create your account to get started')}
           </p>
         </div>
 
@@ -186,7 +190,7 @@ export const LoginPage: React.FC = () => {
         <div className="bg-white dark:bg-[#08222f] border border-slate-200 dark:border-[#14425b] rounded-2xl shadow-sm sm:shadow-md p-6 sm:p-8 transition-colors">
           {/* Error Banner */}
           {error && (
-            <div className="mb-5 bg-rose-50 dark:bg-rose-500/10 border border-rose-200 dark:border-rose-500/20 text-rose-700 dark:text-rose-300 px-3.5 py-2.5 rounded-xl text-xs flex items-center space-x-2">
+            <div className="mb-5 bg-rose-50 dark:bg-rose-500/10 border border-rose-200 dark:border-rose-500/20 text-rose-700 dark:text-rose-300 px-3.5 py-2.5 rounded-xl text-xs flex items-center gap-2">
               <AlertCircle size={16} className="shrink-0 text-rose-500" />
               <span className="flex-1">{error}</span>
             </div>
@@ -206,7 +210,7 @@ export const LoginPage: React.FC = () => {
                   : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
-              Login
+              {t('auth.tab_login', 'Login')}
             </button>
             <button
               type="button"
@@ -220,7 +224,7 @@ export const LoginPage: React.FC = () => {
                   : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
-              Sign Up
+              {t('auth.tab_signup', 'Sign Up')}
             </button>
           </div>
 
@@ -290,7 +294,7 @@ export const LoginPage: React.FC = () => {
             <form onSubmit={handleLoginSubmit} className="space-y-4">
               <div>
                 <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
-                  Email
+                  {t('label.email', 'Email')}
                 </label>
                 <input
                   type="email"
@@ -305,7 +309,7 @@ export const LoginPage: React.FC = () => {
 
               <div>
                 <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
-                  Password
+                  {t('label.password', 'Password')}
                 </label>
                 <div className="relative">
                   <input
@@ -315,12 +319,16 @@ export const LoginPage: React.FC = () => {
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Enter your password"
                     autoComplete="current-password"
-                    className="w-full h-11 px-3.5 pr-11 bg-slate-50 dark:bg-[#051822] border border-slate-200 dark:border-[#14425b] rounded-xl text-slate-900 dark:text-white text-base sm:text-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#ff6f32]/25 focus:border-[#ff6f32] transition"
+                    className={`w-full h-11 bg-slate-50 dark:bg-[#051822] border border-slate-200 dark:border-[#14425b] rounded-xl text-slate-900 dark:text-white text-base sm:text-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#ff6f32]/25 focus:border-[#ff6f32] transition ${
+                      isRtl ? 'pl-11 pr-3.5' : 'pr-11 pl-3.5'
+                    }`}
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition cursor-pointer"
+                    className={`absolute inset-y-0 ${
+                      isRtl ? 'left-0 pl-3.5' : 'right-0 pr-3.5'
+                    } flex items-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition cursor-pointer`}
                     aria-label="Toggle password visibility"
                   >
                     {showPassword ? <EyeOff size={17} /> : <Eye size={17} />}
@@ -336,10 +344,10 @@ export const LoginPage: React.FC = () => {
                 {isLoading ? (
                   <>
                     <Loader2 size={16} className="animate-spin mr-2" />
-                    <span>Logging in...</span>
+                    <span>{t('auth.signing_in', 'Logging in...')}</span>
                   </>
                 ) : (
-                  <span>Login</span>
+                  <span>{t('auth.tab_login', 'Login')}</span>
                 )}
               </button>
             </form>
@@ -348,7 +356,7 @@ export const LoginPage: React.FC = () => {
             <form onSubmit={handleSignupSubmit} className="space-y-4">
               <div>
                 <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
-                  Full Name
+                  {t('label.first_name', 'Full Name')}
                 </label>
                 <input
                   type="text"
@@ -363,7 +371,7 @@ export const LoginPage: React.FC = () => {
 
               <div>
                 <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
-                  Email
+                  {t('label.email', 'Email')}
                 </label>
                 <input
                   type="email"
@@ -378,7 +386,7 @@ export const LoginPage: React.FC = () => {
 
               <div>
                 <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
-                  Password
+                  {t('label.password', 'Password')}
                 </label>
                 <div className="relative">
                   <input
@@ -388,12 +396,16 @@ export const LoginPage: React.FC = () => {
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Create a password"
                     autoComplete="new-password"
-                    className="w-full h-11 px-3.5 pr-11 bg-slate-50 dark:bg-[#051822] border border-slate-200 dark:border-[#14425b] rounded-xl text-slate-900 dark:text-white text-base sm:text-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#ff6f32]/25 focus:border-[#ff6f32] transition"
+                    className={`w-full h-11 bg-slate-50 dark:bg-[#051822] border border-slate-200 dark:border-[#14425b] rounded-xl text-slate-900 dark:text-white text-base sm:text-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#ff6f32]/25 focus:border-[#ff6f32] transition ${
+                      isRtl ? 'pl-11 pr-3.5' : 'pr-11 pl-3.5'
+                    }`}
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition cursor-pointer"
+                    className={`absolute inset-y-0 ${
+                      isRtl ? 'left-0 pl-3.5' : 'right-0 pr-3.5'
+                    } flex items-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition cursor-pointer`}
                     aria-label="Toggle password visibility"
                   >
                     {showPassword ? <EyeOff size={17} /> : <Eye size={17} />}
@@ -409,10 +421,10 @@ export const LoginPage: React.FC = () => {
                 {isLoading ? (
                   <>
                     <Loader2 size={16} className="animate-spin mr-2" />
-                    <span>Creating account...</span>
+                    <span>{t('auth.creating_account', 'Creating account...')}</span>
                   </>
                 ) : (
-                  <span>Sign Up</span>
+                  <span>{t('auth.tab_signup', 'Sign Up')}</span>
                 )}
               </button>
             </form>
@@ -422,7 +434,7 @@ export const LoginPage: React.FC = () => {
           <div className="mt-5 text-center text-xs text-slate-500 dark:text-slate-400">
             {mode === 'login' ? (
               <span>
-                Don't have an account?{' '}
+                {t('auth.dont_have_account', "Don't have an account?")}{' '}
                 <button
                   type="button"
                   onClick={() => {
@@ -431,12 +443,12 @@ export const LoginPage: React.FC = () => {
                   }}
                   className="text-[#ff6f32] hover:underline font-semibold cursor-pointer"
                 >
-                  Sign Up
+                  {t('auth.tab_signup', 'Sign Up')}
                 </button>
               </span>
             ) : (
               <span>
-                Already have an account?{' '}
+                {t('auth.already_have_account', 'Already registered?')}{' '}
                 <button
                   type="button"
                   onClick={() => {
@@ -445,7 +457,7 @@ export const LoginPage: React.FC = () => {
                   }}
                   className="text-[#ff6f32] hover:underline font-semibold cursor-pointer"
                 >
-                  Login
+                  {t('auth.tab_login', 'Login')}
                 </button>
               </span>
             )}

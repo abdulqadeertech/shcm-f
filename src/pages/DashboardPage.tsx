@@ -29,6 +29,7 @@ import { useAuth } from '../context/AuthContext';
 import { Breadcrumbs } from '../components/ui/Breadcrumbs';
 import { Badge } from '../components/ui/Badge';
 import { useToast } from '../context/ToastContext';
+import { useTranslation } from '../context/LanguageContext';
 
 const normalizeChecklists = (data: any): any[] => {
   if (Array.isArray(data)) return data;
@@ -56,6 +57,7 @@ const normalizeChecklists = (data: any): any[] => {
 export const DashboardPage: React.FC = () => {
   const { user } = useAuth();
   const { success, error: toastError } = useToast();
+  const { t, isRtl } = useTranslation();
 
   const [viewMode, setViewMode] = useState<'executive' | 'ess'>(
     user?.role === 'EMPLOYEE' ? 'ess' : 'executive'
@@ -275,23 +277,23 @@ export const DashboardPage: React.FC = () => {
       <Breadcrumbs
         items={[
           { label: 'Workspace', to: '/dashboard' },
-          { label: viewMode === 'executive' ? 'Executive HR Dashboard' : 'Employee Self-Service Hub' },
+          { label: viewMode === 'executive' ? t('dashboard.executive_view', 'Executive HR Dashboard') : t('dashboard.employee_hub', 'Employee Self-Service Hub') },
         ]}
       />
 
       {/* Welcome Banner with Role View Switcher */}
       <div className="bg-[#08222f] rounded-2xl p-6 border border-[#14425b] shadow-card flex flex-col md:flex-row md:items-center justify-between gap-4 transition-colors">
         <div>
-          <div className="flex items-center space-x-2.5">
+          <div className="flex items-center gap-2.5">
             <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
-              Welcome back, {user?.firstName} {user?.lastName}
+              {t('dashboard.welcome_back', 'Welcome back')}, <span className="text-[#ff6f32]">{user?.firstName} {user?.lastName}</span>
             </h1>
             <Badge variant="brand" size="xs">
               {user?.role}
             </Badge>
           </div>
           <p className="text-xs text-slate-400 mt-1">
-            Overview of today&apos;s workforce operations, pending approvals, and attendance.
+            {t('dashboard.overview_subtitle', "Overview of today's workforce operations, pending approvals, and attendance.")}
           </p>
         </div>
 
@@ -307,7 +309,7 @@ export const DashboardPage: React.FC = () => {
                     : 'text-slate-400 hover:text-white'
                 }`}
               >
-                Executive HR View
+                {t('dashboard.executive_view', 'Executive HR View')}
               </button>
               <button
                 onClick={() => setViewMode('ess')}
@@ -317,24 +319,24 @@ export const DashboardPage: React.FC = () => {
                     : 'text-slate-400 hover:text-white'
                 }`}
               >
-                Employee ESS Hub
+                {t('dashboard.employee_hub', 'Employee ESS Hub')}
               </button>
             </div>
           )}
 
           {/* Live Punch Clock Terminal Widget */}
-          <div className="flex items-center space-x-3 bg-[#051720] p-2.5 rounded-xl border border-[#14425b]">
-            <div className="text-right">
+          <div className="flex items-center gap-3 bg-[#051720] p-2.5 rounded-xl border border-[#14425b]">
+            <div className={isRtl ? 'text-left' : 'text-right'}>
               <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-                Biometric Punch
+                {t('dashboard.biometric_punch', 'Biometric Punch')}
               </div>
-              <div className="text-xs font-semibold text-white">
+              <div className="text-xs font-semibold text-white" dir="ltr">
                 {todayAttendance?.clockIn
                   ? `In: ${new Date(todayAttendance.clockIn).toLocaleTimeString([], {
                       hour: '2-digit',
                       minute: '2-digit',
                     })}`
-                  : 'Not Clocked In'}
+                  : t('dashboard.not_clocked_in', 'Not Clocked In')}
                 {todayAttendance?.clockOut &&
                   ` | Out: ${new Date(todayAttendance.clockOut).toLocaleTimeString([], {
                     hour: '2-digit',
@@ -347,24 +349,24 @@ export const DashboardPage: React.FC = () => {
               <button
                 onClick={handleClockIn}
                 disabled={isClocking}
-                className="flex items-center space-x-1.5 px-3 py-1.5 bg-[#ff6f32] hover:bg-[#ea580c] text-white rounded-lg text-xs font-bold shadow-xs transition disabled:opacity-50 cursor-pointer"
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-[#ff6f32] hover:bg-[#ea580c] text-white rounded-lg text-xs font-bold shadow-xs transition disabled:opacity-50 cursor-pointer"
               >
-                <Play size={13} />
-                <span>Clock In</span>
+                <Play size={13} className={isRtl ? 'rotate-180' : ''} />
+                <span>{t('dashboard.clock_in', 'Clock In')}</span>
               </button>
             ) : !todayAttendance?.clockOut ? (
               <button
                 onClick={handleClockOut}
                 disabled={isClocking}
-                className="flex items-center space-x-1.5 px-3 py-1.5 bg-rose-600 hover:bg-rose-500 text-white rounded-lg text-xs font-bold shadow-xs transition disabled:opacity-50 cursor-pointer"
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-rose-600 hover:bg-rose-500 text-white rounded-lg text-xs font-bold shadow-xs transition disabled:opacity-50 cursor-pointer"
               >
                 <Square size={13} />
-                <span>Clock Out</span>
+                <span>{t('dashboard.clock_out', 'Clock Out')}</span>
               </button>
             ) : (
-              <span className="flex items-center space-x-1 text-xs text-emerald-400 font-semibold bg-emerald-500/15 px-2.5 py-1 rounded-lg border border-emerald-500/30">
+              <span className="flex items-center gap-1 text-xs text-emerald-400 font-semibold bg-emerald-500/15 px-2.5 py-1 rounded-lg border border-emerald-500/30">
                 <CheckCircle2 size={13} />
-                <span>Shift Done</span>
+                <span>{t('dashboard.shift_done', 'Shift Done')}</span>
               </span>
             )}
           </div>
@@ -842,45 +844,45 @@ export const DashboardPage: React.FC = () => {
             {/* ESS Balances Card */}
             <div className="bg-[#08222f] p-6 rounded-2xl border border-[#14425b] shadow-card">
               <h2 className="text-sm font-bold text-white mb-1">
-                My Leave Entitlements & Balances
+                {t('dashboard.leave_entitlements', 'My Leave Entitlements & Balances')}
               </h2>
               <p className="text-xs text-slate-400 mb-4">
-                Available vacation and personal quotas for the current year
+                {t('dashboard.leave_entitlements_desc', 'Available vacation and personal quotas for the current year')}
               </p>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
                 <div className="p-4 bg-[#051720] rounded-xl border border-[#14425b]">
-                  <span className="text-slate-300 font-semibold">Annual Vacation</span>
-                  <div className="text-2xl font-bold text-[#ff6f32] mt-1">
-                    {essSummary?.leaveBalances?.annual || 21} <span className="text-xs font-normal">days</span>
+                  <span className="text-slate-300 font-semibold">{t('dashboard.annual_vacation', 'Annual Vacation')}</span>
+                  <div className="text-2xl font-bold text-[#ff6f32] mt-1" dir="ltr">
+                    {essSummary?.leaveBalances?.annual || 21} <span className="text-xs font-normal">{t('dashboard.days', 'days')}</span>
                   </div>
-                  <span className="text-[10px] text-slate-400">Paid statutory compensation</span>
+                  <span className="text-[10px] text-slate-400">{t('dashboard.paid_statutory', 'Paid statutory compensation')}</span>
                 </div>
 
                 <div className="p-4 bg-[#051720] rounded-xl border border-[#14425b]">
-                  <span className="text-slate-300 font-semibold">Sick Leave</span>
-                  <div className="text-2xl font-bold text-white mt-1">
-                    {essSummary?.leaveBalances?.sick || 12} <span className="text-xs font-normal">days</span>
+                  <span className="text-slate-300 font-semibold">{t('dashboard.sick_leave', 'Sick Leave')}</span>
+                  <div className="text-2xl font-bold text-white mt-1" dir="ltr">
+                    {essSummary?.leaveBalances?.sick || 12} <span className="text-xs font-normal">{t('dashboard.days', 'days')}</span>
                   </div>
-                  <span className="text-[10px] text-slate-400">Medical cert required &gt; 2d</span>
+                  <span className="text-[10px] text-slate-400">{t('dashboard.medical_cert', 'Medical cert required > 2d')}</span>
                 </div>
 
                 <div className="p-4 bg-[#051720] rounded-xl border border-[#14425b]">
-                  <span className="text-slate-300 font-semibold">Casual / Personal</span>
-                  <div className="text-2xl font-bold text-white mt-1">
-                    {essSummary?.leaveBalances?.casual || 10} <span className="text-xs font-normal">days</span>
+                  <span className="text-slate-300 font-semibold">{t('dashboard.casual_leave', 'Casual / Personal')}</span>
+                  <div className="text-2xl font-bold text-white mt-1" dir="ltr">
+                    {essSummary?.leaveBalances?.casual || 10} <span className="text-xs font-normal">{t('dashboard.days', 'days')}</span>
                   </div>
-                  <span className="text-[10px] text-slate-400">Personal emergencies</span>
+                  <span className="text-[10px] text-slate-400">{t('dashboard.personal_emergencies', 'Personal emergencies')}</span>
                 </div>
               </div>
 
               <div className="mt-4 flex justify-end">
                 <Link
                   to="/leaves"
-                  className="px-4 py-2 bg-[#ff6f32] hover:bg-[#ea580c] text-white rounded-xl text-xs font-bold shadow-xs transition inline-flex items-center space-x-1.5 cursor-pointer"
+                  className="px-4 py-2 bg-[#ff6f32] hover:bg-[#ea580c] text-white rounded-xl text-xs font-bold shadow-xs transition inline-flex items-center gap-1.5 cursor-pointer"
                 >
                   <CalendarCheck size={14} />
-                  <span>Apply for Time Off</span>
+                  <span>{t('dashboard.apply_time_off', 'Apply for Time Off')}</span>
                 </Link>
               </div>
             </div>
@@ -889,7 +891,7 @@ export const DashboardPage: React.FC = () => {
             <div className="bg-[#08222f] p-6 rounded-2xl border border-[#14425b] shadow-card">
               <div className="flex items-center justify-between mb-1">
                 <h2 className="text-sm font-bold text-white">
-                  Employee Journey & Onboarding Checklist
+                  {t('dashboard.onboarding_checklist', 'Employee Journey & Onboarding Checklist')}
                 </h2>
                 <Badge variant="brand" size="xs">
                   Self-Service
@@ -902,7 +904,7 @@ export const DashboardPage: React.FC = () => {
               <div className="space-y-2.5">
                 {!Array.isArray(checklists) || checklists.length === 0 ? (
                   <div className="text-center py-6 text-xs text-slate-400">
-                    No active onboarding checklists assigned. You are fully compliant!
+                    {t('dashboard.no_checklists', 'No active onboarding checklists assigned. You are fully compliant!')}
                   </div>
                 ) : (
                   checklists.map((list) => (
@@ -919,7 +921,7 @@ export const DashboardPage: React.FC = () => {
                               key={item.id}
                               className="p-3 flex items-center justify-between text-xs hover:bg-[#071c26]"
                             >
-                              <label className="flex items-center space-x-2.5 cursor-pointer">
+                              <label className="flex items-center gap-2.5 cursor-pointer">
                                 <input
                                   type="checkbox"
                                   checked={!!item.isCompleted}
@@ -956,15 +958,17 @@ export const DashboardPage: React.FC = () => {
           <div className="space-y-6">
             <div className="bg-[#08222f] p-6 rounded-2xl border border-[#14425b] shadow-card">
               <h2 className="text-sm font-bold text-white mb-1">
-                My Recent Payslips
+                {t('dashboard.recent_payslips', 'My Recent Payslips')}
               </h2>
               <p className="text-xs text-slate-400 mb-4">
-                Itemized compensation disbursements
+                {t('dashboard.recent_payslips_desc', 'Itemized compensation disbursements')}
               </p>
 
               <div className="space-y-2.5">
                 {!Array.isArray(essSummary?.recentPayslips) || essSummary.recentPayslips.length === 0 ? (
-                  <div className="text-center py-6 text-xs text-slate-400">No payslips found yet.</div>
+                  <div className="text-center py-6 text-xs text-slate-400">
+                    {t('dashboard.no_payslips', 'No payslips found yet.')}
+                  </div>
                 ) : (
                   essSummary.recentPayslips.slice(0, 3).map((ps: any) => (
                     <div
@@ -972,10 +976,10 @@ export const DashboardPage: React.FC = () => {
                       className="p-3 rounded-xl bg-[#051720] border border-[#14425b] flex items-center justify-between text-xs"
                     >
                       <div>
-                        <div className="font-bold text-white">
+                        <div className="font-bold text-white" dir="ltr">
                           Period {ps.payrollRun?.periodMonth}/{ps.payrollRun?.periodYear}
                         </div>
-                        <div className="text-[#ff6f32] font-bold">
+                        <div className="text-[#ff6f32] font-bold" dir="ltr">
                           ${ps.netSalary?.toLocaleString()} Net
                         </div>
                       </div>
@@ -983,7 +987,7 @@ export const DashboardPage: React.FC = () => {
                         to="/payroll"
                         className="px-2.5 py-1 bg-[#08222f] hover:bg-[#0a2736] text-slate-200 rounded-lg border border-[#14425b] font-semibold text-[11px]"
                       >
-                        Receipt
+                        {t('dashboard.receipt', 'Receipt')}
                       </Link>
                     </div>
                   ))
@@ -993,28 +997,28 @@ export const DashboardPage: React.FC = () => {
 
             {/* Quick Actions for ESS */}
             <div className="bg-[#08222f] p-6 rounded-2xl border border-[#14425b] shadow-card space-y-3">
-              <h2 className="text-sm font-bold text-white">Self-Service Actions</h2>
+              <h2 className="text-sm font-bold text-white">{t('dashboard.self_service_actions', 'Self-Service Actions')}</h2>
               <div className="space-y-2 text-xs">
                 <Link
                   to="/leaves"
                   className="flex items-center justify-between p-2.5 rounded-xl bg-[#051720] hover:bg-[#071c26] text-slate-200 hover:text-[#ff6f32] border border-[#14425b] font-medium transition"
                 >
-                  <span>Submit Leave Request</span>
-                  <ArrowUpRight size={14} className="text-[#ff6f32]" />
+                  <span>{t('dashboard.submit_leave', 'Submit Leave Request')}</span>
+                  <ArrowUpRight size={14} className={`text-[#ff6f32] ${isRtl ? 'rotate-[-90deg]' : ''}`} />
                 </Link>
                 <Link
                   to="/helpdesk"
                   className="flex items-center justify-between p-2.5 rounded-xl bg-[#051720] hover:bg-[#071c26] text-slate-200 hover:text-[#ff6f32] border border-[#14425b] font-medium transition"
                 >
-                  <span>Open HR Service Ticket</span>
-                  <ArrowUpRight size={14} className="text-[#ff6f32]" />
+                  <span>{t('dashboard.open_ticket', 'Open HR Service Ticket')}</span>
+                  <ArrowUpRight size={14} className={`text-[#ff6f32] ${isRtl ? 'rotate-[-90deg]' : ''}`} />
                 </Link>
                 <Link
                   to="/attendance"
                   className="flex items-center justify-between p-2.5 rounded-xl bg-[#051720] hover:bg-[#071c26] text-slate-200 hover:text-[#ff6f32] border border-[#14425b] font-medium transition"
                 >
-                  <span>Request Punch Correction</span>
-                  <ArrowUpRight size={14} className="text-[#ff6f32]" />
+                  <span>{t('dashboard.request_punch_correction', 'Request Punch Correction')}</span>
+                  <ArrowUpRight size={14} className={`text-[#ff6f32] ${isRtl ? 'rotate-[-90deg]' : ''}`} />
                 </Link>
               </div>
             </div>

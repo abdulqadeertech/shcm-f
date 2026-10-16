@@ -95,54 +95,89 @@ html.dark {
 }
 
 /* Light Mode Overrides for Hardcoded Theme Classes */
-html:not(.dark) [class*="bg-[#051720]"],
-html:not(.dark) [class*="bg-[#051822]"],
-html:not(.dark) [class*="bg-navy-950"] {
+html:not(.dark) [class*="bg-[#051720]"]:not(.dark-surface-lock):not(.dark-surface-lock *),
+html:not(.dark) [class*="bg-[#051822]"]:not(.dark-surface-lock):not(.dark-surface-lock *),
+html:not(.dark) [class*="bg-[#061b24]"]:not(.dark-surface-lock):not(.dark-surface-lock *),
+html:not(.dark) [class*="bg-navy-950"]:not(.dark-surface-lock):not(.dark-surface-lock *) {
   background-color: #f8fafc !important;
 }
 
-html:not(.dark) [class*="bg-[#071c26]"],
-html:not(.dark) [class*="bg-navy-900"] {
+html:not(.dark) [class*="bg-[#071c26]"]:not(.dark-surface-lock):not(.dark-surface-lock *),
+html:not(.dark) [class*="bg-navy-900"]:not(.dark-surface-lock):not(.dark-surface-lock *) {
   background-color: #ffffff !important;
 }
 
-html:not(.dark) [class*="bg-[#08222f]"],
-html:not(.dark) [class*="bg-[#0a2432]"],
-html:not(.dark) [class*="bg-[#0a2736]"],
-html:not(.dark) [class*="bg-navy-850"],
-html:not(.dark) [class*="bg-navy-800"] {
+html:not(.dark) [class*="bg-[#08222f]"]:not(.dark-surface-lock):not(.dark-surface-lock *),
+html:not(.dark) [class*="bg-[#0a2432]"]:not(.dark-surface-lock):not(.dark-surface-lock *),
+html:not(.dark) [class*="bg-[#0a2736]"]:not(.dark-surface-lock):not(.dark-surface-lock *),
+html:not(.dark) [class*="bg-navy-850"]:not(.dark-surface-lock):not(.dark-surface-lock *),
+html:not(.dark) [class*="bg-navy-800"]:not(.dark-surface-lock):not(.dark-surface-lock *) {
   background-color: #ffffff !important;
 }
 
-html:not(.dark) [class*="bg-[#0c2f42]"],
-html:not(.dark) [class*="bg-[#071c26]/60"],
-html:not(.dark) [class*="hover:bg-[#071c26]"]:hover,
-html:not(.dark) [class*="hover:bg-[#0c2f42]"]:hover {
+html:not(.dark) [class*="bg-[#0c2f42]"]:not(.dark-surface-lock):not(.dark-surface-lock *),
+html:not(.dark) [class*="bg-[#071c26]/60"]:not(.dark-surface-lock):not(.dark-surface-lock *),
+html:not(.dark) [class*="hover:bg-[#071c26]"]:not(.dark-surface-lock):hover,
+html:not(.dark) [class*="hover:bg-[#0c2f42]"]:not(.dark-surface-lock):hover {
   background-color: #f1f5f9 !important;
 }
 
-html:not(.dark) [class*="border-[#14425b]"],
-html:not(.dark) [class*="border-[#0e3547]"],
-html:not(.dark) [class*="border-[#0f3446]"],
-html:not(.dark) [class*="divide-[#14425b]"] > * {
+html:not(.dark) [class*="border-[#14425b]"]:not(.dark-surface-lock):not(.dark-surface-lock *),
+html:not(.dark) [class*="border-[#0e3547]"]:not(.dark-surface-lock):not(.dark-surface-lock *),
+html:not(.dark) [class*="border-[#0f3446]"]:not(.dark-surface-lock):not(.dark-surface-lock *),
+html:not(.dark) [class*="divide-[#14425b]"]:not(.dark-surface-lock) > *,
+html:not(.dark) [class*="divide-[#0f3446]"]:not(.dark-surface-lock) > * {
   border-color: #e2e8f0 !important;
 }
 
-html:not(.dark) [class*="text-white"]:not([class*="bg-[#ff6f32]"]):not([class*="bg-brand-500"]):not(.text-white-force) {
+html:not(.dark) [class*="text-white"]:not([class*="bg-[#ff6f32]"]):not([class*="bg-brand-500"]):not(.text-white-force):not(.dark-surface-lock):not(.dark-surface-lock *) {
   color: #0f172a !important;
 }
 
-html:not(.dark) [class*="text-slate-100"] {
+html:not(.dark) [class*="text-slate-100"]:not(.dark-surface-lock):not(.dark-surface-lock *) {
   color: #0f172a !important;
 }
 
-html:not(.dark) [class*="text-slate-200"],
-html:not(.dark) [class*="text-slate-300"] {
+html:not(.dark) [class*="text-slate-200"]:not(.dark-surface-lock):not(.dark-surface-lock *),
+html:not(.dark) [class*="text-slate-300"]:not(.dark-surface-lock):not(.dark-surface-lock *) {
   color: #334155 !important;
 }
 
-html:not(.dark) [class*="text-slate-400"] {
+html:not(.dark) [class*="text-slate-400"]:not(.dark-surface-lock):not(.dark-surface-lock *) {
   color: #64748b !important;
+}
+
+/* Protected Dark Surface Lock (e.g. Hero Section photograph banner) */
+.dark-surface-lock,
+.dark-surface-lock * {
+  --tw-text-opacity: 1;
+}
+html:not(.dark) .dark-surface-lock h1,
+html:not(.dark) .dark-surface-lock h2,
+html:not(.dark) .dark-surface-lock h3,
+html:not(.dark) .dark-surface-lock .text-white,
+html:not(.dark) .text-white-force {
+  color: #ffffff !important;
+}
+html:not(.dark) .dark-surface-lock p,
+html:not(.dark) .dark-surface-lock .text-slate-200 {
+  color: #e2e8f0 !important;
+}
+html:not(.dark) .dark-surface-lock .text-slate-300 {
+  color: #cbd5e1 !important;
+}
+html:not(.dark) .dark-surface-lock .text-slate-400 {
+  color: #94a3b8 !important;
+}
+html:not(.dark) .dark-surface-lock .bg-\[\#08222f\]\/90 {
+  background-color: rgba(8, 34, 47, 0.92) !important;
+}
+html:not(.dark) .dark-surface-lock .bg-\[\#051822\]\/80,
+html:not(.dark) .dark-surface-lock .bg-\[\#051822\]\/70 {
+  background-color: rgba(5, 24, 34, 0.85) !important;
+}
+html:not(.dark) .dark-surface-lock .border-\[\#14425b\] {
+  border-color: #14425b !important;
 }
 
 html:not(.dark) input,

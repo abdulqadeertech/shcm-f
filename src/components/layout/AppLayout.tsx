@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { NavLink, Outlet, useNavigate, Link } from 'react-router-dom';
+import { NavLink, Outlet, useNavigate, Link, useLocation } from 'react-router-dom';
 import {
   LucideIcon,
   LayoutDashboard,
@@ -51,11 +51,13 @@ interface NavigationGroup {
 
 export const AppLayout: React.FC = () => {
   const { user, logout, quickLogin, switchOrganization } = useAuth();
-  const { t, language, setLanguage } = useTranslation();
+  const { t, language, setLanguage, isRtl } = useTranslation();
   const navigate = useNavigate();
+  const location = useLocation();
   const { success, error: toastError } = useToast();
 
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [desktopSidebarOpen, setDesktopSidebarOpen] = useState(true);
+  const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
   const [personaMenuOpen, setPersonaMenuOpen] = useState(false);
   const [workspaceMenuOpen, setWorkspaceMenuOpen] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
@@ -269,14 +271,25 @@ export const AppLayout: React.FC = () => {
   return (
     <div className="min-h-screen bg-[#051720] flex flex-col text-left text-slate-100 transition-colors">
       {/* Main Workspace Header Shell */}
-      <header className="bg-[#071c26] border-b border-[#0e3547] h-16 flex items-center justify-between px-4 sm:px-6 sticky top-0 z-30 shadow-xs transition-colors">
-        <div className="flex items-center space-x-3 sm:space-x-4">
+      <header className="bg-[#071c26] border-b border-[#0e3547] h-16 flex items-center justify-between px-3 sm:px-6 sticky top-0 z-30 shadow-xs transition-colors">
+        <div className="flex items-center gap-2 sm:gap-4">
           <button
-            onClick={() => setSidebarOpen(!sidebarOpen)}
+            onClick={() => {
+              if (window.innerWidth < 1024) {
+                setMobileDrawerOpen((prev) => !prev);
+              } else {
+                setDesktopSidebarOpen((prev) => !prev);
+              }
+            }}
             className="p-1.5 rounded-xl text-slate-400 hover:text-white hover:bg-[#0a2736] border border-transparent hover:border-[#14425b] transition cursor-pointer"
-            title="Toggle Sidebar"
+            title="Toggle Sidebar Navigation"
           >
-            {sidebarOpen ? <X size={18} /> : <Menu size={18} />}
+            <span className="lg:hidden">
+              {mobileDrawerOpen ? <X size={18} /> : <Menu size={18} />}
+            </span>
+            <span className="hidden lg:inline">
+              {desktopSidebarOpen ? <X size={18} /> : <Menu size={18} />}
+            </span>
           </button>
 
           {/* Clean SmartHCM Brand Logo */}
@@ -288,14 +301,14 @@ export const AppLayout: React.FC = () => {
           <div className="relative" ref={workspaceRef}>
             <button
               onClick={() => setWorkspaceMenuOpen(!workspaceMenuOpen)}
-              className="flex items-center space-x-1.5 px-2.5 py-1.5 bg-[#0a2736] hover:bg-[#0c2f42] text-slate-200 rounded-xl text-xs font-semibold border border-[#14425b] hover:border-[#ff6f32]/40 transition cursor-pointer"
+              className="flex items-center gap-1 px-2 sm:px-2.5 py-1.5 bg-[#0a2736] hover:bg-[#0c2f42] text-slate-200 rounded-xl text-xs font-semibold border border-[#14425b] hover:border-[#ff6f32]/40 transition cursor-pointer max-w-[110px] sm:max-w-[170px]"
               title="Switch Active Company Workspace"
             >
-              <Building2 size={13} className="text-[#ff6f32]" />
-              <span className="max-w-[120px] sm:max-w-[160px] truncate">
+              <Building2 size={13} className="text-[#ff6f32] shrink-0" />
+              <span className="truncate">
                 {currentOrg?.name || 'Select Workspace'}
               </span>
-              <ChevronDown size={12} className="text-slate-400" />
+              <ChevronDown size={12} className="text-slate-400 shrink-0" />
             </button>
 
             {workspaceMenuOpen && (
@@ -349,11 +362,11 @@ export const AppLayout: React.FC = () => {
         </div>
 
         {/* Right Header: Search, Language, ThemeToggle, Notifications, Persona, Profile */}
-        <div className="flex items-center space-x-2 sm:space-x-2.5">
+        <div className="flex items-center gap-1.5 sm:gap-2.5">
           {/* Quick Search */}
           <button
             onClick={() => setSearchModalOpen(true)}
-            className="hidden sm:flex items-center space-x-1.5 bg-[#0a2736] hover:bg-[#0c2f42] text-slate-300 px-3 py-1.5 rounded-xl text-xs border border-[#14425b] hover:border-[#ff6f32]/40 transition cursor-pointer"
+            className="hidden sm:flex items-center gap-1.5 bg-[#0a2736] hover:bg-[#0c2f42] text-slate-300 px-3 py-1.5 rounded-xl text-xs border border-[#14425b] hover:border-[#ff6f32]/40 transition cursor-pointer"
             title="Search modules and employee tools (⌘K)"
           >
             <Search size={13} className="text-[#ff6f32]" />
@@ -367,14 +380,14 @@ export const AppLayout: React.FC = () => {
           <div className="relative" ref={langRef}>
             <button
               onClick={() => setLangMenuOpen(!langMenuOpen)}
-              className="flex items-center space-x-1 bg-[#0a2736] hover:bg-[#0c2f42] text-slate-300 hover:text-white px-2.5 py-1.5 rounded-xl text-xs border border-[#14425b] hover:border-[#ff6f32]/40 transition cursor-pointer"
+              className="flex items-center gap-1 bg-[#0a2736] hover:bg-[#0c2f42] text-slate-300 hover:text-white px-2 sm:px-2.5 py-1.5 rounded-xl text-xs border border-[#14425b] hover:border-[#ff6f32]/40 transition cursor-pointer"
               title="Change Language"
             >
               <Globe size={13} className="text-slate-400" />
-              <span className="hidden md:inline text-xs font-medium">{currentLangObj.code.toUpperCase()}</span>
+              <span className="text-xs font-semibold">{currentLangObj.code.toUpperCase()}</span>
             </button>
             {langMenuOpen && (
-              <div className="absolute right-0 mt-2 w-40 bg-[#08222f] border border-[#14425b] rounded-xl shadow-2xl py-1 z-50 text-xs animate-dropdown-slide">
+              <div className={`absolute ${isRtl ? 'left-0' : 'right-0'} mt-2 w-40 bg-[#08222f] border border-[#14425b] rounded-xl shadow-2xl py-1 z-50 text-xs animate-dropdown-slide`}>
                 {SUPPORTED_LANGUAGES.map((lang) => (
                   <button
                     key={lang.code}
@@ -413,7 +426,7 @@ export const AppLayout: React.FC = () => {
             </button>
 
             {notificationsOpen && (
-              <div className="absolute right-0 mt-2 w-80 bg-[#08222f] border border-[#14425b] rounded-2xl shadow-2xl py-2 z-50 text-xs animate-dropdown-slide">
+              <div className={`absolute ${isRtl ? 'left-0' : 'right-0'} mt-2 w-72 sm:w-80 bg-[#08222f] border border-[#14425b] rounded-2xl shadow-2xl py-2 z-50 text-xs animate-dropdown-slide`}>
                 <div className="px-4 py-2 border-b border-[#0f3446] flex items-center justify-between">
                   <div className="font-bold text-white">Operational Alerts</div>
                   <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#ff6f32]/20 text-[#ff6f32] border border-[#ff6f32]/30 font-bold">
@@ -633,18 +646,49 @@ export const AppLayout: React.FC = () => {
         </div>
       )}
 
+      {/* Mobile Drawer Backdrop Overlay */}
+      {mobileDrawerOpen && (
+        <div
+          className="fixed inset-0 bg-black/60 backdrop-blur-xs z-40 lg:hidden transition-opacity"
+          onClick={() => setMobileDrawerOpen(false)}
+          aria-hidden="true"
+        />
+      )}
+
       {/* Main App Container */}
-      <div className="flex-1 flex overflow-hidden">
-        {/* Sidebar with Role-filtered Groups */}
+      <div className="flex-1 flex overflow-hidden relative">
+        {/* Sidebar with Role-filtered Groups: Off-canvas Drawer on Mobile, Static/Collapsible on Desktop */}
         <aside
-          className={`${
-            sidebarOpen ? 'w-64' : 'w-20'
-          } bg-[#071c26] border-r border-[#0e3547] transition-all duration-200 flex flex-col justify-between shrink-0 select-none shadow-card`}
+          className={`
+            fixed inset-y-0 z-50 lg:static lg:z-auto transition-transform duration-300 ease-in-out
+            ${isRtl ? 'right-0 border-l' : 'left-0 border-r'} border-[#0e3547]
+            bg-[#071c26] flex flex-col justify-between shrink-0 select-none shadow-card
+            ${
+              mobileDrawerOpen
+                ? 'translate-x-0 w-72'
+                : isRtl
+                ? 'translate-x-full lg:translate-x-0'
+                : '-translate-x-full lg:translate-x-0'
+            }
+            ${desktopSidebarOpen ? 'lg:w-64' : 'lg:w-20'}
+          `}
         >
-          <div className="py-4 overflow-y-auto">
+          {/* Mobile Drawer Top Banner */}
+          <div className="lg:hidden p-4 border-b border-[#0e3547] flex items-center justify-between">
+            <BrandLogo size="sm" />
+            <button
+              onClick={() => setMobileDrawerOpen(false)}
+              className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 cursor-pointer"
+              title="Close Drawer"
+            >
+              <X size={18} />
+            </button>
+          </div>
+
+          <div className="py-4 overflow-y-auto flex-1">
             {navigationGroups.map((group, gIdx) => (
               <div key={gIdx} className="mb-4">
-                {sidebarOpen && (
+                {(desktopSidebarOpen || mobileDrawerOpen) && (
                   <div className="px-4 mb-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
                     {group.name}
                   </div>
@@ -656,14 +700,17 @@ export const AppLayout: React.FC = () => {
                       <NavLink
                         key={item.to}
                         to={item.to}
+                        onClick={() => setMobileDrawerOpen(false)}
                         className={({ isActive }) =>
-                          `flex items-center space-x-3 px-3 py-2 rounded-xl text-xs font-semibold transition group ${
+                          `flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition group ${
                             isActive
-                              ? 'bg-[#08222f] text-white shadow-xs border-l-[3px] border-[#ff6f32]'
+                              ? `bg-[#08222f] text-white shadow-xs ${
+                                  isRtl ? 'border-r-[3px]' : 'border-l-[3px]'
+                                } border-[#ff6f32]`
                               : 'text-slate-400 hover:bg-white/5 hover:text-white'
-                          } ${!sidebarOpen ? 'justify-center px-0' : ''}`
+                          } ${!desktopSidebarOpen && !mobileDrawerOpen ? 'lg:justify-center lg:px-0' : ''}`
                         }
-                        title={!sidebarOpen ? item.label : undefined}
+                        title={!desktopSidebarOpen ? item.label : undefined}
                       >
                         {({ isActive }) => (
                           <>
@@ -673,9 +720,9 @@ export const AppLayout: React.FC = () => {
                                 isActive ? 'text-[#ff6f32]' : 'text-slate-400 group-hover:text-white'
                               }`}
                             />
-                            {sidebarOpen && <span className="truncate">{item.label}</span>}
-                            {sidebarOpen && item.badge && (
-                              <span className="ml-auto text-[9px] font-black px-1.5 py-0.5 rounded bg-[#ff6f32]/20 text-[#ff6f32] border border-[#ff6f32]/30 tracking-wider">
+                            {(desktopSidebarOpen || mobileDrawerOpen) && <span className="truncate">{item.label}</span>}
+                            {(desktopSidebarOpen || mobileDrawerOpen) && item.badge && (
+                              <span className={`${isRtl ? 'mr-auto' : 'ml-auto'} text-[9px] font-black px-1.5 py-0.5 rounded bg-[#ff6f32]/20 text-[#ff6f32] border border-[#ff6f32]/30 tracking-wider`}>
                                 {item.badge}
                               </span>
                             )}

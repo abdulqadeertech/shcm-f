@@ -19,7 +19,7 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ items, showBack = true
 
   return (
     <div className="flex items-center justify-between mb-3 text-xs">
-      <nav className="flex items-center space-x-1.5 text-slate-400 flex-wrap" aria-label="Breadcrumb">
+      <nav className="flex items-center gap-1.5 text-slate-400 flex-wrap" aria-label="Breadcrumb">
         <Link
           to="/dashboard"
           className="hover:text-[#ff6f32] transition flex items-center p-1 rounded hover:bg-white/5"
@@ -53,7 +53,7 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ items, showBack = true
         <button
           type="button"
           onClick={() => navigate(-1)}
-          className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-xl bg-[#0a2736] border border-[#14425b] text-slate-300 hover:text-white hover:border-[#ff6f32]/50 transition text-xs font-semibold cursor-pointer shadow-2xs"
+          className="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl bg-[#0a2736] border border-[#14425b] text-slate-300 hover:text-white hover:border-[#ff6f32]/50 transition text-xs font-semibold cursor-pointer shadow-2xs"
           title="Return to previous screen"
         >
           <ArrowLeft size={12} className={isRtl ? 'rotate-180' : ''} />

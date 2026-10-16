@@ -18,7 +18,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   const [imgError, setImgError] = useState(false);
 
   return (
-    <section className="relative w-full min-h-[560px] lg:min-h-[620px] flex items-center overflow-hidden bg-[#071c26]">
+    <section className="relative w-full min-h-[560px] lg:min-h-[620px] flex items-center overflow-hidden bg-[#071c26] dark-surface-lock">
       {/* Corporate Workplace Photograph */}
       <div className="absolute inset-0 z-0">
         {!imgError ? (

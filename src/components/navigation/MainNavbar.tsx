@@ -21,6 +21,7 @@ import {
 import { MegaMenu } from './MegaMenu';
 import { useAuth } from '../../context/AuthContext';
 import { ThemeToggle } from '../ui/ThemeToggle';
+import { LanguageToggle } from '../ui/LanguageToggle';
 import { BrandLogo } from '../common/BrandLogo';
 
 interface MainNavbarProps {
@@ -314,7 +315,8 @@ export const MainNavbar: React.FC<MainNavbarProps> = ({
           </div>
 
           {/* Right Action Controls */}
-          <div className="flex items-center space-x-2 sm:space-x-3">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <LanguageToggle compact={true} />
             <ThemeToggle />
 
             {/* Quick Search Button */}
